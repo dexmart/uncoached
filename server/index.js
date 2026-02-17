@@ -7,9 +7,16 @@ import stripeRoutes from "./routes/stripe.js";
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// CORS configuration - allow both common Vite ports
+// CORS configuration - allow Vite dev ports + production frontend
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+    process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
+    origin: allowedOrigins,
     credentials: true
 }));
 
