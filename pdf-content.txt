@@ -1,0 +1,42 @@
+﻿=== PDF TEXT CONTENT ===
+Number of pages: 13
+
+--- Page 1 ---
+Please see Canva for all background photos (1920 x 1080)  Please See   Uncoached Core Colour System  The Navigation bare can be solid Soft Charcoal Black (#0F1110) with Warm Bone Linen words (#F41EC)  The Chat With Field section in the navigation bar should be replaced with ΓÇ£WhatΓÇÖs InsideΓÇ¥  For now, letΓÇÖs not have a Chat with Field, WhatΓÇÖs Inside or FAQ section. The Home Page, About, Contact Us and (add a) Sign In are good enough for now. We can work on the rest later - letΓÇÖs get this baby launched!  HERO SECTION  Example Structure:  Copy:  Headline  Where insight finally becomes lived.  Subheadline  A quiet, intelligent space for integrating what you already know into real life, real moments, and real change.  CTA
+
+--- Page 2 ---
+1.   Start Your Journey   (links to purchase page)  2.   WhatΓÇÖs Inside   (link to WhatΓÇÖs Inside Page - formerly Chat With Field)  TESTIMONIAL SLOT  (Placed bottom right)  Quiet line:   (placed under buttons)  App coming soon.  SECTION 2  Example Structure:  Copy:  Heading  How We Help You Integrate  Subheading  Uncoached helps insight from therapy, coaching, and inner work settle into real choices and real life, right when you need it, so you can move on with your day.
+
+--- Page 3 ---
+3 Cards  Is it possible to find gentler icons that arent emojis???  Find Clarity  Get oriented with whatΓÇÖs actually going on, without overthinking.  Regulate Gently  Settle your body so your next step feels possible.  Turn Insight Into Action  Apply awareness to real decisions as they happen.  Quiet line under the cards:  Designed to complement therapy and coaching, not replace it.  SECTION 3  Example Structure:  Copy:
+
+--- Page 4 ---
+Headline  Deeper work, on your own timing  Subheadline  Because insight matters most when it becomes part of how you live.  Body Copy  Uncoached offers a quiet, supportive space for integrating therapy, coaching, and personal work into specific moments in everyday life.  No rushing. No fixing. Just tools that help awareness take root gently, privately, and at your own pace.  Bullet Points  Γ£ô   Building emotional resilience for real life.  Γ£ô   Grounded tools for everyday regulation and clarity  Γ£ô   A judgment-free space for honest self-connection.  CTA  Our Approach   (Links to About)  SECTION 4  Example structure, carousel format showcasing 3 at a time:
+
+--- Page 5 ---
+Section Heading  What YouΓÇÖll Find Inside  Subheading  Tools for moving through your days more mindfully.  Intro  Uncoached offers a growing collection of tools designed to support you across many moments, moods, and seasons. You can reach for what you need, when you need it.  Carousel Items  YOU CAN REMOVE THE ΓÇ£Learn MoreΓåÆΓÇ¥ for now under each box.  Look at the Drive folder for Field Avatars to replace emoji icons - LET ME KNOW IF THESE IMAGES DONΓÇÖT LOOK RIGHT ONT HE HOMEPAGE.  Field
+
+--- Page 6 ---
+Chat with Field in real time, like reflecting with a trusted friend that helps you hear yourself more clearly, without advice or pressure.  Audio Breaths  Soft, short audio practices to help regulate your nervous system and ground your body in the moment.  Clarity Cards  Journaling cards with thoughtful questions and exercises to untangle your mind and spark a deeper clarity.  Pocket Prompts
+
+--- Page 7 ---
+Structured prompt experiences that guide reflection and next steps, helping insight turn into real change over time.  Audio Companion  Grounding voices you can return to anytime.  A growing library of guided resets, affirmations, and calming voice notes designed to support focus, regulation, and reassurance throughout your day.  Guided Shifts  Short, guided experiences that help you reset your state and reconnect with yourself in the moment.  Affirmations
+
+--- Page 8 ---
+Designed to support many emotional states and inner needs, offering steady reminders you can return to in under two minutes.  Grounding Voice Notes  Brief, supportive voice notes offering gentle reminders of who you are in moments when you need steadiness, encouragement, or perspective.  More Coming Soon  A growing space, shaped with care.  New tools and experiences will be added intentionally, always with the same focus on safety, integration, and self-trust.  CTA:  Unlock Everything  Quiet line under the carousel:  Designed to complement therapy and coaching between the sessions, not replace it.
+
+--- Page 9 ---
+SECTION 5  Example Structure:  Copy:  Section Heading  Meet Field  Subheading  A different way to be with yourself.  Intro  Field is not here to coach, advise, or analyze you.  It listens, reflects, and stays with what you bring, helping you slow down and hear yourself more clearly in moments that matter.  You can talk things through, explore gentle prompts, try short grounding rituals, or simply pause and be with what is present.  You decide how deep to go, when to pause, and what comes next. Field follows your lead.
+
+--- Page 10 ---
+CTA  Enter Uncoached  Bottom Copy  Field is an AI-powered companion designed to support self-led reflection, not replace human care.  Icon Line  No Advice. No Pressure.  Always Skip or Pause  Private and Secure  SECTION 6  Example Structure:  I actually really like the way you have it here (below), just with the uniform background - can we make that in a carousel format with 6 blocks per page?
+
+--- Page 11 ---
+SECTION 7  Example Structure:  Copy:  Section Heading  Give the Gift of Calm  Subheading  Send a thoughtful gift card and support someone in their journey.
+
+--- Page 12 ---
+Intro  Choose a stress-free, meaningful gift for the ones in your life who crave more self-connection.  Button  Send a Gift Card Now  Icons  1.   Send instantly  2.   Flexible amounts  3.   Digital & secure  FYI Gift Cards Pricing  We will have to change the pricing on Stripe as well.  ΓùÅ   $22 USD (1 month)  ΓùÅ   $62 USD (3 months)  ΓùÅ   $120 USD (6 months)  ΓùÅ   $220 USD (1 year -   2 months free )  SECTION 8  Example Structure:
+
+--- Page 13 ---
+Copy:  Heading  Quiet insights, once a week.  Body  Sign up to receive thoughtful reflections that support real integration.  From gentle affirmations and grounding voice notes to early access to new behind-the-scenes tools, and FieldΓÇÖs new powerful features.  Email Field Placeholder  Enter your email  Button  Subscribe  Footer  ┬⌐ 2025 Emergyng Energy. All rights reserved.   (far left)  Terms   ┬╖   Privacy   ┬╖   Billing & Refunds   (far right)
+

@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/* Custom Theme Variables */
+@theme {
+  /* Brand Accent */
+  --color-sage: #3F5D4D;
+
+  /* Backgrounds */
+  --color-charcoal: #0F1110;
+  --color-bone: #F4F1EC;
+  --color-clay: #D6C7B8;
+
+  /* Accents */
+  --color-golden-light: #C89A5B;
+  --color-golden-deep: #8F6A3D;
+
+  /* Text colors */
+  --color-text-dark: #1F2422;
+  --color-text-muted: #5E6A65;
+  --color-text-tertiary: #8C857A;
+
+  /* Fonts */
+  --font-display: "Playfair Display", serif;
+  --font-body: "Montserrat", sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3F5D4D;
+  border-radius: 4px;
+}
+
+/* Glassmorphism styles */
+.glass-nav {
+  background: rgba(249, 248, 244, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(198, 142, 86, 0.15);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+.dark .glass-nav {
+  background: rgba(28, 25, 23, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-dark {
+  background: rgba(28, 25, 23, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.hero-text-shadow {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Testimonial card hover */
+.testimonial-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(198, 142, 86, 0.15);
+}
+
+/* Golden arch decoration */
+.golden-arch {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border: 2px solid rgba(198, 142, 86, 0.2);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Star rating color */
+.star-rating {
+  color: #D4A853;
+}
+
+/* Float animation */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Base body styles */
+body {
+  margin: 0;
+  min-height: 100vh;
+}
