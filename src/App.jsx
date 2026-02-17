@@ -18,13 +18,10 @@ import ClarityCardsPage from './pages/member/ClarityCardsPage'
 import AffirmationsPage from './pages/member/AffirmationsPage'
 import VoiceNotesPage from './pages/member/VoiceNotesPage'
 
-// Use basename only in production (when deployed to subdirectory)
-const basename = import.meta.env.PROD ? '/mockup/dev/4' : '/'
-
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter basename={basename}>
+      <BrowserRouter>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
