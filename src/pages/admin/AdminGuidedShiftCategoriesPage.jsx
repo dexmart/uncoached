@@ -230,10 +230,12 @@ const AdminGuidedShiftCategoriesPage = () => {
                     ) : (
                         categories.map((category) => (
                             <div key={category.id} className="bg-white p-5 rounded-2xl shadow-sm border border-text-dark/10 flex items-center gap-6">
-                                <div className="w-12 h-12 rounded-xl bg-bone flex items-center justify-center text-2xl shrink-0 overflow-hidden text-clay"
-                                    dangerouslySetInnerHTML={category.icon?.startsWith('<svg') ? { __html: category.icon } : undefined}
-                                >
-                                    {!category.icon?.startsWith('<svg') && category.icon}
+                                <div className="w-12 h-12 rounded-xl bg-bone flex items-center justify-center text-2xl shrink-0 overflow-hidden text-clay">
+                                    {category.icon?.startsWith('<svg') ? (
+                                        <div dangerouslySetInnerHTML={{ __html: category.icon }} className="flex items-center justify-center w-full h-full" />
+                                    ) : (
+                                        <span>{category.icon}</span>
+                                    )}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-3 mb-1">

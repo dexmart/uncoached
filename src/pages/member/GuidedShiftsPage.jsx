@@ -336,10 +336,12 @@ const GuidedShiftsPage = () => {
                             >
                                 <div className="p-6 flex-1 flex flex-col">
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="text-clay/80 p-3 bg-white/50 rounded-full w-12 h-12 flex items-center justify-center shrink-0"
-                                            dangerouslySetInnerHTML={family.icon?.startsWith('<svg') ? { __html: family.icon } : undefined}
-                                        >
-                                            {!family.icon?.startsWith('<svg') && family.icon}
+                                        <div className="text-clay/80 p-3 bg-white/50 rounded-full w-12 h-12 flex items-center justify-center shrink-0">
+                                            {family.icon?.startsWith('<svg') ? (
+                                                <div dangerouslySetInnerHTML={{ __html: family.icon }} className="flex items-center justify-center w-full h-full" />
+                                            ) : (
+                                                <span>{family.icon}</span>
+                                            )}
                                         </div>
                                         <div>
                                             <h3 className="font-display text-xl text-text-dark leading-tight">
