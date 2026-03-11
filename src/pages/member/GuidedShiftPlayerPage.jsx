@@ -81,6 +81,17 @@ const GuidedShiftPlayerPage = () => {
 
     if (!shift) return null;
 
+    let parsedUseWhen = [];
+    if (Array.isArray(shift.use_when)) {
+        parsedUseWhen = shift.use_when;
+    } else if (typeof shift.use_when === 'string') {
+        try { parsedUseWhen = JSON.parse(shift.use_when); } catch (e) { parsedUseWhen = []; }
+        if (!Array.isArray(parsedUseWhen)) parsedUseWhen = [];
+    }
+
+    const categoryIcon = shift.guided_shift_categories?.icon || '';
+    const hasSvgIcon = typeof categoryIcon === 'string' && categoryIcon.startsWith('<svg');
+
     return (
         <div className="min-h-screen bg-bone">
             {/* Background Image */}
@@ -112,9 +123,9 @@ const GuidedShiftPlayerPage = () => {
                     {/* Category Icon */}
                     <div className="text-center mb-8">
                         <div className="inline-flex items-center justify-center w-24 h-24 bg-clay/20 backdrop-blur-sm rounded-full text-text-dark shadow-sm">
-                            {shift.guided_shift_categories?.icon ? (
-                                <div className="text-4xl text-clay" dangerouslySetInnerHTML={shift.guided_shift_categories.icon.startsWith('<svg') ? { __html: shift.guided_shift_categories.icon } : undefined}>
-                                    {!shift.guided_shift_categories.icon.startsWith('<svg') && shift.guided_shift_categories.icon}
+                            {categoryIcon ? (
+                                <div className="text-4xl text-clay" dangerouslySetInnerHTML={hasSvgIcon ? { __html: categoryIcon } : undefined}>
+                                    {!hasSvgIcon && categoryIcon}
                                 </div>
                             ) : (
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -173,7 +184,7 @@ const GuidedShiftPlayerPage = () => {
                     )}
 
                     {/* Use This When */}
-                    {shift.use_when && shift.use_when.length > 0 && (
+                    {parsedUseWhen.length > 0 && (
                         <div className="mb-16">
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="h-px bg-text-dark/10 flex-1"></div>
@@ -184,7 +195,7 @@ const GuidedShiftPlayerPage = () => {
                             </div>
 
                             <div className="space-y-4">
-                                {shift.use_when.map((item, index) => (
+                                {parsedUseWhen.map((item, index) => (
                                     <div key={index} className="flex items-center gap-4">
                                         <div className="shrink-0 w-6 h-6 rounded-full bg-clay/30 flex items-center justify-center text-white">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
