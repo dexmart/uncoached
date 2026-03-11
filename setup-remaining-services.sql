@@ -1,7 +1,7 @@
 -- ================================================================================================
 -- UNCOACHED - REMAINING SERVICES SCHEMA SETUP (UPDATED & BULLETPROOF)
 -- Details: Creates tables, correctly adds new columns if tables already existed,
---          and fixes RLS policies to successfully reference `user_roles.user_id`.
+--          and fixes RLS policies to successfully reference `user_roles.id`.
 -- ================================================================================================
 
 -- 1. Pocket Prompts
@@ -131,31 +131,31 @@ DROP POLICY IF EXISTS "Admins can delete" ON public.voice_notes;
 
 -- Reading Policies (Public/Member)
 CREATE POLICY "Public profiles are viewable by everyone." ON public.pocket_prompt_categories FOR SELECT USING (true);
-CREATE POLICY "Public profiles are viewable by everyone." ON public.pocket_prompts FOR SELECT USING (is_active = true OR EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Public profiles are viewable by everyone." ON public.clarity_cards FOR SELECT USING (is_active = true OR EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Public profiles are viewable by everyone." ON public.pocket_prompts FOR SELECT USING (is_active = true OR EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Public profiles are viewable by everyone." ON public.clarity_cards FOR SELECT USING (is_active = true OR EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 CREATE POLICY "Public profiles are viewable by everyone." ON public.affirmation_categories FOR SELECT USING (true);
-CREATE POLICY "Public profiles are viewable by everyone." ON public.affirmations FOR SELECT USING (is_active = true OR EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Public profiles are viewable by everyone." ON public.voice_notes FOR SELECT USING (is_active = true OR EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Public profiles are viewable by everyone." ON public.affirmations FOR SELECT USING (is_active = true OR EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Public profiles are viewable by everyone." ON public.voice_notes FOR SELECT USING (is_active = true OR EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 
 -- Admin Management Policies (Write Access)
-CREATE POLICY "Admins can insert" ON public.pocket_prompt_categories FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can update" ON public.pocket_prompt_categories FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can delete" ON public.pocket_prompt_categories FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can insert" ON public.pocket_prompt_categories FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can update" ON public.pocket_prompt_categories FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can delete" ON public.pocket_prompt_categories FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 
-CREATE POLICY "Admins can insert" ON public.pocket_prompts FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can update" ON public.pocket_prompts FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can delete" ON public.pocket_prompts FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can insert" ON public.pocket_prompts FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can update" ON public.pocket_prompts FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can delete" ON public.pocket_prompts FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 
-CREATE POLICY "Admins can insert" ON public.clarity_cards FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can update" ON public.clarity_cards FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can delete" ON public.clarity_cards FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can insert" ON public.clarity_cards FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can update" ON public.clarity_cards FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can delete" ON public.clarity_cards FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 
-CREATE POLICY "Admins can insert" ON public.affirmation_categories FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can update" ON public.affirmation_categories FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can delete" ON public.affirmation_categories FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can insert" ON public.affirmation_categories FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can update" ON public.affirmation_categories FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can delete" ON public.affirmation_categories FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 
-CREATE POLICY "Admins can insert" ON public.affirmations FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can update" ON public.affirmations FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can insert" ON public.affirmations FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can update" ON public.affirmations FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 CREATE POLICY "Admins can delete" ON public.affirmations FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
 
 CREATE POLICY "Admins can insert" ON public.voice_notes FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
