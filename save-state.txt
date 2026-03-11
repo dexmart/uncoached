@@ -1,0 +1,36 @@
+# Uncoached React Project - Development Save State
+**Last Updated**: March 7, 2026
+
+## Mission Context
+We are migrating the hardcoded content (React `useState` arrays) of the Uncoached membership platform into a fully dynamic Supabase CMS backend, allowing the site owner to manage content without touching the codebase.
+
+## What is Completely Finished
+**✅ Phase 1: Authentication** 
+Admins can log in and view hidden `AdminLayout` routes through the `AdminProtectedRoute` wrapper.
+
+**✅ Phase 2: User Profiles & Linting** 
+Users can upload avatars and set their display name. We also completely eliminated all ESLint warnings from the project.
+
+**✅ Phase 3: Audio Breaths CMS** 
+The entire Audio Breaths system is now dynamic.
+- **Backend:** Created `audio_families` and `audio_breaths` tables in Supabase.
+- **API/Storage:** Configured policies for the `audio-breaths` storage bucket. (Increased max size to 500MB globally for large uncompressed audio files).
+- **Admin UI:** Developed full CRUD capabilities at `/admin/audio-families` and `/admin/audio-breaths`.
+- **Member UI:** Refactored `/dashboard/audio-breaths` and the individual player page to query Supabase directly instead of reading local JSON. Tested successfully with live `.mp3` uploads.
+
+## What is Currently Broken / Pending Fixes
+**⚠️ Guided Shifts Player Routing Issue**
+Currently, clicking a Guided Shift in the Member UI (`/dashboard/guided-shifts`) attempts to route to the `AudioBreathPlayerPage` component. Because we updated `AudioBreathPlayerPage` in Phase 3 to specifically search the `audio_breaths` database table, these Guided Shift links will result in a blank page or 404 because Guided Shifts do not belong in the `audio_breaths` table.
+
+## Immediate Next Steps (Start Here Tomorrow)
+**Phase 4: Guided Shifts CMS**
+
+To fix the broken routing and make Guided Shifts dynamic just like Audio Breaths, we need to accomplish the following steps:
+
+1. **Database Script:** Draft a SQL script to create `guided_shift_categories` and `guided_shifts` tables in Supabase, mirroring the structure of Audio Breaths but with the correct columns (based on `GuidedShiftsPage.jsx`).
+2. **Storage:** Create a new `guided-shifts` storage bucket in Supabase for their audio files.
+3. **Admin Builders:** Build `AdminGuidedShiftCategoriesPage` and `AdminGuidedShiftsPage` under the `src/pages/admin` folder, and add them to the `App.jsx` protected admin routes.
+4. **Member Player Decoupling:** Build a brand new component named `GuidedShiftPlayerPage.jsx`. Update the `App.jsx` route for `/dashboard/guided-shifts/:id` to point to this new player instead of the `AudioBreathPlayerPage`.
+5. **Member List Rewiring:** Replace the hardcoded `shiftFamilies` array in `GuidedShiftsPage.jsx` with a live Supabase `fetch` pointing to the new tables.
+
+*Note to Future AI Agent: Begin by reviewing `implementation_plan.md` to review the architectural choices decided thus far.*

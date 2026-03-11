@@ -16,7 +16,7 @@ const SignInPage = () => {
         setError('');
         setLoading(true);
 
-        const { data, error } = await signIn(email, password);
+        const { error } = await signIn(email, password);
 
         if (error) {
             setError(error.message);

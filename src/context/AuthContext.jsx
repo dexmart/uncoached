@@ -3,6 +3,7 @@ import { supabase, getSessionWithRetry } from '../lib/supabase';
 
 const AuthContext = createContext({});
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
     return useContext(AuthContext);
 };
@@ -10,52 +11,9 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isRoleLoading, setIsRoleLoading] = useState(true);
     const [subscription, setSubscription] = useState(null);
-
-    useEffect(() => {
-        let mounted = true;
-
-        // Get initial session with retry
-        const getSession = async () => {
-            const session = await getSessionWithRetry();
-
-            if (mounted) {
-                if (session?.user) {
-                    console.log('Session found:', session.user.email);
-                    setUser(session.user);
-                    fetchSubscription(session.user.id, session.user.email);
-                } else {
-                    console.log('No session found');
-                }
-                setLoading(false);
-            }
-        };
-
-        getSession();
-
-        // Listen for auth changes - this is the primary source of truth
-        const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
-            (event, session) => {
-                console.log('Auth event:', event, session?.user?.email);
-
-                if (mounted) {
-                    setUser(session?.user ?? null);
-                    setLoading(false);
-
-                    if (session?.user) {
-                        fetchSubscription(session.user.id, session.user.email);
-                    } else {
-                        setSubscription(null);
-                    }
-                }
-            }
-        );
-
-        return () => {
-            mounted = false;
-            authSubscription.unsubscribe();
-        };
-    }, []);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const fetchSubscription = async (userId, email) => {
         try {
@@ -100,6 +58,89 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const fetchUserRole = async (userId) => {
+        setIsRoleLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('id', userId)
+                .maybeSingle();
+
+            if (error) {
+                console.error('Error fetching user role:', error);
+                setIsAdmin(false);
+            } else {
+                setIsAdmin(data?.role === 'admin');
+            }
+        } catch (err) {
+            console.error('Role fetch failed:', err);
+            setIsAdmin(false);
+        } finally {
+            setIsRoleLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        let mounted = true;
+
+        // Get initial session with retry
+        const getSession = async () => {
+            const session = await getSessionWithRetry();
+
+            if (mounted) {
+                if (session?.user) {
+                    console.log('Session found:', session.user.email);
+                    setUser(session.user);
+                    setLoading(false); // Unblock the UI for normal users immediately
+
+                    // Fetch heavy details in background
+                    Promise.all([
+                        fetchSubscription(session.user.id, session.user.email),
+                        fetchUserRole(session.user.id)
+                    ]);
+                } else {
+                    console.log('No session found');
+                    setIsAdmin(false);
+                    setIsRoleLoading(false);
+                    setLoading(false);
+                }
+            }
+        };
+
+        getSession();
+
+        // Listen for auth changes - this is the primary source of truth
+        const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
+            (event, session) => {
+                console.log('Auth event:', event, session?.user?.email);
+
+                if (mounted) {
+                    setUser(session?.user ?? null);
+
+                    if (session?.user) {
+                        setLoading(false); // Unblock immediately
+                        Promise.all([
+                            fetchSubscription(session.user.id, session.user.email),
+                            fetchUserRole(session.user.id)
+                        ]);
+                    } else {
+                        setSubscription(null);
+                        setIsAdmin(false);
+                        setIsRoleLoading(false);
+                        setLoading(false);
+                    }
+                }
+            }
+        );
+
+        return () => {
+            mounted = false;
+            authSubscription.unsubscribe();
+        };
+    }, []);
+
+    // fetchSubscription moved up
     const signUp = async (email, password, displayName) => {
         const { data, error } = await supabase.auth.signUp({
             email,
@@ -134,6 +175,26 @@ export const AuthProvider = ({ children }) => {
         return { error };
     };
 
+    const updateProfile = async (displayName, avatarUrl) => {
+        try {
+            const updates = {};
+            if (displayName !== undefined) updates.display_name = displayName;
+            if (avatarUrl !== undefined) updates.avatar_url = avatarUrl;
+
+            const { data, error } = await supabase.auth.updateUser({
+                data: updates
+            });
+
+            if (data?.user) {
+                setUser(data.user);
+            }
+
+            return { data, error };
+        } catch (error) {
+            return { error };
+        }
+    };
+
     const value = {
         user,
         loading,
@@ -142,7 +203,10 @@ export const AuthProvider = ({ children }) => {
         signIn,
         signInWithGoogle,
         signOut,
-        isSubscribed: subscription?.status === 'active'
+        updateProfile,
+        isSubscribed: subscription?.status === 'active',
+        isAdmin,
+        isRoleLoading
     };
 
     return (

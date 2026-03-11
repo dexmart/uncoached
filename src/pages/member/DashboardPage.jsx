@@ -77,8 +77,28 @@ const DashboardPage = () => {
             </div>
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col items-center pt-48 pb-24 px-6">
+            <div className="relative z-10 flex flex-col items-center pt-32 pb-24 px-6 md:pt-48">
 
+                {/* Profile Avatar / Link */}
+                <Link to="/dashboard/profile" className="mb-6 group relative">
+                    <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg bg-clay/20 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        {user?.user_metadata?.avatar_url ? (
+                            <img
+                                src={user.user_metadata.avatar_url}
+                                alt="Profile"
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <span className="text-3xl text-clay/50 font-display">
+                                {displayName?.charAt(0).toUpperCase() || 'U'}
+                            </span>
+                        )}
+                    </div>
+                    {/* Hover tooltip */}
+                    <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-3 py-1 bg-charcoal/80 text-bone text-xs rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm pointer-events-none">
+                        Edit Profile
+                    </div>
+                </Link>
 
                 {/* Welcome */}
                 <h1 className="font-display text-4xl md:text-5xl text-text-dark text-center mb-2">

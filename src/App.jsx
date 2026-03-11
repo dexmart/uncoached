@@ -6,6 +6,15 @@ import SignUpPage from './pages/SignUpPage'
 import SignInPage from './pages/SignInPage'
 import PricingPage from './pages/PricingPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import AdminProtectedRoute from './components/AdminProtectedRoute'
+import AdminLayout from './components/AdminLayout'
+
+// Admin Pages
+import AdminDashboardPage from './pages/admin/AdminDashboardPage'
+import AdminAudioFamiliesPage from './pages/admin/AdminAudioFamiliesPage'
+import AdminAudioBreathsPage from './pages/admin/AdminAudioBreathsPage'
+import AdminGuidedShiftCategoriesPage from './pages/admin/AdminGuidedShiftCategoriesPage'
+import AdminGuidedShiftsPage from './pages/admin/AdminGuidedShiftsPage'
 
 // Member Pages
 import DashboardPage from './pages/member/DashboardPage'
@@ -13,10 +22,12 @@ import FieldPage from './pages/member/FieldPage'
 import AudioBreathsPage from './pages/member/AudioBreathsPage'
 import AudioBreathPlayerPage from './pages/member/AudioBreathPlayerPage'
 import GuidedShiftsPage from './pages/member/GuidedShiftsPage'
+import GuidedShiftPlayerPage from './pages/member/GuidedShiftPlayerPage'
 import PocketPromptsPage from './pages/member/PocketPromptsPage'
 import ClarityCardsPage from './pages/member/ClarityCardsPage'
 import AffirmationsPage from './pages/member/AffirmationsPage'
 import VoiceNotesPage from './pages/member/VoiceNotesPage'
+import ProfilePage from './pages/member/ProfilePage'
 
 function App() {
   return (
@@ -75,7 +86,7 @@ function App() {
             path="/dashboard/guided-shifts/:id"
             element={
               <ProtectedRoute requireSubscription={true}>
-                <AudioBreathPlayerPage />
+                <GuidedShiftPlayerPage />
               </ProtectedRoute>
             }
           />
@@ -111,6 +122,30 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/dashboard/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <AdminProtectedRoute>
+                <AdminLayout />
+              </AdminProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboardPage />} />
+            <Route path="audio-families" element={<AdminAudioFamiliesPage />} />
+            <Route path="audio-breaths" element={<AdminAudioBreathsPage />} />
+            <Route path="guided-shift-categories" element={<AdminGuidedShiftCategoriesPage />} />
+            <Route path="guided-shifts" element={<AdminGuidedShiftsPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
