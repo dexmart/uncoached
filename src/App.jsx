@@ -31,6 +31,7 @@ import GuidedShiftsPage from './pages/member/GuidedShiftsPage'
 import GuidedShiftPlayerPage from './pages/member/GuidedShiftPlayerPage'
 import PocketPromptsPage from './pages/member/PocketPromptsPage'
 import ClarityCardsPage from './pages/member/ClarityCardsPage'
+import ClarityCardDetailPage from './pages/member/ClarityCardDetailPage'
 import AffirmationsPage from './pages/member/AffirmationsPage'
 import VoiceNotesPage from './pages/member/VoiceNotesPage'
 import ProfilePage from './pages/member/ProfilePage'
@@ -109,6 +110,14 @@ function App() {
             element={
               <ProtectedRoute requireSubscription={true}>
                 <ClarityCardsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/clarity-cards/:id"
+            element={
+              <ProtectedRoute requireSubscription={true}>
+                <ClarityCardDetailPage />
               </ProtectedRoute>
             }
           />
