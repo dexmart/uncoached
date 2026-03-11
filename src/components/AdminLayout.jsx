@@ -10,7 +10,11 @@ const AdminLayout = () => {
 
     const [openSections, setOpenSections] = useState({
         audioBreaths: location.pathname.includes('/audio-'),
-        guidedShifts: location.pathname.includes('/guided-shift')
+        guidedShifts: location.pathname.includes('/guided-shift'),
+        pocketPrompts: location.pathname.includes('/pocket-prompt'),
+        clarityCards: location.pathname.includes('/clarity-card'),
+        affirmations: location.pathname.includes('/affirmation'),
+        voiceNotes: location.pathname.includes('/voice-note')
     });
 
     const toggleSection = (section) => {
@@ -107,6 +111,102 @@ const AdminLayout = () => {
                                 </Link>
                             </div>
                         )}
+                    </div>
+
+                    {/* Pocket Prompts Accordion */}
+                    <div className="space-y-1">
+                        <button
+                            onClick={() => toggleSection('pocketPrompts')}
+                            className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors text-sm font-medium text-text-dark/70 hover:bg-clay/10 hover:text-text-dark focus:outline-none"
+                        >
+                            <span>Pocket Prompts</span>
+                            <svg className={`w-4 h-4 transition-transform duration-200 ${openSections.pocketPrompts ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        {openSections.pocketPrompts && (
+                            <div className="pl-4 pr-2 space-y-1 pt-1 pb-2">
+                                <Link
+                                    to="/admin/pocket-prompt-categories"
+                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/pocket-prompt-categories')
+                                        ? 'bg-clay/10 text-clay'
+                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
+                                        }`}
+                                >
+                                    Categories
+                                </Link>
+                                <Link
+                                    to="/admin/pocket-prompts"
+                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/pocket-prompts')
+                                        ? 'bg-clay/10 text-clay'
+                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
+                                        }`}
+                                >
+                                    Prompts
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Clarity Cards (Flat Link, no accordion needed since it's just one table, but sticking to design spec) */}
+                    <div className="space-y-1">
+                        <Link
+                            to="/admin/clarity-cards"
+                            className={`w-full flex items-center px-4 py-3 rounded-xl transition-colors text-sm font-medium ${isActive('/admin/clarity-cards')
+                                ? 'bg-clay/10 text-clay shadow-sm'
+                                : 'text-text-dark/70 hover:bg-clay/10 hover:text-text-dark'
+                                }`}
+                        >
+                            Clarity Cards
+                        </Link>
+                    </div>
+
+                    {/* Affirmations Accordion */}
+                    <div className="space-y-1">
+                        <button
+                            onClick={() => toggleSection('affirmations')}
+                            className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors text-sm font-medium text-text-dark/70 hover:bg-clay/10 hover:text-text-dark focus:outline-none"
+                        >
+                            <span>Affirmations</span>
+                            <svg className={`w-4 h-4 transition-transform duration-200 ${openSections.affirmations ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        {openSections.affirmations && (
+                            <div className="pl-4 pr-2 space-y-1 pt-1 pb-2">
+                                <Link
+                                    to="/admin/affirmation-categories"
+                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/affirmation-categories')
+                                        ? 'bg-clay/10 text-clay'
+                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
+                                        }`}
+                                >
+                                    Categories
+                                </Link>
+                                <Link
+                                    to="/admin/affirmations"
+                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/affirmations')
+                                        ? 'bg-clay/10 text-clay'
+                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
+                                        }`}
+                                >
+                                    Affirmations
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Voice Notes (Flat link) */}
+                    <div className="space-y-1 pb-4">
+                        <Link
+                            to="/admin/voice-notes"
+                            className={`w-full flex items-center px-4 py-3 rounded-xl transition-colors text-sm font-medium ${isActive('/admin/voice-notes')
+                                ? 'bg-clay/10 text-clay shadow-sm'
+                                : 'text-text-dark/70 hover:bg-clay/10 hover:text-text-dark'
+                                }`}
+                        >
+                            Voice Notes
+                        </Link>
                     </div>
                 </nav>
 

@@ -1,63 +1,44 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 
 const ClarityCardsPage = () => {
-    // All 10 Clarity Cards
-    const clarityCards = [
-        {
-            id: 1,
-            title: "A Tiny Win to Celebrate",
-            description: "Catch the progress you usually gloss over and let it count."
-        },
-        {
-            id: 2,
-            title: "A Thought I Want to Let Go Of",
-            description: "Name the thought that's been looping so it doesn't keep running the day."
-        },
-        {
-            id: 3,
-            title: "After the Spiral",
-            description: "Come back to yourself after emotional overload or mental chaos."
-        },
-        {
-            id: 4,
-            title: "How I'm Feeling",
-            description: "Get honest about what's present without needing to explain it."
-        },
-        {
-            id: 5,
-            title: "Mini Ritual Moment",
-            description: "Create a small, intentional pause that shifts your state."
-        },
-        {
-            id: 6,
-            title: "My Gentle Next Step",
-            description: "Find a next move that feels doable instead of overwhelming."
-        },
-        {
-            id: 7,
-            title: "What I Need Right Now",
-            description: "Listen for what your system is actually asking for."
-        },
-        {
-            id: 8,
-            title: "What I Want to Remember",
-            description: "Anchor a truth, insight, or reminder you don't want to lose."
-        },
-        {
-            id: 9,
-            title: "When Everything Feels Like Too Much",
-            description: "Meet overwhelm without fixing or pushing through it."
-        },
-        {
-            id: 10,
-            title: "Before I Begin My Day",
-            description: "Set an inner tone before the day starts asking things of you."
+    const [clarityCards, setClarityCards] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchCards();
+    }, []);
+
+    const fetchCards = async () => {
+        try {
+            setLoading(true);
+            const { data, error } = await supabase
+                .from('clarity_cards')
+                .select('*')
+                .eq('is_active', true)
+                .order('sort_order', { ascending: true });
+
+            if (error) throw error;
+            setClarityCards(data || []);
+        } catch (error) {
+            console.error('Error fetching clarity cards:', error);
+        } finally {
+            setLoading(false);
         }
-    ];
+    };
 
     const scrollToCards = () => {
         document.getElementById('card-grid')?.scrollIntoView({ behavior: 'smooth' });
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[#F5F0EB] flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-[#B8A99A] border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#F5F0EB]">
@@ -185,23 +166,29 @@ const ClarityCardsPage = () => {
                 </div>
 
                 <div className="relative z-10 max-w-[1200px] mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-                        {clarityCards.map((card) => (
-                            <Link
-                                key={card.id}
-                                to={`/dashboard/clarity-cards/${card.title.toLowerCase().replace(/ /g, '-')}`}
-                                className="group bg-white rounded-xl p-7 shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.10)] hover:-translate-y-[2px] transition-all duration-200 cursor-pointer border border-[#E8E2DC]/60 min-h-[170px] flex flex-col"
-                                tabIndex={0}
-                            >
-                                <h3 className="font-display text-lg md:text-xl text-[#3D3530] mb-3">
-                                    {card.title}
-                                </h3>
-                                <p className="text-[#6B5E54] text-sm md:text-[15px] leading-relaxed flex-1">
-                                    {card.description}
-                                </p>
-                            </Link>
-                        ))}
-                    </div>
+                    {clarityCards.length === 0 ? (
+                        <div className="text-center py-16 bg-white/50 rounded-3xl border border-[#E8E2DC]/60">
+                            <p className="text-[#6B5E54] text-lg">No cards available yet.</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                            {clarityCards.map((card) => (
+                                <Link
+                                    key={card.id}
+                                    to={`/dashboard/clarity-cards/${card.id}`}
+                                    className="group bg-white rounded-xl p-7 shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.10)] hover:-translate-y-[2px] transition-all duration-200 cursor-pointer border border-[#E8E2DC]/60 min-h-[170px] flex flex-col"
+                                    tabIndex={0}
+                                >
+                                    <h3 className="font-display text-lg md:text-xl text-[#3D3530] mb-3">
+                                        {card.title}
+                                    </h3>
+                                    <p className="text-[#6B5E54] text-sm md:text-[15px] leading-relaxed flex-1">
+                                        {card.description}
+                                    </p>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 

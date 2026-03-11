@@ -15,6 +15,12 @@ import AdminAudioFamiliesPage from './pages/admin/AdminAudioFamiliesPage'
 import AdminAudioBreathsPage from './pages/admin/AdminAudioBreathsPage'
 import AdminGuidedShiftCategoriesPage from './pages/admin/AdminGuidedShiftCategoriesPage'
 import AdminGuidedShiftsPage from './pages/admin/AdminGuidedShiftsPage'
+import AdminPocketPromptCategoriesPage from './pages/admin/AdminPocketPromptCategoriesPage'
+import AdminPocketPromptsPage from './pages/admin/AdminPocketPromptsPage'
+import AdminClarityCardsPage from './pages/admin/AdminClarityCardsPage'
+import AdminAffirmationCategoriesPage from './pages/admin/AdminAffirmationCategoriesPage'
+import AdminAffirmationsPage from './pages/admin/AdminAffirmationsPage'
+import AdminVoiceNotesPage from './pages/admin/AdminVoiceNotesPage'
 
 // Member Pages
 import DashboardPage from './pages/member/DashboardPage'
@@ -145,6 +151,16 @@ function App() {
             <Route path="audio-breaths" element={<AdminAudioBreathsPage />} />
             <Route path="guided-shift-categories" element={<AdminGuidedShiftCategoriesPage />} />
             <Route path="guided-shifts" element={<AdminGuidedShiftsPage />} />
+
+            <Route path="pocket-prompt-categories" element={<AdminPocketPromptCategoriesPage />} />
+            <Route path="pocket-prompts" element={<AdminPocketPromptsPage />} />
+
+            <Route path="clarity-cards" element={<AdminClarityCardsPage />} />
+
+            <Route path="affirmation-categories" element={<AdminAffirmationCategoriesPage />} />
+            <Route path="affirmations" element={<AdminAffirmationsPage />} />
+
+            <Route path="voice-notes" element={<AdminVoiceNotesPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
