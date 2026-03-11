@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 
 const GuidedShiftPlayerPage = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
 
     const [shift, setShift] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [fetchError, setFetchError] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
 
@@ -16,7 +15,6 @@ const GuidedShiftPlayerPage = () => {
     useEffect(() => {
         const fetchShift = async () => {
             try {
-                console.log('GuidedShiftPlayerPage: Fetching shift with id:', id);
                 const { data, error } = await supabase
                     .from('guided_shifts')
                     .select(`
@@ -29,22 +27,20 @@ const GuidedShiftPlayerPage = () => {
                     .eq('id', id)
                     .single();
 
-                console.log('GuidedShiftPlayerPage: Query result:', { data, error });
-
                 if (error) {
-                    setError(`Supabase error: ${error.message} (code: ${error.code})`);
+                    setFetchError(`Database error: ${error.message}`);
                     return;
                 }
 
                 if (!data) {
-                    setError(`No shift found with id: "${id}"`);
+                    setFetchError(`No shift found with id: "${id}"`);
                     return;
                 }
 
                 setShift(data);
             } catch (err) {
                 console.error('Error fetching guided shift:', err);
-                setError(`Unexpected error: ${err.message}`);
+                setFetchError(`Unexpected error: ${err.message}`);
             } finally {
                 setLoading(false);
             }
@@ -90,9 +86,9 @@ const GuidedShiftPlayerPage = () => {
         return (
             <div className="min-h-screen bg-bone flex items-center justify-center">
                 <div className="text-center max-w-md px-6">
-                    {error ? (
+                    {fetchError ? (
                         <>
-                            <p className="text-red-500 mb-4 font-mono text-sm bg-red-50 p-4 rounded-xl">{error}</p>
+                            <p className="text-red-500 mb-4 font-mono text-sm bg-red-50 p-4 rounded-xl">{fetchError}</p>
                             <Link to="/dashboard/guided-shifts" className="text-clay hover:underline">← Back to Guided Shifts</Link>
                         </>
                     ) : (
@@ -103,6 +99,7 @@ const GuidedShiftPlayerPage = () => {
         );
     }
 
+    // Safely parse use_when (could be JSONB array, string, or null)
     let parsedUseWhen = [];
     if (Array.isArray(shift.use_when)) {
         parsedUseWhen = shift.use_when;
@@ -111,8 +108,26 @@ const GuidedShiftPlayerPage = () => {
         if (!Array.isArray(parsedUseWhen)) parsedUseWhen = [];
     }
 
-    const categoryIcon = shift.guided_shift_categories?.icon || '';
-    const hasSvgIcon = typeof categoryIcon === 'string' && categoryIcon.startsWith('<svg');
+    // Safely extract category icon - NEVER render an object directly
+    const rawIcon = shift.guided_shift_categories?.icon;
+    const categoryIconStr = typeof rawIcon === 'string' ? rawIcon : '';
+    const isSvgIcon = categoryIconStr.startsWith('<svg');
+
+    // Helper to safely render icon
+    const renderCategoryIcon = () => {
+        if (!categoryIconStr) {
+            return (
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 5v14" />
+                    <path d="M19 12l-7 7-7-7" />
+                </svg>
+            );
+        }
+        if (isSvgIcon) {
+            return <div className="text-4xl text-clay" dangerouslySetInnerHTML={{ __html: categoryIconStr }} />;
+        }
+        return <div className="text-4xl text-clay">{categoryIconStr}</div>;
+    };
 
     return (
         <div className="min-h-screen bg-bone">
@@ -145,22 +160,13 @@ const GuidedShiftPlayerPage = () => {
                     {/* Category Icon */}
                     <div className="text-center mb-8">
                         <div className="inline-flex items-center justify-center w-24 h-24 bg-clay/20 backdrop-blur-sm rounded-full text-text-dark shadow-sm">
-                            {categoryIcon ? (
-                                <div className="text-4xl text-clay" dangerouslySetInnerHTML={hasSvgIcon ? { __html: categoryIcon } : undefined}>
-                                    {!hasSvgIcon && categoryIcon}
-                                </div>
-                            ) : (
-                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M12 5v14" />
-                                    <path d="M19 12l-7 7-7-7" />
-                                </svg>
-                            )}
+                            {renderCategoryIcon()}
                         </div>
                     </div>
 
                     {/* Title */}
                     <h1 className="font-display text-4xl md:text-5xl text-text-dark text-center mb-10">
-                        {shift.title}
+                        {shift.title || ''}
                     </h1>
 
                     {/* Play Button Pill */}
@@ -190,7 +196,7 @@ const GuidedShiftPlayerPage = () => {
                     {(shift.intro || shift.description) && (
                         <div className="text-center mb-8">
                             <p className="text-text-dark text-lg md:text-xl leading-relaxed opacity-80">
-                                {shift.intro}
+                                {shift.intro || ''}
                                 {shift.description && <span className="block mt-2">{shift.description}</span>}
                             </p>
                         </div>
@@ -224,7 +230,7 @@ const GuidedShiftPlayerPage = () => {
                                                 <path d="M20 6L9 17l-5-5" />
                                             </svg>
                                         </div>
-                                        <span className="text-text-dark/80 text-lg">{item}</span>
+                                        <span className="text-text-dark/80 text-lg">{typeof item === 'string' ? item : ''}</span>
                                     </div>
                                 ))}
                             </div>
