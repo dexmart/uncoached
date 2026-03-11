@@ -2,9 +2,9 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children, requireSubscription = false }) => {
-    const { user, loading, isSubscribed } = useAuth();
+    const { user, loading, isSubscribed, isSubscriptionLoading } = useAuth();
 
-    if (loading) {
+    if (loading || (requireSubscription && isSubscriptionLoading)) {
         return (
             <div className="min-h-screen bg-bone flex items-center justify-center">
                 <div className="text-center">

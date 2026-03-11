@@ -12,10 +12,12 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isRoleLoading, setIsRoleLoading] = useState(true);
+    const [isSubscriptionLoading, setIsSubscriptionLoading] = useState(true);
     const [subscription, setSubscription] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const fetchSubscription = async (userId, email) => {
+        setIsSubscriptionLoading(true);
         try {
             // First check Supabase
             const { data, error } = await supabase
@@ -55,6 +57,8 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (err) {
             console.error('Subscription fetch failed:', err);
+        } finally {
+            setIsSubscriptionLoading(false);
         }
     };
 
@@ -103,6 +107,7 @@ export const AuthProvider = ({ children }) => {
                     console.log('No session found');
                     setIsAdmin(false);
                     setIsRoleLoading(false);
+                    setIsSubscriptionLoading(false);
                     setLoading(false);
                 }
             }
@@ -128,6 +133,7 @@ export const AuthProvider = ({ children }) => {
                         setSubscription(null);
                         setIsAdmin(false);
                         setIsRoleLoading(false);
+                        setIsSubscriptionLoading(false);
                         setLoading(false);
                     }
                 }
@@ -198,6 +204,7 @@ export const AuthProvider = ({ children }) => {
     const value = {
         user,
         loading,
+        isSubscriptionLoading,
         subscription,
         signUp,
         signIn,
