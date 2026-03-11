@@ -118,6 +118,14 @@ const AudioBreathPlayerPage = () => {
 
     if (!breath) return null;
 
+    let parsedUseWhen = [];
+    if (Array.isArray(breath.use_when)) {
+        parsedUseWhen = breath.use_when;
+    } else if (typeof breath.use_when === 'string') {
+        try { parsedUseWhen = JSON.parse(breath.use_when); } catch (e) { parsedUseWhen = []; }
+        if (!Array.isArray(parsedUseWhen)) parsedUseWhen = [];
+    }
+
     return (
         <div className="min-h-screen bg-bone">
             {/* Background Image */}
@@ -190,78 +198,95 @@ const AudioBreathPlayerPage = () => {
                     <audio ref={audioRef} src={breath.audio_url} />
 
                     {/* Intro & Description */}
-                    <div className="text-center mb-8">
-                        <p className="text-text-dark text-lg md:text-xl leading-relaxed opacity-80">
-                            {breath.intro}
-                            <span className="block mt-2">{breath.description}</span>
-                        </p>
-                    </div>
+                    {(breath.intro || breath.description) && (
+                        <div className="text-center mb-8">
+                            <p className="text-text-dark text-lg md:text-xl leading-relaxed opacity-80">
+                                {breath.intro}
+                                {breath.description && <span className="block mt-2">{breath.description}</span>}
+                            </p>
+                        </div>
+                    )}
 
                     {/* Approach Box - Highlighted */}
-                    <div className="bg-bone/60 backdrop-blur-md rounded-2xl p-8 mb-12 border border-white/30 shadow-sm text-center">
-                        <p className="text-text-dark/90 text-lg leading-relaxed">
-                            {breath.approach}
-                        </p>
-                    </div>
+                    {breath.approach && (
+                        <div className="bg-bone/60 backdrop-blur-md rounded-2xl p-8 mb-12 border border-white/30 shadow-sm text-center">
+                            <p className="text-text-dark/90 text-lg leading-relaxed">
+                                {breath.approach}
+                            </p>
+                        </div>
+                    )}
 
                     {/* Use This When */}
-                    <div className="mb-16">
-                        <div className="flex items-center gap-4 mb-6">
-                            <div className="h-px bg-text-dark/10 flex-1"></div>
-                            <h3 className="font-display text-2xl text-text-dark text-center">
-                                Use this when:
-                            </h3>
-                            <div className="h-px bg-text-dark/10 flex-1"></div>
-                        </div>
+                    {parsedUseWhen.length > 0 && (
+                        <div className="mb-16">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="h-px bg-text-dark/10 flex-1"></div>
+                                <h3 className="font-display text-2xl text-text-dark text-center">
+                                    Use this when:
+                                </h3>
+                                <div className="h-px bg-text-dark/10 flex-1"></div>
+                            </div>
 
-                        <div className="space-y-4">
-                            {(breath.use_when || []).map((item, index) => (
-                                <div key={index} className="flex items-center gap-4">
-                                    <div className="shrink-0 w-6 h-6 rounded-full bg-clay/30 flex items-center justify-center text-white">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M20 6L9 17l-5-5" />
-                                        </svg>
+                            <div className="space-y-4">
+                                {parsedUseWhen.map((item, index) => (
+                                    <div key={index} className="flex items-center gap-4">
+                                        <div className="shrink-0 w-6 h-6 rounded-full bg-clay/30 flex items-center justify-center text-white">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M20 6L9 17l-5-5" />
+                                            </svg>
+                                        </div>
+                                        <span className="text-text-dark/80 text-lg">{item}</span>
                                     </div>
-                                    <span className="text-text-dark/80 text-lg">{item}</span>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Science Corner */}
-                    <div className="bg-bone/40 backdrop-blur-sm rounded-2xl p-8 mb-12 border border-white/20 relative overflow-hidden">
-                        {/* Background Decoration */}
-                        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-clay/5 rounded-full blur-3xl"></div>
+                    {breath.science_text && (
+                        <div className="bg-bone/40 backdrop-blur-sm rounded-2xl p-8 mb-12 border border-white/20 relative overflow-hidden">
+                            {/* Background Decoration */}
+                            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-clay/5 rounded-full blur-3xl"></div>
 
-                        <h4 className="font-display text-base uppercase tracking-widest text-clay mb-4">
-                            Science Corner
-                        </h4>
-                        <p className="text-text-dark/80 text-base leading-relaxed mb-6">
-                            {breath.science_text}
-                        </p>
-                        <div className="w-10 h-px bg-text-dark/10 mb-4"></div>
-                        <p className="text-text-dark/50 text-xs italic">
-                            Source: {breath.science_source}
-                        </p>
-                    </div>
+                            <h4 className="font-display text-base uppercase tracking-widest text-clay mb-4">
+                                Science Corner
+                            </h4>
+                            <p className="text-text-dark/80 text-base leading-relaxed mb-6">
+                                {breath.science_text}
+                            </p>
+                            {breath.science_source && (
+                                <>
+                                    <div className="w-10 h-px bg-text-dark/10 mb-4"></div>
+                                    <p className="text-text-dark/50 text-xs italic">
+                                        Source: {breath.science_source}
+                                    </p>
+                                </>
+                            )}
+                        </div>
+                    )}
 
                     {/* Spiritual Corner - Added Back */}
-                    <div className="bg-bone/40 backdrop-blur-sm rounded-2xl p-8 mb-12 border border-white/20 relative overflow-hidden">
-                        {/* Background Decoration */}
-                        <div className="absolute -top-10 -left-10 w-40 h-40 bg-clay/5 rounded-full blur-3xl"></div>
+                    {breath.spiritual_text && (
+                        <div className="bg-bone/40 backdrop-blur-sm rounded-2xl p-8 mb-12 border border-white/20 relative overflow-hidden">
+                            {/* Background Decoration */}
+                            <div className="absolute -top-10 -left-10 w-40 h-40 bg-clay/5 rounded-full blur-3xl"></div>
 
-                        <h4 className="font-display text-base uppercase tracking-widest text-clay mb-4">
-                            Spiritual Corner
-                        </h4>
-                        <p className="text-text-dark/80 text-base leading-relaxed mb-6">
-                            {breath.spiritual_text}
-                        </p>
-                        <div className="w-10 h-px bg-text-dark/10 mb-4"></div>
-                        <p className="text-text-dark/50 text-xs italic">
-                            Source: {breath.spiritual_source}
-                        </p>
-                    </div>
-
+                            <h4 className="font-display text-base uppercase tracking-widest text-clay mb-4">
+                                Spiritual Corner
+                            </h4>
+                            <p className="text-text-dark/80 text-base leading-relaxed mb-6">
+                                {breath.spiritual_text}
+                            </p>
+                            {breath.spiritual_source && (
+                                <>
+                                    <div className="w-10 h-px bg-text-dark/10 mb-4"></div>
+                                    <p className="text-text-dark/50 text-xs italic">
+                                        Source: {breath.spiritual_source}
+                                    </p>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
