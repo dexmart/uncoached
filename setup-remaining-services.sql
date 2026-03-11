@@ -4,6 +4,14 @@
 --          and fixes RLS policies to successfully reference `user_roles.id`.
 -- ================================================================================================
 
+-- CLEAN UP PREVIOUS CONFLICTING SCHEMAS
+DROP TABLE IF EXISTS public.pocket_prompts CASCADE;
+DROP TABLE IF EXISTS public.pocket_prompt_categories CASCADE;
+DROP TABLE IF EXISTS public.clarity_cards CASCADE;
+DROP TABLE IF EXISTS public.affirmations CASCADE;
+DROP TABLE IF EXISTS public.affirmation_categories CASCADE;
+DROP TABLE IF EXISTS public.voice_notes CASCADE;
+
 -- 1. Pocket Prompts
 ------------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.pocket_prompt_categories (
