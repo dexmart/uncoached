@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -7,13 +8,14 @@ const AdminLayout = () => {
 
     const isActive = (path) => location.pathname === path;
 
-    const navItems = [
-        { name: 'Dashboard', path: '/admin' },
-        { name: 'Audio Families', path: '/admin/audio-families' },
-        { name: 'Audio Breaths', path: '/admin/audio-breaths' },
-        { name: 'Shift Categories', path: '/admin/guided-shift-categories' },
-        { name: 'Guided Shifts', path: '/admin/guided-shifts' },
-    ];
+    const [openSections, setOpenSections] = useState({
+        audioBreaths: location.pathname.includes('/audio-'),
+        guidedShifts: location.pathname.includes('/guided-shift')
+    });
+
+    const toggleSection = (section) => {
+        setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+    };
 
     return (
         <div className="min-h-screen bg-bone flex">
@@ -27,18 +29,85 @@ const AdminLayout = () => {
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">
-                    {navItems.map((item) => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            className={`w-full flex items-center px-4 py-3 rounded-xl transition-colors text-sm font-medium ${isActive(item.path)
-                                ? 'bg-clay text-white shadow-sm'
-                                : 'text-text-dark/70 hover:bg-clay/10 hover:text-text-dark'
-                                }`}
+                    <Link
+                        to="/admin"
+                        className={`w-full flex items-center px-4 py-3 rounded-xl transition-colors text-sm font-medium ${isActive('/admin')
+                            ? 'bg-clay text-white shadow-sm'
+                            : 'text-text-dark/70 hover:bg-clay/10 hover:text-text-dark'
+                            }`}
+                    >
+                        Dashboard
+                    </Link>
+
+                    {/* Audio Breaths Accordion */}
+                    <div className="space-y-1">
+                        <button
+                            onClick={() => toggleSection('audioBreaths')}
+                            className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors text-sm font-medium text-text-dark/70 hover:bg-clay/10 hover:text-text-dark focus:outline-none"
                         >
-                            {item.name}
-                        </Link>
-                    ))}
+                            <span>Audio Breaths</span>
+                            <svg className={`w-4 h-4 transition-transform duration-200 ${openSections.audioBreaths ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        {openSections.audioBreaths && (
+                            <div className="pl-4 pr-2 space-y-1 pt-1 pb-2">
+                                <Link
+                                    to="/admin/audio-families"
+                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/audio-families')
+                                        ? 'bg-clay/10 text-clay'
+                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
+                                        }`}
+                                >
+                                    Families
+                                </Link>
+                                <Link
+                                    to="/admin/audio-breaths"
+                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/audio-breaths')
+                                        ? 'bg-clay/10 text-clay'
+                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
+                                        }`}
+                                >
+                                    Tracks
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Guided Shifts Accordion */}
+                    <div className="space-y-1">
+                        <button
+                            onClick={() => toggleSection('guidedShifts')}
+                            className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors text-sm font-medium text-text-dark/70 hover:bg-clay/10 hover:text-text-dark focus:outline-none"
+                        >
+                            <span>Guided Shifts</span>
+                            <svg className={`w-4 h-4 transition-transform duration-200 ${openSections.guidedShifts ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        {openSections.guidedShifts && (
+                            <div className="pl-4 pr-2 space-y-1 pt-1 pb-2">
+                                <Link
+                                    to="/admin/guided-shift-categories"
+                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/guided-shift-categories')
+                                        ? 'bg-clay/10 text-clay'
+                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
+                                        }`}
+                                >
+                                    Categories
+                                </Link>
+                                <Link
+                                    to="/admin/guided-shifts"
+                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/guided-shifts')
+                                        ? 'bg-clay/10 text-clay'
+                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
+                                        }`}
+                                >
+                                    Shifts
+                                </Link>
+                            </div>
+                        )}
+                    </div>
                 </nav>
 
                 <div className="p-4 border-t border-text-dark/10">
@@ -67,20 +136,15 @@ const AdminLayout = () => {
                 </div>
             </aside>
 
-            {/* Mobile Nav Header (Placeholder for simple view) */}
+            {/* Mobile Nav Header (Simplified for Mobile) */}
             <div className="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-text-dark/10 p-4 flex justify-between items-center z-50">
                 <p className="font-display pr-2">uncoached admin</p>
                 <div className="flex gap-2 overflow-x-auto text-xs pb-1">
-                    {navItems.map((item) => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            className={`whitespace-nowrap px-3 py-1.5 rounded-full ${isActive(item.path) ? 'bg-clay text-white' : 'bg-bone text-text-dark/70'
-                                }`}
-                        >
-                            {item.name}
-                        </Link>
-                    ))}
+                    <Link to="/admin" className={`whitespace-nowrap px-3 py-1.5 rounded-full ${isActive('/admin') ? 'bg-clay text-white' : 'bg-bone text-text-dark/70'}`}>Dashboard</Link>
+                    <Link to="/admin/audio-families" className={`whitespace-nowrap px-3 py-1.5 rounded-full ${isActive('/admin/audio-families') ? 'bg-clay text-white' : 'bg-bone text-text-dark/70'}`}>Audio Families</Link>
+                    <Link to="/admin/audio-breaths" className={`whitespace-nowrap px-3 py-1.5 rounded-full ${isActive('/admin/audio-breaths') ? 'bg-clay text-white' : 'bg-bone text-text-dark/70'}`}>Audio Breaths</Link>
+                    <Link to="/admin/guided-shift-categories" className={`whitespace-nowrap px-3 py-1.5 rounded-full ${isActive('/admin/guided-shift-categories') ? 'bg-clay text-white' : 'bg-bone text-text-dark/70'}`}>Shift Categories</Link>
+                    <Link to="/admin/guided-shifts" className={`whitespace-nowrap px-3 py-1.5 rounded-full ${isActive('/admin/guided-shifts') ? 'bg-clay text-white' : 'bg-bone text-text-dark/70'}`}>Guided Shifts</Link>
                 </div>
             </div>
 
