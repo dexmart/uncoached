@@ -81,7 +81,7 @@ const PricingPage = () => {
             const data = await response.json();
 
             if (data.url) {
-                window.location.href = data.url;
+                window.location.assign(data.url);
             } else {
                 setError('Failed to create checkout session');
                 setLoading(null);

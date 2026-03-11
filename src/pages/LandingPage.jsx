@@ -18,7 +18,7 @@ function LandingPage() {
             <DeeperWorkSection />
             <ServicesSection />
             <MeetFieldSection />
-            <TestimonialsSection />
+            {/* <TestimonialsSection /> */}
             <GiftSection />
             <SubscribeSection />
             <Footer />

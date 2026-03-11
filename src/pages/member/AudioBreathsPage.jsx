@@ -1,63 +1,60 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 
 const AudioBreathsPage = () => {
-    // Audio Breath Families data
-    const breathFamilies = [
-        {
-            id: 'calm-me-down',
-            title: 'Calm Me Down',
-            icon: '💗',
-            description: 'For anxiety, nervous system overload, or high activation.',
-            breaths: [
-                { id: 'anxiety-downshift', name: 'Anxiety Downshift' },
-                { id: 'emergency-grounding', name: 'Emergency Grounding' },
-                { id: 'social-nerves-reset', name: 'Social Nerves Reset' }
-            ],
-            useWhen: 'Your system is braced or scanning for threat and needs to settle first.'
-        },
-        {
-            id: 'emotional-regulation',
-            title: 'Emotional Regulation',
-            icon: '🤍',
-            description: 'For strong emotions that need space, not suppression.',
-            breaths: [
-                { id: 'before-you-react', name: 'Before You React' },
-                { id: 'overwhelm-unclench', name: 'Overwhelm Unclench' },
-                { id: 'shame-release', name: 'Shame Release' },
-                { id: 'grief-companion', name: 'Grief Companion' }
-            ],
-            useWhen: 'Feelings are intense, heavy, or consuming and you want to stay connected.'
-        },
-        {
-            id: 'motivate-me',
-            title: 'Motivate Me',
-            icon: '🌅',
-            description: 'For gently bringing energy or confidence online.',
-            breaths: [
-                { id: 'morning-spark', name: 'Morning Spark' },
-                { id: 'confidence-charge-up', name: 'Confidence Charge-Up' },
-                { id: 'joy-amplifier', name: 'Joy Amplifier' },
-                { id: 'creative-spark', name: 'Creative Spark' }
-            ],
-            useWhen: 'Energy feels low, flat, or tight, or when you want to amplify a good state.'
-        },
-        {
-            id: 'help-me-focus',
-            title: 'Help Me Focus',
-            icon: '🎯',
-            description: 'For clarity, presence, and steadiness.',
-            breaths: [
-                { id: 'single-task-focus', name: 'Single-Task Focus' },
-                { id: 'boundary-setting', name: 'Boundary Setting' },
-                { id: 'transition-support', name: 'Transition Support' }
-            ],
-            useWhen: 'Attention is scattered or you\'re moving between roles or moments.'
-        }
-    ];
+    const [breathFamilies, setBreathFamilies] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchFamilies = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('audio_families')
+                    .select('*, audio_breaths(*)')
+                    .order('sort_order', { ascending: true });
+
+                if (error) throw error;
+
+                const formattedFamilies = data.map(family => {
+                    // Sort breaths locally by sort_order
+                    const sortedBreaths = (family.audio_breaths || []).sort((a, b) => a.sort_order - b.sort_order);
+
+                    return {
+                        id: family.id,
+                        title: family.title,
+                        icon: family.icon,
+                        description: family.description,
+                        useWhen: family.use_when,
+                        breaths: sortedBreaths.map(b => ({
+                            id: b.id,
+                            name: b.title
+                        }))
+                    };
+                });
+
+                setBreathFamilies(formattedFamilies);
+            } catch (error) {
+                console.error('Error fetching audio families:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFamilies();
+    }, []);
 
     const scrollToFamilies = () => {
         document.getElementById('breath-families')?.scrollIntoView({ behavior: 'smooth' });
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-bone flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-clay border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-bone">
@@ -393,78 +390,14 @@ const AudioBreathsPage = () => {
 
                     {/* Families Grid */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                        {[
-                            {
-                                id: 'calm-me-down',
-                                title: 'Calm Me Down',
-                                icon: (
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M12 3v18" />
-                                        <path d="M16 8v8" />
-                                        <path d="M20 10v4" />
-                                        <path d="M8 8v8" />
-                                        <path d="M4 10v4" />
-                                    </svg>
-                                ),
-                                description: 'For anxiety, nervous system overload, or high activation.',
-                                breaths: breathFamilies.find(f => f.id === 'calm-me-down').breaths,
-                                useWhen: breathFamilies.find(f => f.id === 'calm-me-down').useWhen
-                            },
-                            {
-                                id: 'emotional-regulation',
-                                title: 'Emotional Regulation',
-                                icon: (
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                    </svg>
-                                ),
-                                description: 'For strong emotions that need space, not suppression.',
-                                breaths: breathFamilies.find(f => f.id === 'emotional-regulation').breaths,
-                                useWhen: breathFamilies.find(f => f.id === 'emotional-regulation').useWhen
-                            },
-                            {
-                                id: 'motivate-me',
-                                title: 'Motivate Me',
-                                icon: (
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M12 9a4 4 0 0 1 4 4" />
-                                        <path d="M12 3v2" />
-                                        <path d="M12 19v2" />
-                                        <path d="M3 13h2" />
-                                        <path d="M19 13h2" />
-                                        <path d="M5.6 6.4l1.4 1.4" />
-                                        <path d="M18.4 6.4l-1.4 1.4" />
-                                        <path d="M5.6 19.6l1.4-1.4" />
-                                        <path d="M18.4 19.6l-1.4-1.4" />
-                                    </svg>
-                                ),
-                                description: 'For gently bringing energy or confidence online.',
-                                breaths: breathFamilies.find(f => f.id === 'motivate-me').breaths,
-                                useWhen: breathFamilies.find(f => f.id === 'motivate-me').useWhen
-                            },
-                            {
-                                id: 'help-me-focus',
-                                title: 'Help Me Focus / Show Up',
-                                icon: (
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <circle cx="12" cy="12" r="6" />
-                                        <circle cx="12" cy="12" r="2" />
-                                        <path d="M22 12h-4" />
-                                    </svg>
-                                ),
-                                description: 'For clarity, presence, and steadiness.',
-                                breaths: breathFamilies.find(f => f.id === 'help-me-focus').breaths,
-                                useWhen: breathFamilies.find(f => f.id === 'help-me-focus').useWhen
-                            }
-                        ].map((family) => (
+                        {breathFamilies.map((family) => (
                             <div
                                 key={family.id}
                                 className="bg-bone/60 backdrop-blur-md rounded-2xl border border-white/30 shadow-sm flex flex-col h-full group hover:shadow-md transition-all overflow-hidden"
                             >
                                 <div className="p-6 flex-1 flex flex-col items-center text-center">
                                     {/* Icon */}
-                                    <div className="text-clay mb-4 opacity-80">
+                                    <div className="text-4xl mb-4">
                                         {family.icon}
                                     </div>
 
