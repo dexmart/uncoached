@@ -8,6 +8,7 @@ const GuidedShiftPlayerPage = () => {
 
     const [shift, setShift] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
 
@@ -15,6 +16,7 @@ const GuidedShiftPlayerPage = () => {
     useEffect(() => {
         const fetchShift = async () => {
             try {
+                console.log('GuidedShiftPlayerPage: Fetching shift with id:', id);
                 const { data, error } = await supabase
                     .from('guided_shifts')
                     .select(`
@@ -27,24 +29,29 @@ const GuidedShiftPlayerPage = () => {
                     .eq('id', id)
                     .single();
 
-                if (error) throw error;
+                console.log('GuidedShiftPlayerPage: Query result:', { data, error });
+
+                if (error) {
+                    setError(`Supabase error: ${error.message} (code: ${error.code})`);
+                    return;
+                }
 
                 if (!data) {
-                    navigate('/dashboard/guided-shifts');
+                    setError(`No shift found with id: "${id}"`);
                     return;
                 }
 
                 setShift(data);
-            } catch (error) {
-                console.error('Error fetching guided shift:', error);
-                navigate('/dashboard/guided-shifts');
+            } catch (err) {
+                console.error('Error fetching guided shift:', err);
+                setError(`Unexpected error: ${err.message}`);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchShift();
-    }, [id, navigate]);
+    }, [id]);
 
     // Separate useEffect for audio event listeners
     useEffect(() => {
@@ -79,7 +86,22 @@ const GuidedShiftPlayerPage = () => {
         );
     }
 
-    if (!shift) return null;
+    if (!shift) {
+        return (
+            <div className="min-h-screen bg-bone flex items-center justify-center">
+                <div className="text-center max-w-md px-6">
+                    {error ? (
+                        <>
+                            <p className="text-red-500 mb-4 font-mono text-sm bg-red-50 p-4 rounded-xl">{error}</p>
+                            <Link to="/dashboard/guided-shifts" className="text-clay hover:underline">← Back to Guided Shifts</Link>
+                        </>
+                    ) : (
+                        <p className="text-text-dark/50">Shift not found.</p>
+                    )}
+                </div>
+            </div>
+        );
+    }
 
     let parsedUseWhen = [];
     if (Array.isArray(shift.use_when)) {
