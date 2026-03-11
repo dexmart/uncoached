@@ -156,11 +156,11 @@ CREATE POLICY "Admins can delete" ON public.affirmation_categories FOR DELETE US
 
 CREATE POLICY "Admins can insert" ON public.affirmations FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 CREATE POLICY "Admins can update" ON public.affirmations FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can delete" ON public.affirmations FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can delete" ON public.affirmations FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 
-CREATE POLICY "Admins can insert" ON public.voice_notes FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can update" ON public.voice_notes FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-CREATE POLICY "Admins can delete" ON public.voice_notes FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can insert" ON public.voice_notes FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can update" ON public.voice_notes FOR UPDATE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
+CREATE POLICY "Admins can delete" ON public.voice_notes FOR DELETE USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin'));
 
 -- ================================================================================================
 -- STORAGE BUCKET FOR VOICE NOTES
@@ -186,19 +186,19 @@ CREATE POLICY "Admin Upload Access"
     ON storage.objects FOR INSERT 
     WITH CHECK (
         bucket_id = 'voice-notes' 
-        AND EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin')
+        AND EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin')
     );
 
 CREATE POLICY "Admin Update Access" 
     ON storage.objects FOR UPDATE 
     USING (
         bucket_id = 'voice-notes' 
-        AND EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin')
+        AND EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin')
     );
 
 CREATE POLICY "Admin Delete Access" 
     ON storage.objects FOR DELETE 
     USING (
         bucket_id = 'voice-notes' 
-        AND EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin')
+        AND EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.id = auth.uid() AND user_roles.role = 'admin')
     );
