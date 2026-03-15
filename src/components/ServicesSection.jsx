@@ -29,7 +29,7 @@ const services = [
     },
     {
         icon: 'images/Field Icons/field affirmation.png',
-        title: 'Afformations',
+        title: <>Af<span className="italic text-sage">for</span>mations</>,
         description: 'Empowering questions to ask yourself, designed to guide your brain toward supportive answers.'
     },
     {
