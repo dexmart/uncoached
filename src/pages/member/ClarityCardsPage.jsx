@@ -55,18 +55,15 @@ const ClarityCardsPage = () => {
 
             {/* SECTION 1: HERO SECTION */}
             <section className="relative min-h-screen flex items-center overflow-hidden bg-[#F4F1EC]">
-                {/* Background Image - Right 50% with gradient fade to left */}
-                <div className="absolute inset-0 z-0 flex justify-end">
-                    <div className="w-full md:w-[60%] h-full relative">
-                        <img
-                            src={import.meta.env.BASE_URL + "images/Clarity Card Hero.jpg"}
-                            alt="Woman journaling"
-                            className="w-full h-full object-cover"
-                        />
-                        {/* Gradient overlay to seamlessly blend the image into the linen background on the left */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#F4F1EC] via-[#F4F1EC]/80 to-transparent md:to-[#F4F1EC]/20"></div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#F4F1EC] via-transparent to-transparent md:hidden"></div>
-                    </div>
+                {/* Background Image - Full width with gradient to left */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src={import.meta.env.BASE_URL + "images/Clarity Card Hero.jpg"}
+                        alt="Woman journaling"
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Gradient overlay to seamlessly blend the image into the linen background on the left, but leave right clear */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#F4F1EC] via-[#F4F1EC]/90 to-transparent"></div>
                 </div>
 
                 {/* Hero Content — Left aligned */}
@@ -170,7 +167,7 @@ const ClarityCardsPage = () => {
                                 <Link
                                     key={card.id}
                                     to={`/dashboard/clarity-cards/${card.id}`}
-                                    className="group bg-[#FFFFFF] rounded-[12px] p-8 transition-all duration-300 cursor-pointer border border-[#D6C7B8] shadow-sm hover:shadow-[0_8px_24px_rgba(200,154,91,0.15)] hover:-translate-y-1 flex flex-col min-h-[180px]"
+                                    className="group bg-[#FFFFFF] rounded-[12px] p-8 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-1 flex flex-col min-h-[180px]"
                                 >
                                     <h3 className="font-serif font-bold text-[18px] md:text-[20px] text-[#1F2422] mb-3">
                                         {card.title}
@@ -193,6 +190,16 @@ const ClarityCardsPage = () => {
 
             {/* SECTION 4: GENTLE CLOSING */}
             <section className="relative py-[100px] md:py-[120px] px-6 bg-[#F4F1EC]">
+                {/* Background Image overlay for the closing section */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths Home Page.jpg"}
+                        alt=""
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-[#F4F1EC]/80 backdrop-blur-sm"></div>
+                </div>
+
                 <div className="relative z-10 max-w-[600px] mx-auto text-center">
                     <h2 className="font-serif font-bold text-[28px] md:text-[32px] text-[#1F2422] mb-8">
                         Use them your way
