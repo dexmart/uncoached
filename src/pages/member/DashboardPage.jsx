@@ -43,10 +43,10 @@ const DashboardPage = () => {
             color: 'from-golden/20 to-golden/10'
         },
         {
-            title: 'Affirmations',
-            description: 'Words to come back to.',
+            title: 'Afformations',
+            description: 'Generate a positive response in your mind.',
             icon: 'images/Field Icons/field affirmation.png',
-            link: '/dashboard/affirmations',
+            link: '/dashboard/afformations',
             color: 'from-clay/20 to-clay/10'
         }
     ];

@@ -32,7 +32,7 @@ import GuidedShiftPlayerPage from './pages/member/GuidedShiftPlayerPage'
 import PocketPromptsPage from './pages/member/PocketPromptsPage'
 import ClarityCardsPage from './pages/member/ClarityCardsPage'
 import ClarityCardDetailPage from './pages/member/ClarityCardDetailPage'
-import AffirmationsPage from './pages/member/AffirmationsPage'
+import AfformationsPage from './pages/member/AfformationsPage'
 import VoiceNotesPage from './pages/member/VoiceNotesPage'
 import ProfilePage from './pages/member/ProfilePage'
 
@@ -122,10 +122,10 @@ function App() {
             }
           />
           <Route
-            path="/dashboard/affirmations"
+            path="/dashboard/afformations"
             element={
               <ProtectedRoute requireSubscription={true}>
-                <AffirmationsPage />
+                <AfformationsPage />
               </ProtectedRoute>
             }
           />
