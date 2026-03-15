@@ -43,7 +43,7 @@ const DashboardPage = () => {
             color: 'from-golden/20 to-golden/10'
         },
         {
-            title: 'Afformations',
+            title: <>Af<span className="italic text-sage font-serif">for</span>mations</>,
             description: 'Generate a positive response in your mind.',
             icon: 'images/Field Icons/field affirmation.png',
             link: '/dashboard/afformations',

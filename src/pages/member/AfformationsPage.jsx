@@ -127,7 +127,7 @@ const AfformationsPage = () => {
 
                 <div className="relative z-10 w-full max-w-[700px] mx-auto text-center animate-fade-in-up">
                     <h1 className="font-serif text-[40px] md:text-[48px] text-[#1F2422] font-medium mb-6">
-                        Afformations
+                        Af<span className="italic text-[#3F5D4D]">for</span>mations
                     </h1>
 
                     <h2 className="text-[18px] md:text-[20px] text-[#5E6A65] leading-[1.6] mb-8 font-sans">
@@ -152,8 +152,8 @@ const AfformationsPage = () => {
                             key={category}
                             onClick={() => setActiveFilter(category)}
                             className={`whitespace-nowrap rounded-full px-5 py-2 text-[13px] md:text-[14px] font-medium transition-all duration-300 ${activeFilter === category
-                                    ? 'bg-[#3F5D4D] text-[#F4F1EC] border border-[#3F5D4D] shadow-sm'
-                                    : 'bg-[#FFFFFF] md:bg-[#F4F1EC] text-[#5E6A65] border border-[#D6C7B8] hover:bg-[#E8E3DD]'
+                                ? 'bg-[#3F5D4D] text-[#F4F1EC] border border-[#3F5D4D] shadow-sm'
+                                : 'bg-[#FFFFFF] md:bg-[#F4F1EC] text-[#5E6A65] border border-[#D6C7B8] hover:bg-[#E8E3DD]'
                                 }`}
                         >
                             {category}
