@@ -161,13 +161,13 @@ const AdminLayout = () => {
                         </Link>
                     </div>
 
-                    {/* Affirmations Accordion */}
+                    {/* Afformations Accordion */}
                     <div className="space-y-1">
                         <button
                             onClick={() => toggleSection('affirmations')}
                             className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors text-sm font-medium text-text-dark/70 hover:bg-clay/10 hover:text-text-dark focus:outline-none"
                         >
-                            <span>Affirmations</span>
+                            <span>Afformations</span>
                             <svg className={`w-4 h-4 transition-transform duration-200 ${openSections.affirmations ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
@@ -190,7 +190,7 @@ const AdminLayout = () => {
                                         : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
                                         }`}
                                 >
-                                    Affirmations
+                                    Afformations
                                 </Link>
                             </div>
                         )}

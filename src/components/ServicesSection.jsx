@@ -29,8 +29,8 @@ const services = [
     },
     {
         icon: 'images/Field Icons/field affirmation.png',
-        title: 'Affirmations',
-        description: 'Designed to support many emotional states and inner needs, offering steady reminders you can return to in under two minutes.'
+        title: 'Afformations',
+        description: 'Empowering questions to ask yourself, designed to guide your brain toward supportive answers.'
     },
     {
         icon: 'images/Field Icons/field audio breath.png',
