@@ -13,7 +13,8 @@ const AdminPocketPromptsPage = () => {
     const [formData, setFormData] = useState({
         category_id: '',
         title: '',
-        prompt: '',
+        content_free: '',
+        content_premium: '',
         is_active: true,
         sort_order: 0
     });
@@ -61,7 +62,8 @@ const AdminPocketPromptsPage = () => {
         setFormData({
             category_id: prompt.category_id,
             title: prompt.title,
-            prompt: prompt.prompt,
+            content_free: prompt.content_free || '',
+            content_premium: prompt.content_premium || '',
             is_active: prompt.is_active !== false,
             sort_order: prompt.sort_order || 0
         });
@@ -73,7 +75,8 @@ const AdminPocketPromptsPage = () => {
         setFormData({
             category_id: categories.length > 0 ? categories[0].id : '',
             title: '',
-            prompt: '',
+            content_free: '',
+            content_premium: '',
             is_active: true,
             sort_order: prompts.length + 1
         });
@@ -100,7 +103,8 @@ const AdminPocketPromptsPage = () => {
             const payload = {
                 category_id: formData.category_id,
                 title: formData.title,
-                prompt: formData.prompt,
+                content_free: formData.content_free,
+                content_premium: formData.content_premium,
                 is_active: formData.is_active,
                 sort_order: parseInt(formData.sort_order) || 0
             };
@@ -201,14 +205,23 @@ const AdminPocketPromptsPage = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-text-dark mb-1">The Prompt (Question or statement)</label>
+                            <label className="block text-sm font-medium text-text-dark mb-1">Free Content (Visible to everyone)</label>
                             <textarea
                                 rows="3"
                                 required
-                                value={formData.prompt}
-                                onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
-                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-none text-lg leading-relaxed"
+                                value={formData.content_free}
+                                onChange={(e) => setFormData({ ...formData, content_free: e.target.value })}
+                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-none text-lg leading-relaxed mb-4"
                                 placeholder="What am I really asking myself right now?"
+                            ></textarea>
+
+                            <label className="block text-sm font-medium text-text-dark mb-1">Premium Content (Visible to subscribers only)</label>
+                            <textarea
+                                rows="4"
+                                value={formData.content_premium}
+                                onChange={(e) => setFormData({ ...formData, content_premium: e.target.value })}
+                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-none text-base leading-relaxed"
+                                placeholder="Paste the higher-level prompt from the PDF here..."
                             ></textarea>
                         </div>
 
@@ -276,8 +289,13 @@ const AdminPocketPromptsPage = () => {
                                         </span>
                                     </div>
                                     <p className="text-sm text-text-dark/70 font-medium italic">
-                                        "{prompt.prompt}"
+                                        "{prompt.content_free}"
                                     </p>
+                                    {prompt.content_premium && (
+                                        <div className="mt-2 text-xs text-clay bg-clay/10 px-2 py-1 rounded inline-block">
+                                            + Premium Content Attached
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="shrink-0 flex items-center justify-between md:justify-end gap-3 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-text-dark/10">
                                     <span className="text-xs text-text-dark/40 mr-4">Order: {prompt.sort_order}</span>

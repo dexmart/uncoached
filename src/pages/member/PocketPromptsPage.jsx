@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../context/AuthContext';
 
 const PocketPromptsPage = () => {
+    const { isSubscribed } = useAuth();
     const [copiedId, setCopiedId] = useState(null);
     const [activeCategory, setActiveCategory] = useState('all');
 
@@ -60,7 +62,11 @@ const PocketPromptsPage = () => {
 
     const handleCopy = async (prompt) => {
         try {
-            await navigator.clipboard.writeText(prompt.prompt);
+            const textToCopy = isSubscribed && prompt.content_premium
+                ? `${prompt.content_free}\n\n${prompt.content_premium}`
+                : prompt.content_free;
+
+            await navigator.clipboard.writeText(textToCopy);
             setCopiedId(prompt.id);
             setTimeout(() => setCopiedId(null), 2000);
         } catch (err) {
@@ -155,8 +161,54 @@ const PocketPromptsPage = () => {
                                                 {prompt.title}
                                             </h3>
                                             <p className="text-text-muted text-lg italic leading-relaxed">
-                                                "{prompt.prompt}"
+                                                "{prompt.content_free}"
                                             </p>
+
+                                            {/* Premium Content Area */}
+                                            {prompt.content_premium && (
+                                                <div className="mt-8 pt-6 border-t border-clay/20">
+                                                    {isSubscribed ? (
+                                                        <div className="animate-fade-in">
+                                                            <div className="flex items-center gap-2 mb-3">
+                                                                <svg className="w-4 h-4 text-golden" fill="currentColor" viewBox="0 0 24 24">
+                                                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                                                </svg>
+                                                                <span className="text-xs font-bold text-golden uppercase tracking-wider">Deep Reflection</span>
+                                                            </div>
+                                                            <p className="text-text-dark/80 whitespace-pre-wrap leading-relaxed">
+                                                                {prompt.content_premium}
+                                                            </p>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-clay/10 to-bone border border-clay/20 p-6 text-center">
+                                                            {/* Blurred preview text effect */}
+                                                            <div className="absolute inset-0 blur-[4px] opacity-40 select-none pointer-events-none p-6 text-left">
+                                                                <p className="text-text-dark/40 whitespace-pre-wrap leading-relaxed">
+                                                                    {prompt.content_premium.substring(0, 150)}...
+                                                                </p>
+                                                            </div>
+
+                                                            <div className="relative z-10 flex flex-col items-center">
+                                                                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-sage">
+                                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                                                    </svg>
+                                                                </div>
+                                                                <h4 className="font-display text-lg text-text-dark mb-2">Unlock the Deep Dive</h4>
+                                                                <p className="text-sm text-text-muted mb-4 max-w-sm">
+                                                                    Subscribe to access the high-level guided reflection for this prompt and all other premium features.
+                                                                </p>
+                                                                <Link
+                                                                    to="/pricing"
+                                                                    className="inline-block px-6 py-2.5 bg-sage text-white text-sm font-medium rounded-full hover:bg-sage/90 transition-colors shadow-sm"
+                                                                >
+                                                                    Upgrade to Access
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                         <button
                                             onClick={() => handleCopy(prompt)}
