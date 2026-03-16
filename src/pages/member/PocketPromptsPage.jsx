@@ -84,36 +84,45 @@ const PocketPromptsPage = () => {
 
     return (
         <div className="min-h-screen bg-bone">
-            {/* Hero Section */}
-            <section className="relative h-[50vh] flex items-center justify-center">
-                <div className="absolute inset-0 z-0 bg-gradient-to-br from-sage/30 to-clay/20"></div>
+            {/* Fixed Nav Link */}
+            <Link
+                to="/dashboard"
+                className="fixed top-8 left-8 z-50 inline-flex items-center gap-2 text-[#3F5D4D]/80 hover:text-[#3F5D4D] transition-colors group mix-blend-multiply"
+            >
+                <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+                </svg>
+                <span className="text-sm font-medium tracking-wide">Back to Portal</span>
+            </Link>
 
-                <div className="relative z-10 text-center px-6">
-                    <Link
-                        to="/dashboard"
-                        className="inline-flex items-center gap-2 text-text-dark/70 hover:text-text-dark transition-colors mb-8"
-                    >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                        <span className="text-sm">Back to Portal</span>
-                    </Link>
+            {/* SECTION 1: INTRO / HERO AREA */}
+            <section className="relative px-6 py-[80px] md:py-[120px] flex items-center justify-center border-b border-[#D6C7B8]/30 overflow-hidden">
+                {/* Background Image Overlay */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src={import.meta.env.BASE_URL + "images/Extra Backgrounds 3.jpg"}
+                        alt=""
+                        className="w-full h-full object-cover opacity-60 mix-blend-multiply"
+                    />
+                    {/* Gradient to blend seamlessly with the rest of the page */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#F4F1EC]/60 via-[#F4F1EC]/80 to-[#F4F1EC]"></div>
+                </div>
 
-                    <h1 className="font-display text-5xl md:text-6xl text-text-dark mb-4">
+                <div className="relative z-10 w-full max-w-[700px] mx-auto text-center animate-fade-in-up">
+                    <h1 className="font-serif text-[40px] md:text-[48px] text-[#1F2422] font-medium mb-6">
                         Pocket Prompts
                     </h1>
-                    <p className="text-text-muted text-lg md:text-xl max-w-2xl mx-auto">
-                        Clarity through questions. Sometimes, the right question is all you need.
-                    </p>
-                </div>
-            </section>
 
-            {/* About Section */}
-            <section className="py-16 px-6">
-                <div className="max-w-3xl mx-auto text-center">
-                    <p className="text-text-muted text-lg leading-relaxed">
+                    <h2 className="text-[18px] md:text-[20px] text-[#5E6A65] leading-[1.6] mb-8 font-sans">
+                        Clarity through questions. Sometimes, the right question is all you need.
+                    </h2>
+
+                    <p className="text-[16px] text-[#5E6A65] leading-[1.7] max-w-[680px] mx-auto mb-10">
                         These prompts are designed to help you cut through the noise and get to what matters.
                         Copy them to your notes, journal with them, or just sit with them for a moment.
+                    </p>
+
+                    <p className="text-[16px] md:text-[17px] text-[#5E6A65] italic leading-relaxed">
                         You don't need to answer right away—sometimes just holding the question is enough.
                     </p>
                 </div>
