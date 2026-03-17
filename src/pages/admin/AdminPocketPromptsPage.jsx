@@ -13,6 +13,11 @@ const AdminPocketPromptsPage = () => {
     const [formData, setFormData] = useState({
         category_id: '',
         title: '',
+        when_to_use: '',
+        purpose: '',
+        example_scenario: '',
+        what_free_offers: '',
+        what_premium_offers: '',
         content_free: '',
         content_premium: '',
         is_active: true,
@@ -62,6 +67,11 @@ const AdminPocketPromptsPage = () => {
         setFormData({
             category_id: prompt.category_id,
             title: prompt.title,
+            when_to_use: prompt.when_to_use || '',
+            purpose: prompt.purpose || '',
+            example_scenario: prompt.example_scenario || '',
+            what_free_offers: prompt.what_free_offers || '',
+            what_premium_offers: prompt.what_premium_offers || '',
             content_free: prompt.content_free || '',
             content_premium: prompt.content_premium || '',
             is_active: prompt.is_active !== false,
@@ -75,6 +85,11 @@ const AdminPocketPromptsPage = () => {
         setFormData({
             category_id: categories.length > 0 ? categories[0].id : '',
             title: '',
+            when_to_use: '',
+            purpose: '',
+            example_scenario: '',
+            what_free_offers: '',
+            what_premium_offers: '',
             content_free: '',
             content_premium: '',
             is_active: true,
@@ -103,6 +118,11 @@ const AdminPocketPromptsPage = () => {
             const payload = {
                 category_id: formData.category_id,
                 title: formData.title,
+                when_to_use: formData.when_to_use,
+                purpose: formData.purpose,
+                example_scenario: formData.example_scenario,
+                what_free_offers: formData.what_free_offers,
+                what_premium_offers: formData.what_premium_offers,
                 content_free: formData.content_free,
                 content_premium: formData.content_premium,
                 is_active: formData.is_active,
@@ -205,22 +225,74 @@ const AdminPocketPromptsPage = () => {
                         </div>
 
                         <div>
+                            <label className="block text-sm font-medium text-text-dark mb-1">When to Use</label>
+                            <textarea
+                                rows="3"
+                                value={formData.when_to_use}
+                                onChange={(e) => setFormData({ ...formData, when_to_use: e.target.value })}
+                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-y text-sm mb-4"
+                                placeholder="Bullet points of when to use this prompt..."
+                            ></textarea>
+
+                            <label className="block text-sm font-medium text-text-dark mb-1">Purpose</label>
+                            <textarea
+                                rows="3"
+                                value={formData.purpose}
+                                onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
+                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-y text-sm mb-4"
+                                placeholder="To help you recognise where your boundaries blur..."
+                            ></textarea>
+
+                            <label className="block text-sm font-medium text-text-dark mb-1">Example Scenario</label>
+                            <textarea
+                                rows="2"
+                                value={formData.example_scenario}
+                                onChange={(e) => setFormData({ ...formData, example_scenario: e.target.value })}
+                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-y text-sm mb-4"
+                                placeholder="“My friend often drops by unannounced...”"
+                            ></textarea>
+
+                            <div className="grid md:grid-cols-2 gap-6 mb-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-text-dark mb-1">What Free Version Offers</label>
+                                    <textarea
+                                        rows="3"
+                                        value={formData.what_free_offers}
+                                        onChange={(e) => setFormData({ ...formData, what_free_offers: e.target.value })}
+                                        className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-y text-sm"
+                                        placeholder="Gain quick clarity on..."
+                                    ></textarea>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-text-dark mb-1">What Premium Version Offers</label>
+                                    <textarea
+                                        rows="3"
+                                        value={formData.what_premium_offers}
+                                        onChange={(e) => setFormData({ ...formData, what_premium_offers: e.target.value })}
+                                        className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-y text-sm"
+                                        placeholder="Create personalized scripts..."
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <hr className="my-6 border-clay/20" />
+
                             <label className="block text-sm font-medium text-text-dark mb-1">Free Content (Visible to everyone)</label>
                             <textarea
                                 rows="3"
                                 required
                                 value={formData.content_free}
                                 onChange={(e) => setFormData({ ...formData, content_free: e.target.value })}
-                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-none text-lg leading-relaxed mb-4"
+                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-y text-sm leading-relaxed mb-4"
                                 placeholder="What am I really asking myself right now?"
                             ></textarea>
 
                             <label className="block text-sm font-medium text-text-dark mb-1">Premium Content (Visible to subscribers only)</label>
                             <textarea
-                                rows="4"
+                                rows="5"
                                 value={formData.content_premium}
                                 onChange={(e) => setFormData({ ...formData, content_premium: e.target.value })}
-                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-none text-base leading-relaxed"
+                                className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-y text-sm leading-relaxed"
                                 placeholder="Paste the higher-level prompt from the PDF here..."
                             ></textarea>
                         </div>

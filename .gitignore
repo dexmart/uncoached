@@ -25,3 +25,7 @@ server/.env
 *.njsproj
 *.sln
 *.sw?
+
+bulk-upload-audio.mjs
+bulk-upload-retry.mjs
+check-audio.mjs
