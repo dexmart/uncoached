@@ -19,6 +19,7 @@ const AdminGuidedShiftsPage = () => {
         description: '',
         approach: '',
         use_when: '', // Will be a textarea where each line is an item
+        field_integration_prompt: '',
         science_text: '',
         science_source: '',
         spiritual_text: '',
@@ -79,6 +80,7 @@ const AdminGuidedShiftsPage = () => {
             description: shift.description || '',
             approach: shift.approach || '',
             use_when: (shift.use_when || []).join('\n'), // Convert JSON array to newline string
+            field_integration_prompt: shift.field_integration_prompt || '',
             science_text: shift.science_text || '',
             science_source: shift.science_source || '',
             spiritual_text: shift.spiritual_text || '',
@@ -101,6 +103,7 @@ const AdminGuidedShiftsPage = () => {
             description: '',
             approach: '',
             use_when: '',
+            field_integration_prompt: '',
             science_text: '',
             science_source: '',
             spiritual_text: '',
@@ -173,6 +176,7 @@ const AdminGuidedShiftsPage = () => {
                 description: formData.description,
                 approach: formData.approach,
                 use_when: formData.use_when.split('\n').map(s => s.trim()).filter(s => s.length > 0), // Convert back to JSON array
+                field_integration_prompt: formData.field_integration_prompt,
                 science_text: formData.science_text,
                 science_source: formData.science_source,
                 spiritual_text: formData.spiritual_text,
@@ -392,6 +396,20 @@ const AdminGuidedShiftsPage = () => {
 
                         {/* DEEP CORNERS */}
                         <div className="grid md:grid-cols-2 gap-6 pt-4 border-t border-text-dark/10">
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-medium text-sage drop-shadow-sm">Field Integration Prompt</h3>
+                                <div>
+                                    <label className="block text-sm font-medium text-text-dark mb-1">Prompt Text (shown with "copy and paste into Field")</label>
+                                    <textarea
+                                        rows="5"
+                                        value={formData.field_integration_prompt}
+                                        onChange={(e) => setFormData({ ...formData, field_integration_prompt: e.target.value })}
+                                        className="w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:ring-1 focus:ring-clay resize-none text-sm"
+                                        placeholder={`I just finished The Centering Drop meditation. Help me unpack what shifted for me internally by exploring these three things:\n1. What I noticed in my body...\n2. What softened for me...\n3. How this micro-shift could guide my next decision...`}
+                                    ></textarea>
+                                </div>
+                            </div>
+
                             <div className="space-y-4">
                                 <h3 className="text-lg font-medium text-clay drop-shadow-sm">Science Corner</h3>
                                 <div>
