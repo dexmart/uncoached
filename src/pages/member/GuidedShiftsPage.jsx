@@ -51,12 +51,12 @@ const GuidedShiftsPage = () => {
             {/* Fixed Nav Link */}
             <Link
                 to="/dashboard"
-                className="fixed top-8 left-8 z-50 inline-flex items-center gap-2 text-text-dark/60 hover:text-text-dark transition-colors group mix-blend-multiply"
+                className="fixed top-8 left-8 z-50 inline-flex items-center gap-2 text-[#3F5D4D] bg-[#F4F1EC]/85 backdrop-blur-md px-5 py-2.5 rounded-full hover:bg-white hover:text-[#1F2422] transition-colors shadow-sm border border-white/40 group mix-blend-normal"
             >
                 <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                 </svg>
-                <span className="text-sm font-light tracking-wide">Back to Portal</span>
+                <span className="text-sm font-medium tracking-wide">Back to Portal</span>
             </Link>
 
             {/* Hero Section */}
@@ -332,11 +332,11 @@ const GuidedShiftsPage = () => {
                         ) : shiftFamilies.map((family) => (
                             <div
                                 key={family.id}
-                                className="bg-bone/60 backdrop-blur-md rounded-2xl border border-white/30 shadow-sm flex flex-col h-full overflow-hidden hover:shadow-md transition-all group"
+                                className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#D6C7B8]/50 shadow-[0_4px_20px_rgba(31,36,34,0.08)] flex flex-col h-full overflow-hidden hover:shadow-[0_8px_30px_rgba(31,36,34,0.12)] hover:border-[#3F5D4D]/30 transition-all duration-300 group"
                             >
                                 <div className="p-6 flex-1 flex flex-col">
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="text-clay/80 p-3 bg-white/50 rounded-full w-12 h-12 flex items-center justify-center shrink-0">
+                                        <div className="text-[#C89A5B] p-3 bg-[#F4F1EC] rounded-full w-12 h-12 flex items-center justify-center shrink-0 shadow-sm border border-[#D6C7B8]/30">
                                             {family.icon?.startsWith('<svg') ? (
                                                 <div dangerouslySetInnerHTML={{ __html: family.icon }} className="flex items-center justify-center w-full h-full" />
                                             ) : (
@@ -350,7 +350,7 @@ const GuidedShiftsPage = () => {
                                         </div>
                                     </div>
 
-                                    <p className="text-text-dark/70 text-sm mb-6 min-h-[40px]">
+                                    <p className="text-[#5E6A65] text-sm mb-6 min-h-[40px] leading-relaxed">
                                         {family.purpose}
                                     </p>
 
@@ -360,12 +360,12 @@ const GuidedShiftsPage = () => {
                                                 {shift.status === 'active' ? (
                                                     <Link
                                                         to={`/dashboard/guided-shifts/${shift.name.toLowerCase().replace(/ /g, '-')}`}
-                                                        className="block w-full px-4 py-2.5 bg-white/60 hover:bg-white text-text-dark rounded-xl text-sm transition-all text-center border border-transparent hover:border-clay/20"
+                                                        className="block w-full px-4 py-3 bg-[#3F5D4D] hover:bg-[#2E4A3B] text-white rounded-xl text-sm font-medium transition-all text-center shadow-sm hover:shadow-md"
                                                     >
                                                         {shift.name}
                                                     </Link>
                                                 ) : (
-                                                    <div className="block w-full px-4 py-2.5 bg-white/20 text-text-dark/40 rounded-xl text-sm text-center border border-transparent cursor-default">
+                                                    <div className="block w-full px-4 py-3 bg-[#F4F1EC] text-[#8C857A] rounded-xl text-sm text-center border border-[#D6C7B8]/30 cursor-default">
                                                         {shift.name} <span className="text-[10px] opacity-70 ml-1">(soon)</span>
                                                     </div>
                                                 )}

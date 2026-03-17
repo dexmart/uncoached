@@ -61,12 +61,12 @@ const AudioBreathsPage = () => {
             {/* Fixed Nav Link */}
             <Link
                 to="/dashboard"
-                className="fixed top-8 left-8 z-50 inline-flex items-center gap-2 text-text-dark/60 hover:text-text-dark transition-colors group mix-blend-multiply"
+                className="fixed top-8 left-8 z-50 inline-flex items-center gap-2 text-[#3F5D4D] bg-[#F4F1EC]/85 backdrop-blur-md px-5 py-2.5 rounded-full hover:bg-white hover:text-[#1F2422] transition-colors shadow-sm border border-white/40 group mix-blend-normal"
             >
                 <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                 </svg>
-                <span className="text-sm font-light tracking-wide">Back to Portal</span>
+                <span className="text-sm font-medium tracking-wide">Back to Portal</span>
             </Link>
 
             {/* Hero Section */}
