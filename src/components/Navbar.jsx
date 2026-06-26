@@ -64,7 +64,7 @@ const Navbar = () => {
                 </div>
 
                 <Link
-                    className="hidden sm:block px-6 py-2 rounded-full bg-sage text-bone hover:bg-sage/90 transition-all duration-300 text-sm font-medium shadow-sm"
+                    className="hidden md:block px-6 py-2 rounded-full bg-sage text-bone hover:bg-sage/90 transition-all duration-300 text-sm font-medium shadow-sm"
                     to="/signin"
                 >
                     Sign In
