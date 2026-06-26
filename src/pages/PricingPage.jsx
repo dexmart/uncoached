@@ -15,8 +15,9 @@ const PricingPage = () => {
             price: '$22',
             period: '/month',
             priceId: import.meta.env.VITE_STRIPE_MONTHLY_PRICE_ID,
-            description: 'Flexible monthly access',
-            features: ['Full access to all features', 'Cancel anytime']
+            description: 'Explore Uncoached at your own pace',
+            cta: 'Start monthly',
+            features: ['No long-term commitment', 'Cancel any time']
         },
         {
             id: 'quarterly',
@@ -24,9 +25,9 @@ const PricingPage = () => {
             price: '$62',
             period: '/3 months',
             priceId: import.meta.env.VITE_STRIPE_QUARTERLY_PRICE_ID,
-            description: 'Save $4 per month',
-            perMonth: '$20.67/mo',
-            features: ['Full access to all features', 'Best for trying it out']
+            description: 'Save $12',
+            cta: 'Choose 3 months',
+            features: ['Begin forming natural habits of checking in', 'Feel it working in real moments, not just in theory']
         },
         {
             id: 'biannual',
@@ -34,10 +35,11 @@ const PricingPage = () => {
             price: '$120',
             period: '/6 months',
             priceId: import.meta.env.VITE_STRIPE_BIANNUAL_PRICE_ID,
-            description: 'Save $6 per month',
-            perMonth: '$20/mo',
-            popular: false,
-            features: ['Full access to all features', 'Great commitment level']
+            description: 'Save $36',
+            cta: 'Choose 6 months',
+            popular: true,
+            badge: 'Most Chosen',
+            features: ['Nervous system familiarity', 'Ideal for between-session care']
         },
         {
             id: 'annual',
@@ -45,10 +47,9 @@ const PricingPage = () => {
             price: '$220',
             period: '/year',
             priceId: import.meta.env.VITE_STRIPE_ANNUAL_PRICE_ID,
-            description: 'Best value - Save $44',
-            perMonth: '$18.33/mo',
-            popular: true,
-            features: ['Full access to all features', 'Maximum savings']
+            description: '2 months free',
+            cta: 'Choose annual',
+            features: ['Long-term nervous system support', 'For when this becomes part of life']
         }
     ];
 
@@ -109,7 +110,7 @@ const PricingPage = () => {
                         Choose your path
                     </h1>
                     <p className="text-text-muted text-lg max-w-xl mx-auto">
-                        Begin your journey to self-connection. Full access to Field, Audio Breaths, Guided Shifts, and everything inside.
+                        There's no right pace. Take what you need.
                     </p>
                 </div>
 
@@ -130,10 +131,10 @@ const PricingPage = () => {
                                 : 'border-clay/30'
                                 } hover:shadow-lg transition-all duration-300`}
                         >
-                            {plan.popular && (
+                            {plan.badge && (
                                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                                    <span className="bg-sage text-bone text-xs font-semibold px-4 py-1 rounded-full">
-                                        Best Value
+                                    <span className="bg-sage text-bone text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap">
+                                        {plan.badge}
                                     </span>
                                 </div>
                             )}
@@ -179,14 +180,77 @@ const PricingPage = () => {
                                     : 'bg-charcoal text-bone hover:bg-charcoal/90'
                                     } disabled:opacity-50`}
                             >
-                                {loading === plan.id ? 'Loading...' : authLoading ? 'Please wait...' : 'Get Started'}
+                                {loading === plan.id ? 'Loading...' : authLoading ? 'Please wait...' : plan.cta}
                             </button>
                         </div>
                     ))}
                 </div>
 
-                {/* Footer */}
-                <div className="text-center">
+                {/* Universal messaging */}
+                <p className="text-center font-display text-xl text-text-dark mb-10">
+                    There's no right pace. Take what you need.
+                </p>
+
+                {/* Detail dropdowns */}
+                <div className="max-w-2xl mx-auto space-y-4 mb-12">
+                    <details className="group bg-white rounded-2xl border border-clay/30 overflow-hidden">
+                        <summary className="flex items-center justify-between cursor-pointer list-none px-6 py-5 font-display text-lg text-text-dark">
+                            What's included
+                            <span className="material-symbols-outlined text-text-muted transition-transform group-open:rotate-180">
+                                expand_more
+                            </span>
+                        </summary>
+                        <div className="px-6 pb-6 text-text-muted text-sm">
+                            <p className="mb-3">All plans include full access to:</p>
+                            <ul className="space-y-2">
+                                {[
+                                    'Field, your reflective AI companion',
+                                    'Audio Breaths and Guided Shifts for real-life moments',
+                                    'Voice notes and affirmations for steady support',
+                                    'Clarity cards and integration tools',
+                                    'Prompt library',
+                                    'Everything added to Uncoached over time',
+                                ].map((item) => (
+                                    <li key={item} className="flex items-start gap-2">
+                                        <svg className="w-5 h-5 text-sage flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </details>
+
+                    <details className="group bg-white rounded-2xl border border-clay/30 overflow-hidden">
+                        <summary className="flex items-center justify-between cursor-pointer list-none px-6 py-5 font-display text-lg text-text-dark">
+                            Optional extras
+                            <span className="material-symbols-outlined text-text-muted transition-transform group-open:rotate-180">
+                                expand_more
+                            </span>
+                        </summary>
+                        <div className="px-6 pb-6 text-text-muted text-sm leading-relaxed">
+                            Some tools inside Uncoached may be available as optional, one-time
+                            purchases. These are designed as deeper dives or seasonal supports and
+                            are always optional. Your membership gives you the core space. Extras
+                            are there if and when you want more.
+                        </div>
+                    </details>
+                </div>
+
+                {/* Disclaimer */}
+                <div className="max-w-2xl mx-auto text-center">
+                    <p className="text-text-tertiary text-xs leading-relaxed mb-6">
+                        Uncoached is not therapy or coaching. It's a self-guided space designed to
+                        support awareness, regulation, and integration in everyday life. All
+                        memberships renew automatically at the end of each billing period. You can
+                        cancel at any time before renewal to stop future charges. There's no right
+                        pace. Stay for a moment, or make it a rhythm.
+                    </p>
+                    <p className="font-display text-lg text-text-dark mb-6">
+                        You don't need to fix yourself. You just need a place to stay connected to
+                        yourself.
+                    </p>
                     <p className="text-text-muted text-sm">
                         Secure payment powered by Stripe. Cancel anytime.
                     </p>

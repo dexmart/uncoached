@@ -88,6 +88,7 @@ const AudioBreathPlayerPage = () => {
     useEffect(() => {
         if (!breath || !audioRef.current) return;
 
+        const audio = audioRef.current;
         const handleEnded = () => setIsPlaying(false);
 
         audio.addEventListener('ended', handleEnded);
@@ -95,7 +96,7 @@ const AudioBreathPlayerPage = () => {
         return () => {
             audio.removeEventListener('ended', handleEnded);
         };
-    }, []);
+    }, [breath]);
 
     const togglePlay = () => {
         if (audioRef.current) {
@@ -122,7 +123,7 @@ const AudioBreathPlayerPage = () => {
     if (Array.isArray(breath.use_when)) {
         parsedUseWhen = breath.use_when;
     } else if (typeof breath.use_when === 'string') {
-        try { parsedUseWhen = JSON.parse(breath.use_when); } catch (e) { parsedUseWhen = []; }
+        try { parsedUseWhen = JSON.parse(breath.use_when); } catch { parsedUseWhen = []; }
         if (!Array.isArray(parsedUseWhen)) parsedUseWhen = [];
     }
 

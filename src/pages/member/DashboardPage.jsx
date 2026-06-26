@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom';
 const DashboardPage = () => {
     const { user, signOut } = useAuth();
 
-    const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'Friend';
+    const meta = user?.user_metadata || {};
+    // display_name (email signup), full_name/name (Google OAuth), then email prefix.
+    const displayName =
+        meta.display_name || meta.full_name || meta.name || user?.email?.split('@')[0] || 'Friend';
 
     const navigationItems = [
         {

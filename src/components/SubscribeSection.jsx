@@ -9,10 +9,12 @@ const SubscribeSection = () => {
 
             <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
                 <h2 className="font-display text-3xl md:text-4xl mb-4 text-bone italic">
-                    Quiet insights, once a week.
+                    Not another newsletter.
                 </h2>
                 <p className="text-bone/80 mb-8 max-w-xl mx-auto">
-                    Sign up to receive gentle reflections and calming strategies — no spam, just a peaceful pause in your inbox.
+                    Sign up to receive thoughtful reflections that support real integration. From
+                    gentle affirmations and grounding voice notes to early access to new
+                    behind-the-scenes tools and Field's powerful features.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 justify-center items-center max-w-md mx-auto">
@@ -21,8 +23,8 @@ const SubscribeSection = () => {
                         placeholder="Enter your email"
                         className="flex-1 w-full bg-bone/10 border border-bone/30 rounded-lg py-3 px-4 text-sm text-bone placeholder-bone/50 focus:ring-2 focus:ring-sage focus:border-sage outline-none transition-all backdrop-blur-sm"
                     />
-                    <button className="w-full sm:w-auto px-8 py-3 bg-sage text-bone rounded-lg font-medium hover:bg-sage/90 transition-all duration-300">
-                        Join the List
+                    <button className="w-full sm:w-auto px-8 py-3 bg-sage text-bone rounded-lg font-medium hover:bg-sage/90 transition-all duration-300 whitespace-nowrap">
+                        Stay Connected
                     </button>
                 </div>
             </div>
