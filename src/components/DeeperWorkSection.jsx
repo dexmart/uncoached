@@ -1,13 +1,22 @@
+import { Link } from 'react-router-dom';
+
 const DeeperWorkSection = () => {
     return (
-        <section className="py-24 relative overflow-hidden" id="deeper-work">
-            {/* Background with overlay */}
-            <div className="absolute inset-0 z-0">
+        <section className="py-16 lg:py-24 relative overflow-hidden bg-bone" id="deeper-work">
+            {/* Background with overlay — desktop only; on mobile the image is stacked above the text */}
+            <div className="absolute inset-0 z-0 hidden lg:block">
                 <img src={import.meta.env.BASE_URL + "bg/S3_ Deeper work, on your own timing - homepage.png"} alt="" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-bone/60 to-bone"></div>
             </div>
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+                {/* Mobile image */}
+                <img
+                    src={import.meta.env.BASE_URL + "bg/S3_ Deeper work, on your own timing - homepage.png"}
+                    alt="Deeper work, on your own timing"
+                    className="lg:hidden w-full h-56 object-cover rounded-2xl mb-8 shadow-md"
+                />
+
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     {/* Left - Empty for background visibility */}
                     <div className="order-2 lg:order-1 hidden lg:block">
@@ -44,12 +53,12 @@ const DeeperWorkSection = () => {
                             </li>
                         </ul>
 
-                        <a
-                            href="/about"
+                        <Link
+                            to="/about"
                             className="inline-flex items-center gap-2 px-8 py-4 bg-sage text-bone rounded-full font-medium shadow-lg hover:bg-sage/90 hover:scale-105 transition-all duration-300"
                         >
                             Our Approach
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

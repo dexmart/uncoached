@@ -52,13 +52,15 @@ const TestimonialsSection = () => {
     const testimonialsPerPage = 3;
     const totalSlides = Math.ceil(testimonials.length / testimonialsPerPage);
 
-    // Auto-scroll
+    // Auto-scroll. Depending on currentSlide restarts the timer after every
+    // change (including manual nav), so a click is never immediately followed by
+    // an auto-advance — which is what made it feel too fast.
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % totalSlides);
-        }, 3000);
+        }, 6000);
         return () => clearInterval(interval);
-    }, [totalSlides]);
+    }, [totalSlides, currentSlide]);
 
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % totalSlides);

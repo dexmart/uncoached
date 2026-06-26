@@ -5,6 +5,7 @@ import AboutPage from './pages/AboutPage'
 import SignUpPage from './pages/SignUpPage'
 import SignInPage from './pages/SignInPage'
 import PricingPage from './pages/PricingPage'
+import PractitionersPage from './pages/PractitionersPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import AdminProtectedRoute from './components/AdminProtectedRoute'
 import AdminLayout from './components/AdminLayout'
@@ -47,6 +48,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/practitioners" element={<PractitionersPage />} />
 
           {/* Protected Routes (require auth) */}
           <Route
