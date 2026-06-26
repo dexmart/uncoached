@@ -48,13 +48,15 @@ const ServicesSection = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const totalSlides = 3; // 8 items, 3 per view = 3 slides (last slide has 2 items)
 
-    // Auto-scroll
+    // Auto-scroll. Depending on currentSlide restarts the timer after every
+    // change (including manual nav), so a click is never immediately followed by
+    // an auto-advance — which is what made it feel too fast.
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % totalSlides);
-        }, 4000);
+        }, 6000);
         return () => clearInterval(interval);
-    }, [totalSlides]);
+    }, [totalSlides, currentSlide]);
 
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % totalSlides);
