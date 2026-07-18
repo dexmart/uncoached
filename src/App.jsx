@@ -6,6 +6,8 @@ import SignUpPage from './pages/SignUpPage'
 import SignInPage from './pages/SignInPage'
 import PricingPage from './pages/PricingPage'
 import PractitionersPage from './pages/PractitionersPage'
+import GiftPage from './pages/GiftPage'
+import ScrollToTop from './components/ScrollToTop'
 import ProtectedRoute from './components/ProtectedRoute'
 import AdminProtectedRoute from './components/AdminProtectedRoute'
 import AdminLayout from './components/AdminLayout'
@@ -41,6 +43,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
@@ -49,6 +52,7 @@ function App() {
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/practitioners" element={<PractitionersPage />} />
+          <Route path="/gift" element={<GiftPage />} />
 
           {/* Protected Routes (require auth) */}
           <Route
