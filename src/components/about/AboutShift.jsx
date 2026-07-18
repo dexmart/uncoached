@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const AboutShift = () => {
     return (
         <section className="py-24 relative overflow-hidden">
@@ -25,12 +27,12 @@ const AboutShift = () => {
                         <p>You learn how to meet whatever life brings with more steadiness, clarity, and self-trust.</p>
                     </div>
                     <div className="mt-8">
-                        <a
+                        <Link
                             className="inline-block px-8 py-4 bg-sage text-bone rounded-full font-medium shadow-lg hover:bg-sage/90 hover:scale-105 transition-all duration-300 text-center"
-                            href="/#journey"
+                            to="/pricing"
                         >
                             Start Your Journey
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

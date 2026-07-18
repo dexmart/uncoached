@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const AboutHero = () => {
     return (
         <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden">
@@ -52,9 +54,12 @@ const AboutHero = () => {
                         </p>
                     </div>
 
-                    <button className="px-8 py-3 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all shadow-lg text-lg">
+                    <Link
+                        to="/pricing"
+                        className="inline-block px-8 py-3 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all shadow-lg text-lg"
+                    >
                         Start Your Journey
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>

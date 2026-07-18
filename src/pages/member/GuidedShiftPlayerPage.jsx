@@ -257,6 +257,34 @@ const GuidedShiftPlayerPage = () => {
                     </div>
 
                     {/* ═══════════════════════════════════════ */}
+                    {/* USE THIS WHEN (right after the track) */}
+                    {/* ═══════════════════════════════════════ */}
+                    {parsedUseWhen.length > 0 && (
+                        <div className="mb-8">
+                            <div className="flex items-center gap-4 mb-5">
+                                <div className="h-px bg-[#D6C7B8]/50 flex-1"></div>
+                                <h3 className="text-[13px] uppercase tracking-[0.2em] text-[#C89A5B] font-bold text-center">
+                                    Use This When
+                                </h3>
+                                <div className="h-px bg-[#D6C7B8]/50 flex-1"></div>
+                            </div>
+
+                            <div className="space-y-3">
+                                {parsedUseWhen.map((item, index) => (
+                                    <div key={index} className="flex items-start gap-3 bg-white/70 backdrop-blur-sm rounded-xl px-5 py-3.5 border border-white/40">
+                                        <div className="shrink-0 w-5 h-5 rounded-full bg-[#C89A5B]/20 flex items-center justify-center mt-0.5">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C89A5B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M20 6L9 17l-5-5" />
+                                            </svg>
+                                        </div>
+                                        <span className="text-[#1F2422]/80 text-[15px] leading-relaxed">{typeof item === 'string' ? item : ''}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ═══════════════════════════════════════ */}
                     {/* APPROACH BOX */}
                     {/* ═══════════════════════════════════════ */}
                     {shift.approach && (
@@ -283,34 +311,6 @@ const GuidedShiftPlayerPage = () => {
 
                             <div className="text-[#1F2422]/80 text-[15px] leading-[1.8] whitespace-pre-line">
                                 {shift.field_integration_prompt}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* ═══════════════════════════════════════ */}
-                    {/* USE THIS WHEN */}
-                    {/* ═══════════════════════════════════════ */}
-                    {parsedUseWhen.length > 0 && (
-                        <div className="mb-8">
-                            <div className="flex items-center gap-4 mb-5">
-                                <div className="h-px bg-[#D6C7B8]/50 flex-1"></div>
-                                <h3 className="text-[13px] uppercase tracking-[0.2em] text-[#C89A5B] font-bold text-center">
-                                    Use This When
-                                </h3>
-                                <div className="h-px bg-[#D6C7B8]/50 flex-1"></div>
-                            </div>
-
-                            <div className="space-y-3">
-                                {parsedUseWhen.map((item, index) => (
-                                    <div key={index} className="flex items-start gap-3 bg-white/70 backdrop-blur-sm rounded-xl px-5 py-3.5 border border-white/40">
-                                        <div className="shrink-0 w-5 h-5 rounded-full bg-[#C89A5B]/20 flex items-center justify-center mt-0.5">
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C89A5B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M20 6L9 17l-5-5" />
-                                            </svg>
-                                        </div>
-                                        <span className="text-[#1F2422]/80 text-[15px] leading-relaxed">{typeof item === 'string' ? item : ''}</span>
-                                    </div>
-                                ))}
                             </div>
                         </div>
                     )}

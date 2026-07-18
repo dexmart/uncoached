@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
     return (
@@ -28,12 +28,12 @@ const HeroSection = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center">
-                    <a
+                    <Link
                         className="px-8 py-4 bg-sage text-bone rounded-full font-medium shadow-lg hover:bg-sage/90 hover:scale-105 transition-all duration-300 text-center"
-                        href="#journey"
+                        to="/pricing"
                     >
                         Start Your Journey
-                    </a>
+                    </Link>
                     <a
                         className="px-8 py-4 bg-sage text-white rounded-full font-medium shadow-lg hover:bg-sage/90 hover:scale-105 transition-all duration-300 text-center"
                         href="#whats-inside"

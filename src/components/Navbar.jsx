@@ -5,7 +5,7 @@ const NAV_LINKS = [
     { label: 'Home', to: '/' },
     { label: 'About', to: '/about' },
     { label: 'Practitioners', to: '/practitioners' },
-    { label: 'Gift', to: '/#gift' },
+    { label: 'Gift', to: '/gift' },
     { label: 'Contact Us', href: 'mailto:hello@uncoached.space' },
 ];
 
