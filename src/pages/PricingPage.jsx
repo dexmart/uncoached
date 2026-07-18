@@ -206,7 +206,7 @@ const PricingPage = () => {
                                 {[
                                     'Field, your reflective AI companion',
                                     'Audio Breaths and Guided Shifts for real-life moments',
-                                    'Voice notes and affirmations for steady support',
+                                    'Voice notes and afformations for steady support',
                                     'Clarity cards and integration tools',
                                     'Prompt library',
                                     'Everything added to Uncoached over time',
