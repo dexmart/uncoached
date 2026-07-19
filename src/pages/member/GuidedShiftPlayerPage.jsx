@@ -11,6 +11,7 @@ const GuidedShiftPlayerPage = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [audioReady, setAudioReady] = useState(false);
     const audioRef = useRef(null);
 
     // Initial fetch of shift data
@@ -53,17 +54,27 @@ const GuidedShiftPlayerPage = () => {
 
     // Audio event listeners
     useEffect(() => {
+        setAudioReady(false);
         if (!shift || !audioRef.current) return;
 
         const audio = audioRef.current;
         const handleEnded = () => setIsPlaying(false);
         const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
-        const handleLoadedMetadata = () => setDuration(audio.duration);
+        const handleLoadedMetadata = () => {
+            setDuration(audio.duration);
+            setAudioReady(true);
+        };
         const handlePlay = () => {
             if (audio.duration && !isNaN(audio.duration)) {
                 setDuration(audio.duration);
+                setAudioReady(true);
             }
         };
+        // If metadata is already cached, reflect it right away.
+        if (audio.readyState >= 1 && audio.duration && !isNaN(audio.duration)) {
+            setDuration(audio.duration);
+            setAudioReady(true);
+        }
 
         audio.addEventListener('ended', handleEnded);
         audio.addEventListener('timeupdate', handleTimeUpdate);
@@ -250,11 +261,17 @@ const GuidedShiftPlayerPage = () => {
                                 </div>
                                 <div className="flex justify-between text-[12px] text-[#8C857A] mt-1.5 font-medium">
                                     <span>{formatTime(currentTime)}</span>
-                                    <span>{formatTime(duration)}</span>
+                                    <span>{!shift.audio_url ? '--:--' : audioReady ? formatTime(duration) : 'Loading…'}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    {shift.audio_url && !audioReady && (
+                        <p className="text-center text-[12px] text-[#8C857A] italic -mt-4 mb-8">
+                            Audio may take a moment to load…
+                        </p>
+                    )}
 
                     {/* ═══════════════════════════════════════ */}
                     {/* USE THIS WHEN (right after the track) */}
