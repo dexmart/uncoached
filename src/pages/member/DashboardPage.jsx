@@ -111,24 +111,9 @@ const DashboardPage = () => {
                     It's good to have you here.
                 </p>
 
-                {/* Search Bar */}
-                <div className="w-full max-w-xl mb-12">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            placeholder="Search the portal..."
-                            className="w-full px-6 py-4 pl-12 bg-white/80 backdrop-blur-sm border border-clay/30 rounded-full focus:outline-none focus:ring-2 focus:ring-sage/50 text-text-dark"
-                        />
-                        <svg
-                            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </div>
-                </div>
+                {/* Search Bar — hidden for launch. The input had no logic behind it,
+                    so it returned nothing (e.g. "anxiety" / "audio breaths"). Restore this
+                    block once portal search is wired up to all content paths (post-launch). */}
 
                 {/* Navigation Grid */}
                 <div className="w-full max-w-4xl">
