@@ -10,6 +10,7 @@ const ProfilePage = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    const [portalLoading, setPortalLoading] = useState(false);
     const fileInputRef = useRef(null);
 
     // Initialize from user metadata
@@ -37,6 +38,30 @@ const ProfilePage = () => {
             setMessage('Profile updated successfully!');
         }
         setIsSaving(false);
+    };
+
+    const handleBillingPortal = async () => {
+        setPortalLoading(true);
+        setError('');
+        setMessage('');
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/stripe/create-portal-session`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userEmail: user.email })
+            });
+            const data = await res.json();
+            if (data.url) {
+                window.location.assign(data.url);
+            } else {
+                setError(data.error || 'Could not open the billing portal.');
+                setPortalLoading(false);
+            }
+        } catch (err) {
+            console.error('Billing portal error:', err);
+            setError('Something went wrong opening the billing portal. Please try again.');
+            setPortalLoading(false);
+        }
     };
 
     const handleImageUpload = async (e) => {
@@ -212,6 +237,24 @@ const ProfilePage = () => {
                         {isSaving ? 'Saving Changes...' : 'Save Profile'}
                     </button>
                 </form>
+
+                {/* Membership & Billing */}
+                <div className="w-full mt-6 bg-white p-8 rounded-3xl shadow-sm border border-clay/10">
+                    <h2 className="font-display text-2xl text-text-dark mb-2">Managing Your Subscription</h2>
+                    <p className="text-sm text-text-muted mb-6 leading-relaxed">
+                        You can update your payment method, view or download invoices, and cancel your
+                        subscription directly through our secure Billing Portal.
+                    </p>
+                    <button
+                        type="button"
+                        onClick={handleBillingPortal}
+                        disabled={portalLoading}
+                        className={`w-full py-4 rounded-xl font-medium transition-all duration-300 shadow-sm
+                            ${portalLoading ? 'bg-bone text-text-muted cursor-not-allowed border border-clay/20' : 'bg-charcoal text-bone hover:bg-charcoal/90'}`}
+                    >
+                        {portalLoading ? 'Opening secure portal…' : 'Manage Subscription'}
+                    </button>
+                </div>
 
             </div>
         </div>

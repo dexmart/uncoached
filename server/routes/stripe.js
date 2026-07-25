@@ -41,10 +41,11 @@ router.post(
                 const { error } = await supabaseAdmin.from("subscriptions").upsert({
                     user_id: userId,
                     stripe_subscription_id: sub.id,
+                    stripe_customer_id: session.customer,
                     status: sub.status,
                     plan: sub.items.data[0]?.price?.nickname || "monthly",
                     current_period_end: new Date(sub.current_period_end * 1000).toISOString()
-                });
+                }, { onConflict: "user_id" });
 
                 if (error) {
                     console.error("Failed to update subscription:", error);
@@ -116,18 +117,28 @@ router.post("/create-checkout-session", async (req, res) => {
     }
 });
 
-// Create customer portal session
+// Create customer portal session.
+// Accepts a customerId, or resolves the Stripe customer by userEmail.
 router.post("/create-portal-session", async (req, res) => {
-    const { customerId } = req.body;
-
-    if (!customerId) {
-        return res.status(400).json({ error: "Missing customerId" });
-    }
+    const { customerId, userEmail } = req.body;
 
     try {
+        let custId = customerId;
+
+        if (!custId && userEmail) {
+            const customers = await stripe.customers.list({ email: userEmail, limit: 1 });
+            if (customers.data.length > 0) {
+                custId = customers.data[0].id;
+            }
+        }
+
+        if (!custId) {
+            return res.status(404).json({ error: "No Stripe customer found for this account." });
+        }
+
         const session = await stripe.billingPortal.sessions.create({
-            customer: customerId,
-            return_url: `${process.env.FRONTEND_URL}/dashboard`
+            customer: custId,
+            return_url: `${process.env.FRONTEND_URL}/dashboard/profile`
         });
 
         res.json({ url: session.url });
