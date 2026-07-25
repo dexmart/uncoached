@@ -1,5 +1,7 @@
+import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 
 const DashboardPage = () => {
     const { user, signOut } = useAuth();
@@ -8,6 +10,58 @@ const DashboardPage = () => {
     // display_name (email signup), full_name/name (Google OAuth), then email prefix.
     const displayName =
         meta.display_name || meta.full_name || meta.name || user?.email?.split('@')[0] || 'Friend';
+
+    // ---- Portal search ----
+    const [query, setQuery] = useState('');
+    const [searchFocused, setSearchFocused] = useState(false);
+    const [searchIndex, setSearchIndex] = useState([]);
+
+    useEffect(() => {
+        // Sections/tools are always searchable, even offline; content is added below.
+        const sections = [
+            { label: 'Field', type: 'Tool', link: '/dashboard/field', keywords: 'chat support reflect talk' },
+            { label: 'Audio Breaths', type: 'Tool', link: '/dashboard/audio-breaths', keywords: 'breathe breathing nervous system calm' },
+            { label: 'Guided Shifts', type: 'Tool', link: '/dashboard/guided-shifts', keywords: 'reset state regulate' },
+            { label: 'Pocket Prompts', type: 'Tool', link: '/dashboard/pocket-prompts', keywords: 'questions reflection' },
+            { label: 'Clarity Cards', type: 'Tool', link: '/dashboard/clarity-cards', keywords: 'journal journaling cards' },
+            { label: 'Afformations', type: 'Tool', link: '/dashboard/afformations', keywords: 'affirmations affirmation questions' },
+            { label: 'Voice Notes', type: 'Tool', link: '/dashboard/voice-notes', keywords: 'audio messages identity' },
+        ];
+
+        let cancelled = false;
+        const buildIndex = async () => {
+            const entries = [...sections];
+            try {
+                const [ab, gs, cc, pp, vn, af] = await Promise.all([
+                    supabase.from('audio_breaths').select('id,title'),
+                    supabase.from('guided_shifts').select('id,title').eq('is_active', true),
+                    supabase.from('clarity_cards').select('id,title').eq('is_active', true),
+                    supabase.from('pocket_prompts').select('id,title').eq('is_active', true),
+                    supabase.from('voice_notes').select('id,title').eq('is_active', true),
+                    supabase.from('affirmations').select('id,text').eq('is_active', true),
+                ]);
+                (ab.data || []).forEach(r => entries.push({ label: r.title, type: 'Audio Breath', link: `/dashboard/audio-breaths/${r.id}` }));
+                (gs.data || []).forEach(r => entries.push({ label: r.title, type: 'Guided Shift', link: `/dashboard/guided-shifts/${r.id}` }));
+                (cc.data || []).forEach(r => entries.push({ label: r.title, type: 'Clarity Card', link: `/dashboard/clarity-cards/${r.id}` }));
+                (pp.data || []).forEach(r => entries.push({ label: r.title, type: 'Pocket Prompt', link: '/dashboard/pocket-prompts' }));
+                (vn.data || []).forEach(r => entries.push({ label: r.title, type: 'Voice Note', link: '/dashboard/voice-notes' }));
+                (af.data || []).forEach(r => entries.push({ label: r.text, type: 'Afformation', link: '/dashboard/afformations' }));
+            } catch (err) {
+                console.error('Search index build error:', err);
+            }
+            if (!cancelled) setSearchIndex(entries);
+        };
+        buildIndex();
+        return () => { cancelled = true; };
+    }, []);
+
+    const searchResults = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        if (!q) return [];
+        return searchIndex
+            .filter(e => (e.label || '').toLowerCase().includes(q) || (e.keywords || '').toLowerCase().includes(q))
+            .slice(0, 8);
+    }, [query, searchIndex]);
 
     const navigationItems = [
         {
@@ -111,9 +165,48 @@ const DashboardPage = () => {
                     It's good to have you here.
                 </p>
 
-                {/* Search Bar — hidden for launch. The input had no logic behind it,
-                    so it returned nothing (e.g. "anxiety" / "audio breaths"). Restore this
-                    block once portal search is wired up to all content paths (post-launch). */}
+                {/* Search Bar */}
+                <div className="w-full max-w-xl mb-12 relative">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onFocus={() => setSearchFocused(true)}
+                            onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
+                            placeholder="Search the portal..."
+                            className="w-full px-6 py-4 pl-12 bg-white/80 backdrop-blur-sm border border-clay/30 rounded-full focus:outline-none focus:ring-2 focus:ring-sage/50 text-text-dark"
+                        />
+                        <svg
+                            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+
+                    {searchFocused && query.trim() && (
+                        <div className="absolute z-30 mt-2 w-full bg-white rounded-2xl shadow-lg border border-clay/20 overflow-hidden max-h-80 overflow-y-auto text-left">
+                            {searchResults.length === 0 ? (
+                                <p className="px-5 py-4 text-sm text-text-muted">No matches for “{query.trim()}”.</p>
+                            ) : (
+                                searchResults.map((r, i) => (
+                                    <Link
+                                        key={`${r.link}-${i}`}
+                                        to={r.link}
+                                        onMouseDown={() => setQuery('')}
+                                        className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-bone/70 transition-colors border-b border-clay/10 last:border-0"
+                                    >
+                                        <span className="text-text-dark text-sm truncate">{r.label}</span>
+                                        <span className="text-[10px] uppercase tracking-wider text-sage bg-sage/10 px-2 py-1 rounded-full flex-shrink-0">{r.type}</span>
+                                    </Link>
+                                ))
+                            )}
+                        </div>
+                    )}
+                </div>
 
                 {/* Navigation Grid */}
                 <div className="w-full max-w-4xl">
