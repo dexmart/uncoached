@@ -7,6 +7,9 @@ import SignInPage from './pages/SignInPage'
 import PricingPage from './pages/PricingPage'
 import PractitionersPage from './pages/PractitionersPage'
 import GiftPage from './pages/GiftPage'
+import TermsPage from './pages/legal/TermsPage'
+import PrivacyPage from './pages/legal/PrivacyPage'
+import BillingPage from './pages/legal/BillingPage'
 import ScrollToTop from './components/ScrollToTop'
 import ProtectedRoute from './components/ProtectedRoute'
 import AdminProtectedRoute from './components/AdminProtectedRoute'
@@ -53,6 +56,9 @@ function App() {
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/practitioners" element={<PractitionersPage />} />
           <Route path="/gift" element={<GiftPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/billing" element={<BillingPage />} />
 
           {/* Protected Routes (require auth) */}
           <Route
