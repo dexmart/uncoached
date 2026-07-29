@@ -7,11 +7,14 @@ import stripeRoutes from "./routes/stripe.js";
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// CORS configuration - allow Vite dev ports + production frontend
+// CORS configuration - allow Vite dev ports + production frontends
 const allowedOrigins = [
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5175",
+    "https://uncoached.space",
+    "https://www.uncoached.space",
+    "https://uncoached.vercel.app",
     process.env.FRONTEND_URL
 ].filter(Boolean);
 
