@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 
 const PocketPromptsPage = () => {
-    const { isSubscribed } = useAuth();
+    const { user } = useAuth();
+    const location = useLocation();
     const [copiedId, setCopiedId] = useState(null);
     const [activeCategory, setActiveCategory] = useState('all');
+    const [purchasedIds, setPurchasedIds] = useState(new Set());
+    const [unlockingId, setUnlockingId] = useState(null);
 
     const [categories, setCategories] = useState([{ id: 'all', title: 'All Prompts', slug: 'all' }]);
     const [prompts, setPrompts] = useState([]);
@@ -69,6 +72,51 @@ const PocketPromptsPage = () => {
             setTimeout(() => setCopiedId(null), 2000);
         } catch (err) {
             console.error('Failed to copy:', err);
+        }
+    };
+
+    // Which high-level prompts this member has unlocked ($2 each).
+    // Re-runs on return from Stripe checkout (location.search carries ?unlocked=).
+    useEffect(() => {
+        if (!user) return;
+        let active = true;
+        supabase
+            .from('prompt_purchases')
+            .select('prompt_id')
+            .eq('user_id', user.id)
+            .then(({ data }) => {
+                if (active) setPurchasedIds(new Set((data || []).map(r => r.prompt_id)));
+            });
+        return () => { active = false; };
+    }, [user, location.search]);
+
+    // First N lines of the high-level prompt, shown as a free taste.
+    const previewOf = (text, lines = 8) => (text || '').split('\n').slice(0, lines).join('\n');
+
+    const handleUnlock = async (prompt) => {
+        if (!user) return;
+        setUnlockingId(prompt.id);
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/stripe/create-prompt-checkout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: user.id,
+                    userEmail: user.email,
+                    promptId: prompt.id,
+                    promptTitle: prompt.title
+                })
+            });
+            const data = await res.json();
+            if (data.url) {
+                window.location.assign(data.url);
+            } else {
+                console.error('Prompt checkout failed:', data.error);
+                setUnlockingId(null);
+            }
+        } catch (err) {
+            console.error('Prompt checkout error:', err);
+            setUnlockingId(null);
         }
     };
 
@@ -248,57 +296,52 @@ const PocketPromptsPage = () => {
                                                 </div>
                                             </div>
 
-                                            {/* Premium Content Area */}
+                                            {/* High-Level (Premium) — $2 one-time unlock, with a free preview */}
                                             {prompt.content_premium && (
                                                 <div className="mt-2 pt-6 border-t border-clay/20">
-                                                    {isSubscribed ? (
+                                                    <div className="flex items-center gap-2 mb-3">
+                                                        <svg className="w-4 h-4 text-golden-deep" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                                        </svg>
+                                                        <span className="text-xs font-bold text-golden-deep uppercase tracking-wider">
+                                                            High-Level Version {purchasedIds.has(prompt.id) ? '— Unlocked' : '— Preview'}
+                                                        </span>
+                                                    </div>
+
+                                                    {purchasedIds.has(prompt.id) ? (
                                                         <div className="animate-fade-in flex flex-col md:flex-row md:items-start justify-between gap-4">
                                                             <div className="flex-1">
-                                                                <div className="flex items-center gap-2 mb-3">
-                                                                    <svg className="w-4 h-4 text-golden" fill="currentColor" viewBox="0 0 24 24">
-                                                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                                                    </svg>
-                                                                    <span className="text-xs font-bold text-golden uppercase tracking-wider">High-Level Version</span>
-                                                                </div>
-                                                                <div className="bg-golden/5 p-5 rounded-xl border border-golden/20 text-sm text-text-dark/90 whitespace-pre-wrap leading-relaxed font-mono">
+                                                                <div className="bg-golden-light/10 p-5 rounded-xl border border-golden-light/30 text-sm text-text-dark/90 whitespace-pre-wrap leading-relaxed font-mono">
                                                                     {prompt.content_premium}
                                                                 </div>
                                                             </div>
                                                             <button
                                                                 onClick={() => handleCopy(prompt, 'premium')}
-                                                                className={`flex-shrink-0 px-4 py-2 mt-8 rounded-lg text-sm font-medium transition-all self-start ${copiedId === `${prompt.id}-premium`
-                                                                    ? 'bg-golden text-white shadow-sm'
-                                                                    : 'bg-bone text-text-dark/70 hover:bg-golden hover:text-white'
+                                                                className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all self-start ${copiedId === `${prompt.id}-premium`
+                                                                    ? 'bg-golden-deep text-white shadow-sm'
+                                                                    : 'bg-bone text-text-dark/70 hover:bg-golden-deep hover:text-white'
                                                                     }`}
                                                             >
-                                                                {copiedId === `${prompt.id}-premium` ? 'Copied!' : 'Copy Premium'}
+                                                                {copiedId === `${prompt.id}-premium` ? 'Copied!' : 'Copy Prompt'}
                                                             </button>
                                                         </div>
                                                     ) : (
-                                                        <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-clay/10 to-bone border border-clay/20 p-8 text-center mt-2">
-                                                            {/* Blurred preview text effect */}
-                                                            <div className="absolute inset-0 blur-[4px] opacity-40 select-none pointer-events-none p-6 text-left">
-                                                                <p className="text-text-dark/40 whitespace-pre-wrap leading-relaxed">
-                                                                    {prompt.content_premium.substring(0, 150)}...
-                                                                </p>
-                                                            </div>
-
-                                                            <div className="relative z-10 flex flex-col items-center">
-                                                                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-sage">
-                                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                                                    </svg>
+                                                        <div>
+                                                            <div className="relative">
+                                                                <div className="bg-golden-light/10 p-5 rounded-xl border border-golden-light/30 text-sm text-text-dark/90 whitespace-pre-wrap leading-relaxed font-mono max-h-56 overflow-hidden select-none">
+                                                                    {previewOf(prompt.content_premium, 8)}
                                                                 </div>
-                                                                <h4 className="font-display text-lg text-text-dark mb-2">Unlock the Deep Dive</h4>
-                                                                <p className="text-sm text-text-muted mb-4 max-w-sm">
-                                                                    Subscribe to access the high-level guided reflection for this prompt and all other premium features.
-                                                                </p>
-                                                                <Link
-                                                                    to="/pricing"
-                                                                    className="inline-block px-6 py-2.5 bg-sage text-white text-sm font-medium rounded-full hover:bg-sage/90 transition-colors shadow-sm"
+                                                                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white via-white/80 to-transparent rounded-b-xl pointer-events-none" />
+                                                            </div>
+                                                            <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
+                                                                <button
+                                                                    onClick={() => handleUnlock(prompt)}
+                                                                    disabled={unlockingId === prompt.id}
+                                                                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-golden-deep text-bone text-sm font-medium rounded-full hover:bg-golden-deep/90 transition-colors shadow-sm disabled:opacity-70"
                                                                 >
-                                                                    Upgrade to Access
-                                                                </Link>
+                                                                    {unlockingId === prompt.id ? 'Opening checkout…' : 'Unlock full prompt — $2'}
+                                                                </button>
+                                                                <span className="text-xs text-text-muted">One-time payment · yours to keep</span>
                                                             </div>
                                                         </div>
                                                     )}
