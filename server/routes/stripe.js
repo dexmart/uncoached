@@ -32,6 +32,20 @@ router.post(
         if (event.type === "checkout.session.completed") {
             const session = event.data.object;
 
+            // One-time high-level Pocket Prompt purchase ($2)
+            if (session.metadata?.type === "prompt_purchase") {
+                const { userId: buyerId, promptId } = session.metadata;
+                if (buyerId && promptId) {
+                    const { error } = await supabaseAdmin.from("prompt_purchases").upsert(
+                        { user_id: buyerId, prompt_id: promptId },
+                        { onConflict: "user_id,prompt_id" }
+                    );
+                    if (error) console.error("Failed to record prompt purchase:", error);
+                    else console.log(`Prompt ${promptId} purchased by ${buyerId}`);
+                }
+                return res.json({ received: true });
+            }
+
             const userId = session.client_reference_id;
             const subId = session.subscription;
 
@@ -114,6 +128,42 @@ router.post("/create-checkout-session", async (req, res) => {
     } catch (err) {
         console.error("Checkout session error:", err);
         res.status(500).json({ error: "Failed to create checkout session" });
+    }
+});
+
+// Create a one-time $2 checkout for a single high-level Pocket Prompt
+router.post("/create-prompt-checkout", async (req, res) => {
+    const { userId, userEmail, promptId, promptTitle } = req.body;
+
+    if (!userId || !promptId) {
+        return res.status(400).json({ error: "Missing userId or promptId" });
+    }
+
+    try {
+        const session = await stripe.checkout.sessions.create({
+            mode: "payment",
+            payment_method_types: ["card"],
+            line_items: [{
+                price_data: {
+                    currency: "usd",
+                    unit_amount: 200, // $2.00
+                    product_data: {
+                        name: promptTitle ? `High-Level Prompt: ${promptTitle}` : "High-Level Pocket Prompt"
+                    }
+                },
+                quantity: 1
+            }],
+            success_url: `${process.env.FRONTEND_URL}/dashboard/pocket-prompts?unlocked=${promptId}`,
+            cancel_url: `${process.env.FRONTEND_URL}/dashboard/pocket-prompts`,
+            client_reference_id: userId,
+            customer_email: userEmail,
+            metadata: { type: "prompt_purchase", userId, promptId }
+        });
+
+        res.json({ url: session.url });
+    } catch (err) {
+        console.error("Prompt checkout error:", err);
+        res.status(500).json({ error: "Failed to create prompt checkout" });
     }
 });
 
