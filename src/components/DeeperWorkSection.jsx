@@ -10,9 +10,9 @@ const DeeperWorkSection = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-                {/* Mobile image */}
+                {/* Mobile image — Johanna's composed version (subject left, calm space right) */}
                 <img
-                    src={import.meta.env.BASE_URL + "bg/S3_ Deeper work, on your own timing - homepage.png"}
+                    src={import.meta.env.BASE_URL + "bg/S3-deeper-work-mobile.jpg"}
                     alt="Deeper work, on your own timing"
                     className="lg:hidden w-full h-56 object-cover rounded-2xl mb-8 shadow-md"
                 />
