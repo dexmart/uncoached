@@ -45,3 +45,12 @@ app.use("/stripe", stripeRoutes);
 app.listen(PORT, () => {
     console.log(`🚀 Uncoached API running on http://localhost:${PORT}`);
 });
+
+// Keep the free-tier instance warm so the first login after a quiet spell isn't
+// delayed by a ~50s cold start (which can bounce paying members to /pricing).
+const SELF_URL = process.env.SELF_URL || process.env.RENDER_EXTERNAL_URL;
+if (SELF_URL) {
+    setInterval(() => {
+        fetch(`${SELF_URL}/health`).catch(() => { /* ignore */ });
+    }, 10 * 60 * 1000); // every 10 minutes
+}
