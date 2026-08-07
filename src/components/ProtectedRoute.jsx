@@ -2,9 +2,9 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children, requireSubscription = false }) => {
-    const { user, loading, isSubscribed, isSubscriptionLoading } = useAuth();
+    const { user, loading, isSubscribed, isSubscriptionLoading, isAdmin, isRoleLoading } = useAuth();
 
-    if (loading || (requireSubscription && isSubscriptionLoading)) {
+    if (loading || (requireSubscription && (isSubscriptionLoading || isRoleLoading))) {
         return (
             <div className="min-h-screen bg-bone flex items-center justify-center">
                 <div className="text-center">
@@ -19,7 +19,8 @@ const ProtectedRoute = ({ children, requireSubscription = false }) => {
         return <Navigate to="/signin" replace />;
     }
 
-    if (requireSubscription && !isSubscribed) {
+    // Admins (e.g. the owner) always have full access, regardless of subscription.
+    if (requireSubscription && !isSubscribed && !isAdmin) {
         return <Navigate to="/pricing" replace />;
     }
 
