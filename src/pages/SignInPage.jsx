@@ -1,15 +1,30 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
 
 const SignInPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [notice, setNotice] = useState('');
     const [loading, setLoading] = useState(false);
 
     const { signIn, signInWithGoogle } = useAuth();
     const navigate = useNavigate();
+
+    const handleForgotPassword = async () => {
+        setError(''); setNotice('');
+        if (!email) {
+            setError('Enter your email above first, then click "Forgot your password?"');
+            return;
+        }
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/reset-password`
+        });
+        if (error) setError(error.message);
+        else setNotice(`Password reset link sent to ${email}. Check your inbox (and spam).`);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -49,10 +64,15 @@ const SignInPage = () => {
                     <p className="text-text-muted mt-2">Sign in to continue your journey</p>
                 </div>
 
-                {/* Error Message */}
+                {/* Error / Notice */}
                 {error && (
                     <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 text-center">
                         {error}
+                    </div>
+                )}
+                {notice && (
+                    <div className="bg-sage/10 text-sage p-4 rounded-xl mb-6 text-center">
+                        {notice}
                     </div>
                 )}
 
@@ -109,6 +129,12 @@ const SignInPage = () => {
                         {loading ? 'Signing in...' : 'Sign In'}
                     </button>
                 </form>
+
+                <p className="text-center mt-4">
+                    <button type="button" onClick={handleForgotPassword} className="text-sm text-text-muted hover:text-sage hover:underline">
+                        Forgot your password?
+                    </button>
+                </p>
 
                 <p className="text-center text-text-muted mt-6">
                     Don't have an account?{' '}
