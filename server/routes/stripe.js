@@ -198,6 +198,61 @@ router.post("/create-portal-session", async (req, res) => {
     }
 });
 
+// Admin-only: repair a member's access by pulling their live Stripe subscription
+// and saving the durable record. Caller must be an admin (verified via their JWT).
+router.post("/repair-subscription", async (req, res) => {
+    const { accessToken, targetEmail } = req.body;
+
+    if (!accessToken || !targetEmail) {
+        return res.status(400).json({ error: "Missing accessToken or targetEmail" });
+    }
+
+    try {
+        // 1. Verify the caller is a signed-in admin
+        const { data: { user: caller }, error: authErr } = await supabaseAdmin.auth.getUser(accessToken);
+        if (authErr || !caller) return res.status(401).json({ error: "Your session is invalid — please sign in again." });
+
+        const { data: roleRow } = await supabaseAdmin
+            .from("user_roles").select("role").eq("id", caller.id).maybeSingle();
+        if (roleRow?.role !== "admin") return res.status(403).json({ error: "Admins only." });
+
+        // 2. Find the target user by email
+        const { data: list } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+        const target = (list?.users || []).find(
+            (u) => (u.email || "").toLowerCase() === targetEmail.trim().toLowerCase()
+        );
+        if (!target) return res.status(404).json({ error: `No account found for ${targetEmail}` });
+
+        // 3. Find their active Stripe subscription (by email)
+        const customers = await stripe.customers.list({ email: targetEmail.trim(), limit: 10 });
+        let sub = null, customerId = null;
+        for (const c of customers.data) {
+            const subs = await stripe.subscriptions.list({ customer: c.id, status: "all", limit: 10 });
+            const active = subs.data.find((s) => s.status === "active" || s.status === "trialing");
+            if (active) { sub = active; customerId = c.id; break; }
+        }
+        if (!sub) {
+            return res.status(404).json({ error: `No active Stripe subscription found for ${targetEmail}. Check the email they paid with.` });
+        }
+
+        // 4. Save the durable record keyed to the user
+        const { error: upErr } = await supabaseAdmin.from("subscriptions").upsert({
+            user_id: target.id,
+            stripe_subscription_id: sub.id,
+            stripe_customer_id: customerId,
+            status: sub.status,
+            plan: sub.items.data[0]?.price?.nickname || "monthly",
+            current_period_end: new Date(sub.current_period_end * 1000).toISOString()
+        }, { onConflict: "user_id" });
+        if (upErr) return res.status(500).json({ error: `Save failed (is the user_id unique constraint added?): ${upErr.message}` });
+
+        res.json({ success: true, email: target.email, status: sub.status });
+    } catch (err) {
+        console.error("Repair subscription error:", err);
+        res.status(500).json({ error: "Repair failed — see server logs." });
+    }
+});
+
 // Verify subscription status directly from Stripe
 router.post("/verify-subscription", async (req, res) => {
     const { userId, userEmail } = req.body;
