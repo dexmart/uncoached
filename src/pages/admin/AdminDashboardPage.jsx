@@ -17,6 +17,38 @@ const AdminDashboardPage = () => {
     const [loading, setLoading] = useState(true);
     const [currentTime, setCurrentTime] = useState(new Date());
 
+    // Repair member access (pulls their live Stripe subscription and saves it)
+    const [repairEmail, setRepairEmail] = useState('');
+    const [repairing, setRepairing] = useState(false);
+    const [repairMsg, setRepairMsg] = useState(null); // { ok, text }
+
+    const handleRepair = async (e) => {
+        e.preventDefault();
+        if (!repairEmail.trim()) return;
+        setRepairing(true);
+        setRepairMsg(null);
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/stripe/repair-subscription`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ accessToken: session?.access_token, targetEmail: repairEmail.trim() })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setRepairMsg({ ok: true, text: `Access restored for ${data.email} (${data.status}). They can log in now.` });
+                setRepairEmail('');
+            } else {
+                setRepairMsg({ ok: false, text: data.error || 'Could not repair access.' });
+            }
+        } catch (err) {
+            console.error('Repair error:', err);
+            setRepairMsg({ ok: false, text: 'Something went wrong. Please try again.' });
+        } finally {
+            setRepairing(false);
+        }
+    };
+
     useEffect(() => {
         fetchAllStats();
         const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -48,12 +80,12 @@ const AdminDashboardPage = () => {
                 supabase.from('guided_shift_categories').select('*', { count: 'exact', head: true }),
                 supabase.from('audio_breaths').select('*', { count: 'exact', head: true }),
                 supabase.from('audio_breaths').select('id').not('audio_url', 'is', null),
-                supabase.from('audio_breath_families').select('*', { count: 'exact', head: true }),
+                supabase.from('audio_families').select('*', { count: 'exact', head: true }),
                 supabase.from('pocket_prompts').select('*', { count: 'exact', head: true }),
                 supabase.from('pocket_prompt_categories').select('*', { count: 'exact', head: true }),
                 supabase.from('clarity_cards').select('*', { count: 'exact', head: true }),
-                supabase.from('afformations').select('*', { count: 'exact', head: true }),
-                supabase.from('afformation_categories').select('*', { count: 'exact', head: true }),
+                supabase.from('affirmations').select('*', { count: 'exact', head: true }),
+                supabase.from('affirmation_categories').select('*', { count: 'exact', head: true }),
                 supabase.from('voice_notes').select('*', { count: 'exact', head: true }),
                 supabase.from('voice_notes').select('id').not('audio_url', 'is', null),
             ]);
@@ -230,6 +262,43 @@ const AdminDashboardPage = () => {
                         </button>
                     </div>
                 </div>
+            </div>
+
+            {/* Repair member access */}
+            <div className="mb-8 bg-white/60 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-sm">
+                <div className="flex items-start gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-sage/10 flex items-center justify-center flex-shrink-0">
+                        <svg className="w-5 h-5 text-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 className="font-display text-lg text-text-dark">Fix a member's access</h3>
+                        <p className="text-sm text-text-muted">
+                            If a paying member can't get in, enter the email they paid with — this pulls their
+                            live subscription from Stripe and restores access instantly.
+                        </p>
+                    </div>
+                </div>
+                <form onSubmit={handleRepair} className="flex flex-col sm:flex-row gap-3">
+                    <input
+                        type="email"
+                        value={repairEmail}
+                        onChange={(e) => setRepairEmail(e.target.value)}
+                        placeholder="member@email.com"
+                        className="flex-1 px-4 py-2.5 bg-white border border-clay/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm"
+                    />
+                    <button
+                        type="submit"
+                        disabled={repairing}
+                        className="px-6 py-2.5 bg-sage text-bone rounded-xl font-medium text-sm hover:bg-sage/90 transition-colors disabled:opacity-60 whitespace-nowrap"
+                    >
+                        {repairing ? 'Fixing…' : 'Restore access'}
+                    </button>
+                </form>
+                {repairMsg && (
+                    <p className={`text-sm mt-3 ${repairMsg.ok ? 'text-sage' : 'text-red-600'}`}>{repairMsg.text}</p>
+                )}
             </div>
 
             {/* Top Stats Row */}
