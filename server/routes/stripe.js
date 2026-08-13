@@ -28,79 +28,85 @@ router.post(
             return res.status(400).send(`Webhook Error: ${err.message}`);
         }
 
-        // Handle checkout session completed
-        if (event.type === "checkout.session.completed") {
-            const session = event.data.object;
+        // Acknowledge Stripe immediately so a slow DB/Stripe call can never cause a
+        // timeout — timeouts are what got this endpoint auto-disabled before. Then process.
+        res.json({ received: true });
 
-            // One-time high-level Pocket Prompt purchase ($2)
-            if (session.metadata?.type === "prompt_purchase") {
-                const { userId: buyerId, promptId } = session.metadata;
-                if (buyerId && promptId) {
-                    const { error } = await supabaseAdmin.from("prompt_purchases").upsert(
-                        { user_id: buyerId, prompt_id: promptId },
-                        { onConflict: "user_id,prompt_id" }
-                    );
-                    if (error) console.error("Failed to record prompt purchase:", error);
-                    else console.log(`Prompt ${promptId} purchased by ${buyerId}`);
+        try {
+            // Handle checkout session completed
+            if (event.type === "checkout.session.completed") {
+                const session = event.data.object;
+
+                // One-time high-level Pocket Prompt purchase ($2)
+                if (session.metadata?.type === "prompt_purchase") {
+                    const { userId: buyerId, promptId } = session.metadata;
+                    if (buyerId && promptId) {
+                        const { error } = await supabaseAdmin.from("prompt_purchases").upsert(
+                            { user_id: buyerId, prompt_id: promptId },
+                            { onConflict: "user_id,prompt_id" }
+                        );
+                        if (error) console.error("Failed to record prompt purchase:", error);
+                        else console.log(`Prompt ${promptId} purchased by ${buyerId}`);
+                    }
+                    return;
                 }
-                return res.json({ received: true });
+
+                const userId = session.client_reference_id;
+                const subId = session.subscription;
+
+                if (userId && subId) {
+                    const sub = await stripe.subscriptions.retrieve(subId);
+
+                    const { error } = await supabaseAdmin.from("subscriptions").upsert({
+                        user_id: userId,
+                        stripe_subscription_id: sub.id,
+                        stripe_customer_id: session.customer,
+                        status: sub.status,
+                        plan: sub.items.data[0]?.price?.nickname || "monthly",
+                        current_period_end: new Date(sub.current_period_end * 1000).toISOString()
+                    }, { onConflict: "user_id" });
+
+                    if (error) {
+                        console.error("Failed to update subscription:", error);
+                    } else {
+                        console.log(`Subscription created for user ${userId}`);
+                    }
+                }
             }
 
-            const userId = session.client_reference_id;
-            const subId = session.subscription;
+            // Handle subscription updated
+            if (event.type === "customer.subscription.updated") {
+                const sub = event.data.object;
 
-            if (userId && subId) {
-                const sub = await stripe.subscriptions.retrieve(subId);
-
-                const { error } = await supabaseAdmin.from("subscriptions").upsert({
-                    user_id: userId,
-                    stripe_subscription_id: sub.id,
-                    stripe_customer_id: session.customer,
-                    status: sub.status,
-                    plan: sub.items.data[0]?.price?.nickname || "monthly",
-                    current_period_end: new Date(sub.current_period_end * 1000).toISOString()
-                }, { onConflict: "user_id" });
+                const { error } = await supabaseAdmin
+                    .from("subscriptions")
+                    .update({
+                        status: sub.status,
+                        current_period_end: new Date(sub.current_period_end * 1000).toISOString()
+                    })
+                    .eq("stripe_subscription_id", sub.id);
 
                 if (error) {
                     console.error("Failed to update subscription:", error);
-                } else {
-                    console.log(`Subscription created for user ${userId}`);
                 }
             }
-        }
 
-        // Handle subscription updated
-        if (event.type === "customer.subscription.updated") {
-            const sub = event.data.object;
+            // Handle subscription deleted/cancelled
+            if (event.type === "customer.subscription.deleted") {
+                const sub = event.data.object;
 
-            const { error } = await supabaseAdmin
-                .from("subscriptions")
-                .update({
-                    status: sub.status,
-                    current_period_end: new Date(sub.current_period_end * 1000).toISOString()
-                })
-                .eq("stripe_subscription_id", sub.id);
+                const { error } = await supabaseAdmin
+                    .from("subscriptions")
+                    .update({ status: "cancelled" })
+                    .eq("stripe_subscription_id", sub.id);
 
-            if (error) {
-                console.error("Failed to update subscription:", error);
+                if (error) {
+                    console.error("Failed to cancel subscription:", error);
+                }
             }
+        } catch (err) {
+            console.error("Webhook processing error:", err);
         }
-
-        // Handle subscription deleted/cancelled
-        if (event.type === "customer.subscription.deleted") {
-            const sub = event.data.object;
-
-            const { error } = await supabaseAdmin
-                .from("subscriptions")
-                .update({ status: "cancelled" })
-                .eq("stripe_subscription_id", sub.id);
-
-            if (error) {
-                console.error("Failed to cancel subscription:", error);
-            }
-        }
-
-        res.json({ received: true });
     }
 );
 
