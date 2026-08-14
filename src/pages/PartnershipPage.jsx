@@ -143,29 +143,36 @@ const PartnershipPage = () => {
         <div className="antialiased" style={{ backgroundColor: CREAM }}>
 
             {/* ── 1 · Cover ─────────────────────────────────────────── */}
-            <section className="relative min-h-[88vh] flex flex-col justify-center overflow-hidden">
-                <img src={bg('cover-vase.jpg')} alt=""
-                    className="absolute inset-0 w-full h-full object-cover object-left" />
-                <div className="absolute inset-0"
-                    style={{ background: `linear-gradient(90deg, transparent 30%, ${CREAM}40 52%, ${CREAM}b8 68%)` }} />
+            {/* On desktop the cover photo is shown whole (portrait, page-like);
+                on mobile it fills the screen. The green band always sits underneath. */}
+            <section className="w-full">
+                <div className="relative mx-auto w-full lg:max-w-[960px]">
+                    <img src={bg('cover-vase.jpg')} alt=""
+                        className="block w-full h-[78vh] object-cover object-left lg:h-auto lg:object-contain" />
 
-                <div className="relative z-10 w-full px-6 pb-12">
-                    <div className="max-w-sm ml-auto lg:mr-[8%] text-center">
-                        <img src={import.meta.env.BASE_URL + 'logo/logo-sage-on-light.png'}
-                            alt="Uncoached" className="h-[72px] md:h-20 w-auto mx-auto mb-7" />
-                        <h1 className="text-[29px] md:text-[36px] leading-[1.32] mb-7"
-                            style={{ ...baskerville, color: GREEN }}>
-                            Uncoached<br />Practitioner<br />Partnership<br />Guide
-                        </h1>
-                        <span className="block h-px w-20 mx-auto mb-7" style={{ backgroundColor: GREEN }} />
-                        <p className="text-[15px] leading-relaxed" style={{ color: GREEN }}>
-                            Helping clients between<br />the breakthroughs.
-                        </p>
-                        <Sprig className="w-11 h-auto mx-auto mt-7" />
+                    {/* soft wash so the type stays readable over the wall */}
+                    <div className="absolute inset-0 pointer-events-none"
+                        style={{ background: `linear-gradient(90deg, transparent 34%, ${CREAM}30 54%, ${CREAM}a6 74%)` }} />
+
+                    <div className="absolute inset-0 flex items-center justify-end">
+                        <div className="text-center w-[60%] sm:w-[50%] lg:w-[44%] pr-[5%] sm:pr-[7%]">
+                            <img src={import.meta.env.BASE_URL + 'logo/logo-sage-on-light.png'}
+                                alt="Uncoached" className="h-12 sm:h-16 lg:h-20 w-auto mx-auto mb-4 sm:mb-6" />
+                            <h1 className="text-[23px] sm:text-[28px] lg:text-[35px] leading-[1.3] mb-4 sm:mb-6"
+                                style={{ ...baskerville, color: GREEN }}>
+                                Uncoached<br />Practitioner<br />Partnership<br />Guide
+                            </h1>
+                            <span className="block h-px w-14 sm:w-20 mx-auto mb-4 sm:mb-6"
+                                style={{ backgroundColor: GREEN }} />
+                            <p className="text-[13px] sm:text-[15px] leading-relaxed" style={{ color: GREEN }}>
+                                Helping clients between<br />the breakthroughs.
+                            </p>
+                            <Sprig className="w-8 sm:w-11 h-auto mx-auto mt-4 sm:mt-6" />
+                        </div>
                     </div>
                 </div>
 
-                <div className="relative z-10 w-full py-4 text-center" style={{ backgroundColor: GREEN }}>
+                <div className="w-full py-4 text-center" style={{ backgroundColor: GREEN }}>
                     <span className="text-white text-[11px] md:text-xs uppercase" style={{ letterSpacing: '0.26em' }}>
                         uncoached.space
                     </span>
@@ -174,8 +181,9 @@ const PartnershipPage = () => {
 
             {/* ── 2 · Welcome ───────────────────────────────────────── */}
             <section>
-                <div className="max-w-5xl mx-auto grid lg:grid-cols-[1fr_0.8fr]">
-                    <div className="px-6 md:px-10 lg:pl-14 py-14 md:py-16 order-2 lg:order-1">
+                {/* Photo stays on the right at every size, as in the printed guide */}
+                <div className="max-w-5xl mx-auto grid grid-cols-[1fr_0.42fr] sm:grid-cols-[1fr_0.55fr] lg:grid-cols-[1fr_0.8fr]">
+                    <div className="px-5 sm:px-8 lg:pl-14 py-12 md:py-16">
                         <p className="uppercase text-[21px] md:text-[24px] mb-6"
                             style={{ ...lora, color: GREEN, letterSpacing: '0.1em' }}>Welcome</p>
                         <p className="text-[18px] md:text-[20px]" style={{ ...baskerville, color: INK }}>
@@ -195,17 +203,18 @@ const PartnershipPage = () => {
                         </div>
                     </div>
 
-                    <div className="order-1 lg:order-2 h-52 sm:h-64 lg:h-auto">
+                    <div>
                         <img src={bg('welcome-sunset.jpg')} alt=""
-                            className="w-full h-full object-cover lg:rounded-tl-[42%]" />
+                            className="w-full h-full object-cover rounded-tl-[32%] lg:rounded-tl-[42%]" />
                     </div>
                 </div>
             </section>
 
             {/* ── 3 · What is the partnership ───────────────────────── */}
             <section className="relative px-6 py-14 md:py-16 overflow-hidden">
-                <Fern className="-bottom-16 -right-24 w-[380px] max-w-[65%]" />
                 <div className="relative max-w-2xl mx-auto">
+                    {/* anchored to the text column so it stays close to the copy on wide screens */}
+                    <Fern className="-bottom-12 -right-28 w-[340px] max-w-[60%]" />
                     <SectionTitle className="mb-6">What is the Practitioner Partnership?</SectionTitle>
                     <div className="mb-8"><DividerTrio /></div>
 
@@ -235,8 +244,8 @@ const PartnershipPage = () => {
 
             {/* ── 4 · How our partnership works ─────────────────────── */}
             <section className="relative px-6 py-14 md:py-16 overflow-hidden">
-                <Fern className="bottom-0 right-0 w-[320px] max-w-[55%]" />
                 <div className="relative max-w-xl mx-auto">
+                    <Fern className="-bottom-8 -right-24 w-[300px] max-w-[55%]" />
                     <div className="text-center mb-10">
                         <SectionTitle className="mb-2">How our partnership works</SectionTitle>
                         <p className="italic text-[15px]" style={{ ...lora, color: GREEN }}>
@@ -279,9 +288,9 @@ const PartnershipPage = () => {
 
             {/* ── 5 · What you could share ──────────────────────────── */}
             <section className="relative px-6 py-14 md:py-16 overflow-hidden">
-                <img src={bg('blossom.png')} alt=""
-                    className="pointer-events-none absolute top-4 -right-10 w-[170px] md:w-[230px] select-none" />
                 <div className="relative max-w-xl mx-auto">
+                    <img src={bg('blossom.png')} alt=""
+                        className="pointer-events-none absolute -top-6 -right-24 w-[150px] md:w-[210px] select-none" />
                     <SectionTitle className="mb-4">What you could share</SectionTitle>
 
                     {/* Soft sage band standing in for the printed dry-brush swash */}
