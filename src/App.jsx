@@ -8,6 +8,8 @@ import ResetPasswordPage from './pages/ResetPasswordPage'
 import PricingPage from './pages/PricingPage'
 import PractitionersPage from './pages/PractitionersPage'
 import GiftPage from './pages/GiftPage'
+import PartnershipPage from './pages/PartnershipPage'
+import PartnershipApplyPage from './pages/PartnershipApplyPage'
 import TermsPage from './pages/legal/TermsPage'
 import PrivacyPage from './pages/legal/PrivacyPage'
 import BillingPage from './pages/legal/BillingPage'
@@ -58,6 +60,10 @@ function App() {
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/practitioners" element={<PractitionersPage />} />
           <Route path="/gift" element={<GiftPage />} />
+          {/* Practitioner Partnership — intentionally not linked in the nav;
+              Johanna shares this link directly with practitioners. */}
+          <Route path="/partnership" element={<PartnershipPage />} />
+          <Route path="/partnership/apply" element={<PartnershipApplyPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/billing" element={<BillingPage />} />

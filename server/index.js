@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import audioRoutes from "./routes/audio.js";
 import stripeRoutes from "./routes/stripe.js";
+import practitionerRoutes from "./routes/practitioners.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -40,6 +41,7 @@ app.get("/health", (req, res) => {
 // Routes
 app.use("/audio", audioRoutes);
 app.use("/stripe", stripeRoutes);
+app.use("/practitioners", practitionerRoutes);
 
 // Start server
 app.listen(PORT, () => {
