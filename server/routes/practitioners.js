@@ -4,8 +4,9 @@ import { supabaseAdmin } from "../supabaseAdmin.js";
 const router = Router();
 
 const NOTIFY_TO = process.env.PARTNERSHIP_NOTIFY_TO || "hello@uncoached.space";
-// Until the domain is verified in Resend, their shared sender works for testing.
-const NOTIFY_FROM = process.env.PARTNERSHIP_NOTIFY_FROM || "onboarding@resend.dev";
+// Must be on a domain verified in Resend, otherwise Resend only allows sending
+// to the account owner's own address.
+const NOTIFY_FROM = process.env.PARTNERSHIP_NOTIFY_FROM || "partnerships@uncoached.space";
 
 const esc = (s) =>
     String(s ?? "")
@@ -37,8 +38,9 @@ async function send({ to, subject, html, replyTo }) {
             }),
         });
         if (!res.ok) {
-            console.error("Resend error:", res.status, await res.text());
-            return { ok: false, reason: "resend_error" };
+            const detail = await res.text();
+            console.error("Resend error:", res.status, detail);
+            return { ok: false, reason: `resend_${res.status}`, detail };
         }
         return { ok: true };
     } catch (err) {
@@ -115,7 +117,13 @@ async function sendNotification(app) {
         }),
     ]);
 
-    return { sent: toOwner.ok, confirmed: toApplicant.ok };
+    return {
+        sent: toOwner.ok,
+        confirmed: toApplicant.ok,
+        // surfaced only to help diagnose delivery problems
+        ownerError: toOwner.ok ? undefined : toOwner.reason,
+        applicantError: toApplicant.ok ? undefined : toApplicant.reason,
+    };
 }
 
 // Public: submit a practitioner partnership application
@@ -155,7 +163,13 @@ router.post("/apply", async (req, res) => {
 
         // Saved successfully — email, but never fail the request on email trouble.
         const notice = await sendNotification(application);
-        res.json({ success: true, emailed: notice.sent, confirmed: notice.confirmed });
+        res.json({
+            success: true,
+            emailed: notice.sent,
+            confirmed: notice.confirmed,
+            ...(notice.ownerError ? { ownerError: notice.ownerError } : {}),
+            ...(notice.applicantError ? { applicantError: notice.applicantError } : {}),
+        });
     } catch (err) {
         console.error("Application error:", err);
         res.status(500).json({ error: "Something went wrong. Please try again." });
