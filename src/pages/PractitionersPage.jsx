@@ -1,32 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { supabase } from '../lib/supabase';
 
+// Filter chips. A practitioner matches when the category words appear anywhere
+// in their (free-text) areas of focus, so Johanna doesn't have to police wording.
 const CATEGORIES = [
     'All',
-    'Trauma Therapists',
-    'Somatic Practitioners',
-    'Nervous System Specialists',
+    'Trauma',
+    'Somatic',
+    'Nervous System',
     'Hormone & Functional Health',
-    'Relationship Therapists',
-    'Integration Coaches',
-    'Spiritual Directors',
-    'EMDR / Trauma Processing',
-];
-
-// Current featured practitioners from the spec. Specialty/location/website are
-// placeholders until the owner supplies per-practitioner details and intro videos.
-const PRACTITIONERS = [
-    { name: 'Joanne Darlaston', category: 'Trauma Therapists' },
-    { name: 'Andres Saborio', category: 'Somatic Practitioners' },
-    { name: 'Melissa Huerta', category: 'Nervous System Specialists' },
-    { name: 'Camila Zamora', category: 'Integration Coaches' },
-    { name: 'Jennifer Olejarz', category: 'Relationship Therapists' },
-    { name: 'Katharine Brayne', category: 'EMDR / Trauma Processing' },
-    { name: 'Angela Forest', category: 'Somatic Practitioners' },
-    { name: 'Erika Belenger', category: 'Hormone & Functional Health' },
-    { name: 'Dora Praxedis', category: 'Spiritual Directors' },
-    { name: 'Laura Wall', category: 'Trauma Therapists' },
+    'Relationship',
+    'Integration',
+    'Spiritual',
+    'EMDR',
 ];
 
 const STEPS = [
@@ -48,63 +36,96 @@ const STEPS = [
     },
 ];
 
-const initials = (name) =>
-    name
-        .split(' ')
-        .map((part) => part[0])
-        .slice(0, 2)
-        .join('');
+const initials = (name = '') =>
+    name.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase();
 
-const PractitionerCard = ({ practitioner }) => (
+const Detail = ({ icon, children }) => (
+    <div className="flex items-start gap-2">
+        <span className="material-symbols-outlined text-golden-deep text-base leading-6">{icon}</span>
+        <span>{children}</span>
+    </div>
+);
+
+const PractitionerCard = ({ p }) => (
     <div className="flex flex-col bg-white rounded-2xl border border-clay/30 shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-        {/* Video introduction placeholder (2-5 min intro) */}
-        <div className="relative aspect-video bg-charcoal/90 flex items-center justify-center">
-            <div className="flex flex-col items-center gap-2 text-bone/70">
-                <span className="material-symbols-outlined text-5xl">play_circle</span>
-                <span className="text-xs uppercase tracking-widest">Intro video coming soon</span>
+        {p.photo_url ? (
+            <img src={p.photo_url} alt={p.full_name} className="w-full aspect-[4/3] object-cover" />
+        ) : (
+            <div className="w-full aspect-[4/3] bg-sage/10 flex items-center justify-center">
+                <span className="font-display text-4xl text-sage/60">{initials(p.full_name)}</span>
             </div>
-        </div>
+        )}
 
         <div className="flex flex-col flex-1 p-6">
-            <div className="flex items-center gap-4 mb-4">
-                <div className="h-12 w-12 rounded-full bg-sage/15 text-sage flex items-center justify-center font-display text-lg flex-shrink-0">
-                    {initials(practitioner.name)}
-                </div>
-                <div>
-                    <h3 className="font-display text-lg text-text-dark leading-tight">
-                        {practitioner.name}
-                    </h3>
-                    <p className="text-text-tertiary text-xs uppercase tracking-wide">
-                        {practitioner.category}
-                    </p>
-                </div>
-            </div>
+            <h3 className="font-display text-lg text-text-dark leading-tight">
+                {p.full_name}
+                {p.credentials && (
+                    <span className="text-text-muted text-sm font-body"> · {p.credentials}</span>
+                )}
+            </h3>
+            {p.areas_of_focus && (
+                <p className="text-text-tertiary text-xs uppercase tracking-wide mt-1">{p.areas_of_focus}</p>
+            )}
 
-            <dl className="space-y-2 text-sm text-text-muted mb-6">
-                <div className="flex items-start gap-2">
-                    <span className="material-symbols-outlined text-golden-deep text-base">location_on</span>
-                    <span>Online &amp; in-person availability</span>
-                </div>
-                <div className="flex items-start gap-2">
-                    <span className="material-symbols-outlined text-golden-deep text-base">favorite</span>
-                    <span>{practitioner.category}</span>
-                </div>
+            {p.bio && (
+                <p className="text-sm text-text-muted leading-relaxed mt-3">{p.bio}</p>
+            )}
+
+            <dl className="space-y-2 text-sm text-text-muted mt-4 mb-6">
+                {p.countries && <Detail icon="location_on">{p.countries}</Detail>}
+                {p.delivery && <Detail icon="videocam">{p.delivery}</Detail>}
+                {p.languages && <Detail icon="translate">{p.languages}</Detail>}
             </dl>
 
-            <span className="mt-auto inline-flex items-center justify-center gap-1 text-sm font-medium text-sage cursor-default">
-                Website link coming soon
-            </span>
+            <div className="mt-auto flex flex-wrap items-center gap-4">
+                {p.website_url && (
+                    <a href={p.website_url} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-sm font-medium text-sage hover:underline">
+                        Visit website
+                        <span className="material-symbols-outlined text-base">arrow_outward</span>
+                    </a>
+                )}
+                {p.social_url && (
+                    <a href={/^https?:\/\//i.test(p.social_url) ? p.social_url : undefined}
+                        target="_blank" rel="noopener noreferrer"
+                        className={`text-sm ${/^https?:\/\//i.test(p.social_url) ? 'text-sage hover:underline' : 'text-text-tertiary cursor-default'}`}>
+                        {p.social_url}
+                    </a>
+                )}
+            </div>
         </div>
     </div>
 );
 
 const PractitionersPage = () => {
     const [activeCategory, setActiveCategory] = useState('All');
+    const [practitioners, setPractitioners] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // Approved applications are published through a view that exposes only the
+    // fields the Partnership guide promises will be shown publicly.
+    useEffect(() => {
+        let active = true;
+        supabase
+            .from('public_practitioners')
+            .select('*')
+            .order('created_at', { ascending: true })
+            .then(({ data, error }) => {
+                if (error) console.error('Load practitioners failed:', error);
+                if (active) {
+                    setPractitioners(data || []);
+                    setLoading(false);
+                }
+            });
+        return () => { active = false; };
+    }, []);
 
     const visible =
         activeCategory === 'All'
-            ? PRACTITIONERS
-            : PRACTITIONERS.filter((p) => p.category === activeCategory);
+            ? practitioners
+            : practitioners.filter((p) =>
+                (p.areas_of_focus || '').toLowerCase().includes(activeCategory.toLowerCase().split(' ')[0])
+            );
 
     return (
         <div className="bg-bone text-text-dark font-body antialiased min-h-screen">
@@ -165,15 +186,23 @@ const PractitionersPage = () => {
                         ))}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {visible.map((practitioner) => (
-                            <PractitionerCard key={practitioner.name} practitioner={practitioner} />
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div className="flex justify-center py-16">
+                            <div className="w-10 h-10 border-4 border-sage border-t-transparent rounded-full animate-spin" />
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {visible.map((p) => (
+                                <PractitionerCard key={p.id} p={p} />
+                            ))}
+                        </div>
+                    )}
 
-                    {visible.length === 0 && (
+                    {!loading && visible.length === 0 && (
                         <p className="text-center text-text-muted mt-10">
-                            No practitioners in this category yet.
+                            {practitioners.length === 0
+                                ? 'Our first practitioners are being welcomed in. Check back soon.'
+                                : 'No practitioners in this category yet.'}
                         </p>
                     )}
                 </div>
