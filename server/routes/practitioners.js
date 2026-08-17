@@ -23,7 +23,7 @@ const FIELDS = [
 ];
 
 async function send({ to, subject, html, replyTo }) {
-    const key = process.env.RESEND_API_KEY;
+    const key = (process.env.RESEND_API_KEY || "").trim();
     if (!key) return { ok: false, reason: "no_api_key" };
     try {
         const res = await fetch("https://api.resend.com/emails", {
@@ -75,7 +75,7 @@ function applicantConfirmation(app) {
 }
 
 async function sendNotification(app) {
-    const key = process.env.RESEND_API_KEY;
+    const key = (process.env.RESEND_API_KEY || "").trim();
     if (!key) {
         console.log("RESEND_API_KEY not set — application saved, emails skipped.");
         return { sent: false, reason: "no_api_key" };

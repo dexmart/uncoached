@@ -46,6 +46,17 @@ app.use("/practitioners", practitionerRoutes);
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 Uncoached API running on http://localhost:${PORT}`);
+
+    // Which config did this process actually receive? Presence only — never values.
+    const need = [
+        "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "STRIPE_SECRET_KEY",
+        "STRIPE_WEBHOOK_SECRET", "FRONTEND_URL", "RESEND_API_KEY",
+    ];
+    console.log("CONFIG CHECK:", need.map((k) => `${k}=${process.env[k] ? "yes" : "NO"}`).join("  "));
+
+    // Catch a key pasted with stray whitespace, which looks set but fails auth.
+    const rk = process.env.RESEND_API_KEY;
+    if (rk && rk !== rk.trim()) console.warn("RESEND_API_KEY has leading/trailing whitespace — trim it.");
 });
 
 // Keep the free-tier instance warm so the first login after a quiet spell isn't
