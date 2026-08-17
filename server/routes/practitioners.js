@@ -21,10 +21,61 @@ const FIELDS = [
     ["Resource ideas", "resource_ideas"],
 ];
 
+async function send({ to, subject, html, replyTo }) {
+    const key = process.env.RESEND_API_KEY;
+    if (!key) return { ok: false, reason: "no_api_key" };
+    try {
+        const res = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+                from: `Uncoached <${NOTIFY_FROM}>`,
+                to: [to],
+                ...(replyTo ? { reply_to: replyTo } : {}),
+                subject,
+                html,
+            }),
+        });
+        if (!res.ok) {
+            console.error("Resend error:", res.status, await res.text());
+            return { ok: false, reason: "resend_error" };
+        }
+        return { ok: true };
+    } catch (err) {
+        console.error("Send failed:", err);
+        return { ok: false, reason: "exception" };
+    }
+}
+
+/** Warm confirmation to the practitioner who applied. */
+function applicantConfirmation(app) {
+    const first = (app.full_name || "there").trim().split(/\s+/)[0];
+    return `
+    <div style="font-family:Georgia,'Times New Roman',serif;max-width:560px;color:#1F2422;line-height:1.7">
+        <p style="font-size:17px;color:#3F5D4D;margin:0 0 18px">Thank you, ${esc(first)}.</p>
+        <p style="margin:0 0 16px">
+            Your application to the Uncoached Practitioner Partnership has arrived safely, and
+            I'm really glad you reached out.
+        </p>
+        <p style="margin:0 0 16px">
+            I read every application personally, so it may take me a little time to come back to
+            you. If it feels like a good fit, I'll be in touch by email with a link to book a call
+            so we can talk through your idea together.
+        </p>
+        <p style="margin:0 0 16px">
+            In the meantime there's nothing you need to do. Thank you for being willing to share
+            your work with the people who need it.
+        </p>
+        <p style="margin:24px 0 4px;color:#3F5D4D">Warmly,</p>
+        <p style="margin:0;font-size:17px;color:#3F5D4D">Johanna</p>
+        <p style="margin:2px 0 0;font-size:12px;color:#8C857A">Founder, Uncoached · uncoached.space</p>
+    </div>`;
+}
+
 async function sendNotification(app) {
     const key = process.env.RESEND_API_KEY;
     if (!key) {
-        console.log("RESEND_API_KEY not set — application saved, notification email skipped.");
+        console.log("RESEND_API_KEY not set — application saved, emails skipped.");
         return { sent: false, reason: "no_api_key" };
     }
 
@@ -47,27 +98,24 @@ async function sendNotification(app) {
             </p>
         </div>`;
 
-    try {
-        const res = await fetch("https://api.resend.com/emails", {
-            method: "POST",
-            headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-            body: JSON.stringify({
-                from: `Uncoached <${NOTIFY_FROM}>`,
-                to: [NOTIFY_TO],
-                reply_to: app.email,
-                subject: `New practitioner application — ${app.full_name}`,
-                html,
-            }),
-        });
-        if (!res.ok) {
-            console.error("Resend error:", res.status, await res.text());
-            return { sent: false, reason: "resend_error" };
-        }
-        return { sent: true };
-    } catch (err) {
-        console.error("Notification send failed:", err);
-        return { sent: false, reason: "exception" };
-    }
+    // Notify Johanna, and confirm receipt to the applicant. Independent of each
+    // other so one failing never blocks the other.
+    const [toOwner, toApplicant] = await Promise.all([
+        send({
+            to: NOTIFY_TO,
+            replyTo: app.email,
+            subject: `New practitioner application — ${app.full_name}`,
+            html,
+        }),
+        send({
+            to: app.email,
+            replyTo: NOTIFY_TO,
+            subject: "Thank you — your Uncoached Practitioner application",
+            html: applicantConfirmation(app),
+        }),
+    ]);
+
+    return { sent: toOwner.ok, confirmed: toApplicant.ok };
 }
 
 // Public: submit a practitioner partnership application
@@ -105,9 +153,9 @@ router.post("/apply", async (req, res) => {
             return res.status(500).json({ error: "We couldn't save your application. Please try again." });
         }
 
-        // Saved successfully — notify, but never fail the request on email trouble.
+        // Saved successfully — email, but never fail the request on email trouble.
         const notice = await sendNotification(application);
-        res.json({ success: true, emailed: notice.sent });
+        res.json({ success: true, emailed: notice.sent, confirmed: notice.confirmed });
     } catch (err) {
         console.error("Application error:", err);
         res.status(500).json({ error: "Something went wrong. Please try again." });

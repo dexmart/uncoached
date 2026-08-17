@@ -30,6 +30,7 @@ import AdminClarityCardsPage from './pages/admin/AdminClarityCardsPage'
 import AdminAffirmationCategoriesPage from './pages/admin/AdminAffirmationCategoriesPage'
 import AdminAffirmationsPage from './pages/admin/AdminAffirmationsPage'
 import AdminVoiceNotesPage from './pages/admin/AdminVoiceNotesPage'
+import AdminPractitionersPage from './pages/admin/AdminPractitionersPage'
 
 // Member Pages
 import DashboardPage from './pages/member/DashboardPage'
@@ -190,6 +191,8 @@ function App() {
             <Route path="affirmations" element={<AdminAffirmationsPage />} />
 
             <Route path="voice-notes" element={<AdminVoiceNotesPage />} />
+
+            <Route path="practitioners" element={<AdminPractitionersPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
