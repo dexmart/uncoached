@@ -2,20 +2,10 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
+import { PRACTITIONER_CATEGORIES, parseFocusAreas } from '../lib/practitionerCategories';
 
-// Filter chips. A practitioner matches when the category words appear anywhere
-// in their (free-text) areas of focus, so Johanna doesn't have to police wording.
-const CATEGORIES = [
-    'All',
-    'Trauma',
-    'Somatic',
-    'Nervous System',
-    'Hormone & Functional Health',
-    'Relationship',
-    'Integration',
-    'Spiritual',
-    'EMDR',
-];
+// Same list the application form offers, so every filter matches exactly.
+const CATEGORIES = ['All', ...PRACTITIONER_CATEGORIES];
 
 const STEPS = [
     {
@@ -123,9 +113,12 @@ const PractitionersPage = () => {
     const visible =
         activeCategory === 'All'
             ? practitioners
-            : practitioners.filter((p) =>
-                (p.areas_of_focus || '').toLowerCase().includes(activeCategory.toLowerCase().split(' ')[0])
-            );
+            : practitioners.filter((p) => parseFocusAreas(p.areas_of_focus).includes(activeCategory));
+
+    // Only offer a filter that would actually return someone.
+    const available = CATEGORIES.filter(
+        (c) => c === 'All' || practitioners.some((p) => parseFocusAreas(p.areas_of_focus).includes(c))
+    );
 
     return (
         <div className="bg-bone text-text-dark font-body antialiased min-h-screen">
@@ -171,7 +164,7 @@ const PractitionersPage = () => {
                 <div className="max-w-6xl mx-auto">
                     {/* Category filters */}
                     <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-10">
-                        {CATEGORIES.map((category) => (
+                        {available.map((category) => (
                             <button
                                 key={category}
                                 onClick={() => setActiveCategory(category)}

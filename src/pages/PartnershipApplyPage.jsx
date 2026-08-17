@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { PRACTITIONER_CATEGORIES } from '../lib/practitionerCategories';
 
 const Field = ({ label, hint, optional, children }) => (
     <label className="block">
@@ -33,7 +34,11 @@ const PartnershipApplyPage = () => {
         countries: '', delivery: '', languages: '', website_url: '', social_url: '',
         expertise_area: '', resource_ideas: '', consent: false,
     });
+    const [focusAreas, setFocusAreas] = useState([]);
     const [photo, setPhoto] = useState(null);
+
+    const toggleFocus = (cat) =>
+        setFocusAreas((f) => (f.includes(cat) ? f.filter((c) => c !== cat) : [...f, cat]));
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
     const [done, setDone] = useState(false);
@@ -74,6 +79,8 @@ const PartnershipApplyPage = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...form,
+                    // stored as a comma-separated list so the directory filters match exactly
+                    areas_of_focus: focusAreas.join(', '),
                     website_url: tidyUrl(form.website_url),
                     social_url: tidyUrl(form.social_url),
                     photo_url,
@@ -162,9 +169,22 @@ const PartnershipApplyPage = () => {
                             className={inputClass} placeholder="I work with…" />
                     </Field>
 
-                    <Field label="Area(s) of focus" hint="e.g. trauma therapy, somatic work, nervous system regulation.">
-                        <input value={form.areas_of_focus} onChange={set('areas_of_focus')}
-                            className={inputClass} placeholder="EMDR, somatic therapy…" />
+                    <Field label="Area(s) of focus"
+                        hint="Pick any that fit — these are the filters people use to find you on the Practitioners page.">
+                        <div className="flex flex-wrap gap-2">
+                            {PRACTITIONER_CATEGORIES.map((cat) => {
+                                const on = focusAreas.includes(cat);
+                                return (
+                                    <button type="button" key={cat} onClick={() => toggleFocus(cat)}
+                                        aria-pressed={on}
+                                        className={`px-4 py-2 rounded-full text-sm transition-colors border ${on
+                                            ? 'bg-sage text-bone border-sage'
+                                            : 'bg-white text-text-muted border-clay/40 hover:border-sage/40'}`}>
+                                        {cat}
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </Field>
 
                     <div className="grid sm:grid-cols-2 gap-6">
