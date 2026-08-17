@@ -16,6 +16,17 @@ const Field = ({ label, hint, optional, children }) => (
 const inputClass =
     'w-full px-4 py-3 bg-white border border-clay/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark placeholder-text-tertiary';
 
+// Practitioners type links however they like — "example.com", "www.example.com",
+// "https://example.com". Store something that actually works as a link.
+const tidyUrl = (value) => {
+    const s = (value || '').trim();
+    if (!s) return null;
+    if (/^https?:\/\//i.test(s)) return s;
+    if (s.startsWith('@')) return s;                    // a social handle, leave alone
+    if (!s.includes('.') || /\s/.test(s)) return s;     // not a domain — keep as typed
+    return `https://${s.replace(/^\/+/, '')}`;
+};
+
 const PartnershipApplyPage = () => {
     const [form, setForm] = useState({
         full_name: '', credentials: '', email: '', bio: '', areas_of_focus: '',
@@ -61,7 +72,12 @@ const PartnershipApplyPage = () => {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/practitioners/apply`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...form, photo_url }),
+                body: JSON.stringify({
+                    ...form,
+                    website_url: tidyUrl(form.website_url),
+                    social_url: tidyUrl(form.social_url),
+                    photo_url,
+                }),
             });
             const data = await res.json();
 
@@ -181,8 +197,8 @@ const PartnershipApplyPage = () => {
 
                     <div className="grid sm:grid-cols-2 gap-6">
                         <Field label="Website / booking link">
-                            <input type="url" value={form.website_url} onChange={set('website_url')}
-                                className={inputClass} placeholder="https://…" />
+                            <input type="text" inputMode="url" value={form.website_url} onChange={set('website_url')}
+                                className={inputClass} placeholder="yourpractice.com" />
                         </Field>
                         <Field label="Social media" optional>
                             <input value={form.social_url} onChange={set('social_url')}
