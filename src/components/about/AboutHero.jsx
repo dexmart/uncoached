@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useCopy } from '../../context/SiteCopyContext';
 
 const AboutHero = () => {
+    const copy = useCopy();
     return (
         <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden">
             {/* Background */}
@@ -23,13 +25,13 @@ const AboutHero = () => {
                     />
 
                     <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-bone mb-6 leading-tight">
-                        It's not about what you know. <br />
-                        <span className="italic">It's about how you live.</span>
+                        {copy('about.hero.title')} <br />
+                        <span className="italic">{copy('about.hero.title_emphasis')}</span>
                     </h1>
 
                     <div className="text-bone/90 text-lg md:text-xl leading-relaxed space-y-4 mb-8 font-light">
                         <p>
-                            Uncoached is for people who have <em>genuinely</em> tried:
+                            {copy('about.hero.intro')}
                         </p>
                         <ul className="grid grid-cols-2 gap-x-8 gap-y-2 justify-center max-w-md mx-auto text-sm md:text-base">
                             <li className="flex items-center gap-2">
@@ -50,7 +52,7 @@ const AboutHero = () => {
                             </li>
                         </ul>
                         <p className="font-medium text-lg md:text-xl">
-                            And yet, in the middle of real life, it often feels hard to actually live them.
+                            {copy('about.hero.closing')}
                         </p>
                     </div>
 
@@ -58,7 +60,7 @@ const AboutHero = () => {
                         to="/pricing"
                         className="inline-block px-8 py-3 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all shadow-lg text-lg"
                     >
-                        Start Your Journey
+                        {copy('about.hero.cta')}
                     </Link>
                 </div>
             </div>
