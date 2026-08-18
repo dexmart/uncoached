@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { PRACTITIONER_CATEGORIES } from '../lib/practitionerCategories';
+import { parseFocusAreas } from '../lib/practitionerCategories';
 
 const Field = ({ label, hint, optional, children }) => (
     <label className="block">
@@ -34,11 +34,9 @@ const PartnershipApplyPage = () => {
         countries: '', delivery: '', languages: '', website_url: '', social_url: '',
         expertise_area: '', resource_ideas: '', consent: false,
     });
-    const [focusAreas, setFocusAreas] = useState([]);
     const [photo, setPhoto] = useState(null);
 
-    const toggleFocus = (cat) =>
-        setFocusAreas((f) => (f.includes(cat) ? f.filter((c) => c !== cat) : [...f, cat]));
+    const focusCount = parseFocusAreas(form.areas_of_focus).length;
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
     const [done, setDone] = useState(false);
@@ -79,8 +77,6 @@ const PartnershipApplyPage = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...form,
-                    // stored as a comma-separated list so the directory filters match exactly
-                    areas_of_focus: focusAreas.join(', '),
                     website_url: tidyUrl(form.website_url),
                     social_url: tidyUrl(form.social_url),
                     photo_url,
@@ -132,9 +128,10 @@ const PartnershipApplyPage = () => {
                     <h1 className="font-display text-3xl md:text-4xl text-sage mb-3">
                         Tell us about you
                     </h1>
-                    <p className="text-text-muted">
-                        A few details about your practice and the work you do. Nothing here needs to be
-                        polished — Johanna will help shape your profile.
+                    <p className="text-text-muted leading-relaxed">
+                        Share a few details about your practice, the work you do, and what you'd like to
+                        bring to Uncoached. We'll review your submission to make sure the partnership
+                        feels like a good fit. If approved, we'll be in touch with next steps.
                     </p>
                 </div>
 
@@ -148,13 +145,14 @@ const PartnershipApplyPage = () => {
                             <input required value={form.full_name} onChange={set('full_name')}
                                 className={inputClass} placeholder="Jane Doe" />
                         </Field>
-                        <Field label="Credentials" optional>
-                            <input value={form.credentials} onChange={set('credentials')}
+                        <Field label="Credentials / Training"
+                            hint="Licences, certifications, professional designations, or relevant training.">
+                            <input required value={form.credentials} onChange={set('credentials')}
                                 className={inputClass} placeholder="RP, MSW, RSW…" />
                         </Field>
                     </div>
 
-                    <Field label="Email" hint="Where Johanna will reply.">
+                    <Field label="Email" hint="Where we'll contact you about your submission.">
                         <input required type="email" value={form.email} onChange={set('email')}
                             className={inputClass} placeholder="you@yourpractice.com" />
                     </Field>
@@ -164,27 +162,20 @@ const PartnershipApplyPage = () => {
                             className="w-full text-sm text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:bg-sage file:text-bone file:font-medium hover:file:bg-sage/90 file:cursor-pointer" />
                     </Field>
 
-                    <Field label="Short bio" hint="A few sentences about you and your approach.">
+                    <Field label="Short bio" hint="Tell us a little about your work, who you support, and your approach.">
                         <textarea rows={4} value={form.bio} onChange={set('bio')}
-                            className={inputClass} placeholder="I work with…" />
+                            className={inputClass} placeholder="Tell us about your practice..." />
                     </Field>
 
-                    <Field label="Area(s) of focus"
-                        hint="Pick any that fit — these are the filters people use to find you on the Practitioners page.">
-                        <div className="flex flex-wrap gap-2">
-                            {PRACTITIONER_CATEGORIES.map((cat) => {
-                                const on = focusAreas.includes(cat);
-                                return (
-                                    <button type="button" key={cat} onClick={() => toggleFocus(cat)}
-                                        aria-pressed={on}
-                                        className={`px-4 py-2 rounded-full text-sm transition-colors border ${on
-                                            ? 'bg-sage text-bone border-sage'
-                                            : 'bg-white text-text-muted border-clay/40 hover:border-sage/40'}`}>
-                                        {cat}
-                                    </button>
-                                );
-                            })}
-                        </div>
+                    <Field label="Area(s) of focus" hint="Choose up to 5 areas that best represent the work you do.">
+                        <input value={form.areas_of_focus} onChange={set('areas_of_focus')}
+                            className={inputClass}
+                            placeholder="e.g. Trauma Therapy, Somatic Practice, EMDR, Couples Therapy..." />
+                        {focusCount > 5 && (
+                            <span className="block text-sm text-golden-deep mt-1.5">
+                                That's {focusCount} areas — please narrow it to 5 so people can find you easily.
+                            </span>
+                        )}
                     </Field>
 
                     <div className="grid sm:grid-cols-2 gap-6">
@@ -216,7 +207,7 @@ const PartnershipApplyPage = () => {
                     </Field>
 
                     <div className="grid sm:grid-cols-2 gap-6">
-                        <Field label="Website / booking link">
+                        <Field label="Website / booking link or email">
                             <input type="text" inputMode="url" value={form.website_url} onChange={set('website_url')}
                                 className={inputClass} placeholder="yourpractice.com" />
                         </Field>
@@ -232,18 +223,20 @@ const PartnershipApplyPage = () => {
                             className={inputClass} placeholder="Grounding practices for panic, boundary-setting…" />
                     </Field>
 
-                    <Field label="Any resource ideas you already have?"
-                        hint="No idea yet? Totally fine — you can leave this blank and we'll find one together." optional>
+                    <Field label="Do you already have a resource or practice in mind?" optional
+                        hint="No idea yet? That's completely fine. We can explore it together during your Partnership Chat.">
                         <textarea rows={3} value={form.resource_ideas} onChange={set('resource_ideas')}
-                            className={inputClass} placeholder="An exercise I use with clients is…" />
+                            className={inputClass}
+                            placeholder="e.g. an exercise, reflection, worksheet, conversation tool, or practice I use with clients..." />
                     </Field>
 
                     <label className="flex items-start gap-3 bg-clay/30 rounded-2xl p-5 cursor-pointer">
                         <input type="checkbox" required checked={form.consent} onChange={set('consent')}
                             className="mt-1 w-5 h-5 accent-[#3F5D4D] flex-shrink-0" />
                         <span className="text-sm text-text-dark/85 leading-relaxed">
-                            I give Uncoached permission to display my profile, and I'm open to
-                            collaboratively developing and publishing a resource together.
+                            If accepted into the Practitioner Partnership, I give Uncoached permission to
+                            publish my practitioner profile and I'm open to collaborating on a resource
+                            for the Uncoached Library.
                         </span>
                     </label>
 
@@ -251,6 +244,11 @@ const PartnershipApplyPage = () => {
                         className="w-full py-4 bg-sage text-bone rounded-full font-medium text-lg hover:bg-sage/90 transition-colors disabled:opacity-60">
                         {submitting ? 'Sending…' : 'Submit application'}
                     </button>
+
+                    <p className="text-center text-sm text-text-muted leading-relaxed -mt-2">
+                        We'll review your application and be in touch with next steps if it feels like a
+                        good fit.
+                    </p>
 
                     <p className="text-center">
                         <Link to="/partnership" className="text-sm text-text-muted hover:text-sage hover:underline">
