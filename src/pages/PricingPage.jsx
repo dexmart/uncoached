@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCopy } from '../context/SiteCopyContext';
 
 const PricingPage = () => {
+    const copy = useCopy();
     const [loading, setLoading] = useState(null);
     const [error, setError] = useState('');
     const { user, loading: authLoading } = useAuth();
@@ -107,10 +109,10 @@ const PricingPage = () => {
                         />
                     </Link>
                     <h1 className="font-display text-4xl md:text-5xl text-text-dark mb-4">
-                        Choose your path
+                        {copy('pricing.title')}
                     </h1>
                     <p className="text-text-muted text-lg max-w-xl mx-auto">
-                        There's no right pace. Take what you need.
+                        {copy('pricing.subtitle')}
                     </p>
                 </div>
 
@@ -188,7 +190,7 @@ const PricingPage = () => {
 
                 {/* Universal messaging */}
                 <p className="text-center font-display text-xl text-text-dark mb-10">
-                    There's no right pace. Take what you need.
+                    {copy('pricing.universal')}
                 </p>
 
                 {/* Detail dropdowns */}
@@ -241,15 +243,10 @@ const PricingPage = () => {
                 {/* Disclaimer */}
                 <div className="max-w-2xl mx-auto text-center">
                     <p className="text-text-tertiary text-xs leading-relaxed mb-6">
-                        Uncoached is not therapy or coaching. It's a self-guided space designed to
-                        support awareness, regulation, and integration in everyday life. All
-                        memberships renew automatically at the end of each billing period. You can
-                        cancel at any time before renewal to stop future charges. There's no right
-                        pace. Stay for a moment, or make it a rhythm.
+                        {copy('pricing.disclaimer')}
                     </p>
                     <p className="font-display text-lg text-text-dark mb-6">
-                        You don't need to fix yourself. You just need a place to stay connected to
-                        yourself.
+                        {copy('pricing.closing')}
                     </p>
                     <p className="text-text-muted text-sm">
                         Secure payment powered by Stripe. Cancel anytime.

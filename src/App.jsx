@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
+import { SiteCopyProvider } from './context/SiteCopyContext'
 import LandingPage from './pages/LandingPage'
 import AboutPage from './pages/AboutPage'
 import SignUpPage from './pages/SignUpPage'
@@ -31,6 +32,7 @@ import AdminAffirmationCategoriesPage from './pages/admin/AdminAffirmationCatego
 import AdminAffirmationsPage from './pages/admin/AdminAffirmationsPage'
 import AdminVoiceNotesPage from './pages/admin/AdminVoiceNotesPage'
 import AdminPractitionersPage from './pages/admin/AdminPractitionersPage'
+import AdminSiteCopyPage from './pages/admin/AdminSiteCopyPage'
 
 // Member Pages
 import DashboardPage from './pages/member/DashboardPage'
@@ -49,6 +51,7 @@ import ProfilePage from './pages/member/ProfilePage'
 function App() {
   return (
     <AuthProvider>
+      <SiteCopyProvider>
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
@@ -193,9 +196,11 @@ function App() {
             <Route path="voice-notes" element={<AdminVoiceNotesPage />} />
 
             <Route path="practitioners" element={<AdminPractitionersPage />} />
+            <Route path="site-copy" element={<AdminSiteCopyPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
+      </SiteCopyProvider>
     </AuthProvider>
   )
 }

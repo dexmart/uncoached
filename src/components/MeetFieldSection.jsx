@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useCopy } from '../context/SiteCopyContext';
 
 const MeetFieldSection = () => {
+    const copy = useCopy();
     return (
         <section className="py-16 lg:py-24 px-6 lg:px-12 relative bg-bone" id="chat">
             {/* Background — desktop only; on mobile the phone mockup stacks above the text */}
@@ -22,33 +24,33 @@ const MeetFieldSection = () => {
                 {/* Right - Content */}
                 <div>
                     <h2 className="font-display text-4xl md:text-5xl mb-4 leading-tight text-text-dark">
-                        Meet Field
+                        {copy('home.field.title')}
                     </h2>
                     <p className="text-golden-deep text-xl mb-6 font-medium">
-                        A different way to be with yourself.
+                        {copy('home.field.subtitle')}
                     </p>
                     <p className="text-text-muted text-lg mb-4 leading-relaxed">
-                        Field is not here to coach, advise, or analyze you.
+                        {copy('home.field.body1')}
                     </p>
                     <p className="text-text-muted leading-relaxed mb-4">
-                        It listens, reflects, and stays with what you bring, helping you slow down and hear yourself more clearly in moments that matter.
+                        {copy('home.field.body2')}
                     </p>
                     <p className="text-text-muted leading-relaxed mb-4">
-                        You can talk things through, explore gentle prompts, try short grounding rituals, or simply pause and be with what is present.
+                        {copy('home.field.body3')}
                     </p>
                     <p className="text-text-muted leading-relaxed mb-8">
-                        You decide how deep to go, when to pause, and what comes next. Field follows your lead.
+                        {copy('home.field.body4')}
                     </p>
 
                     <Link
                         className="inline-flex items-center gap-2 px-8 py-4 bg-sage text-bone rounded-full font-medium shadow-lg hover:bg-sage/90 transition-all duration-300 mb-8"
                         to="/pricing"
                     >
-                        Enter Uncoached
+                        {copy('home.field.cta')}
                     </Link>
 
                     <p className="text-text-muted text-sm italic mb-8">
-                        Field is an AI-powered companion designed to support self-led reflection, not replace human care.
+                        {copy('home.field.disclaimer')}
                     </p>
 
                     <div className="flex flex-wrap gap-6 text-sm text-text-muted">

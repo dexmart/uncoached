@@ -1,4 +1,7 @@
+import { useCopy } from '../../context/SiteCopyContext';
+
 const AboutGap = () => {
+    const copy = useCopy();
     const gaps = [
         {
             icon: (
@@ -48,13 +51,12 @@ const AboutGap = () => {
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 text-center">
                 <div className="max-w-3xl mx-auto mb-16">
-                    <h2 className="font-display text-4xl mb-6 text-text-dark">The Gap No One Talks About</h2>
+                    <h2 className="font-display text-4xl mb-6 text-text-dark">{copy('about.gap.title')}</h2>
                     <p className="text-xl text-text-muted mb-4">
-                        Most personal growth focuses on understanding. <br />
-                        But understanding alone does not create change.
+                        {copy('about.gap.intro')}
                     </p>
                     <p className="text-2xl font-serif text-golden-deep italic">
-                        Change happens in ordinary moments.
+                        {copy('about.gap.emphasis')}
                     </p>
                 </div>
 
@@ -75,7 +77,7 @@ const AboutGap = () => {
                 </div>
 
                 <p className="text-xl text-text-dark font-bold text-center">
-                    You don't need more advice, you need something that helps you come back to yourself in the moment.
+                    {copy('about.gap.closing')}
                 </p>
             </div>
         </section>
