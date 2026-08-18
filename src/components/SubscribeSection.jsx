@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useCopy } from '../context/SiteCopyContext';
 
 // Kit (kit.com) form — submissions post to Kit in the background so we can keep
 // the site's own branding instead of embedding Kit's styled form.
@@ -8,6 +9,7 @@ const KIT_FORM_ID = '8339647';
 const KIT_ENDPOINT = `https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`;
 
 const SubscribeSection = () => {
+    const copy = useCopy();
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState('idle'); // idle | loading | success | error
 
@@ -48,17 +50,15 @@ const SubscribeSection = () => {
 
             <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
                 <h2 className="font-display text-3xl md:text-4xl mb-4 text-bone italic">
-                    Not another newsletter.
+                    {copy('home.subscribe.title')}
                 </h2>
                 <p className="text-bone/80 mb-8 max-w-xl mx-auto">
-                    Sign up to receive thoughtful reflections that support real integration. From
-                    gentle affirmations and grounding voice notes to early access to new
-                    behind-the-scenes tools and Field's powerful features.
+                    {copy('home.subscribe.body')}
                 </p>
 
                 {status === 'success' ? (
                     <p className="text-bone font-medium text-lg max-w-md mx-auto bg-sage/30 border border-sage/40 rounded-lg py-4 px-6 backdrop-blur-sm">
-                        You're in. Thank you for staying connected. 🌿
+                        {copy('home.subscribe.success')}
                     </p>
                 ) : (
                     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 justify-center items-center max-w-md mx-auto">
@@ -75,7 +75,7 @@ const SubscribeSection = () => {
                             disabled={status === 'loading'}
                             className="w-full sm:w-auto px-8 py-3 bg-sage text-bone rounded-lg font-medium hover:bg-sage/90 transition-all duration-300 whitespace-nowrap disabled:opacity-70"
                         >
-                            {status === 'loading' ? 'Joining…' : 'Stay Connected'}
+                            {status === 'loading' ? 'Joining…' : copy('home.subscribe.cta')}
                         </button>
                     </form>
                 )}

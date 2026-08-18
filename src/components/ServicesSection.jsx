@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useCopy } from '../context/SiteCopyContext';
 
 const services = [
     {
@@ -45,6 +46,7 @@ const services = [
 ];
 
 const ServicesSection = () => {
+    const copy = useCopy();
     const [currentSlide, setCurrentSlide] = useState(0);
     const totalSlides = 3; // 8 items, 3 per view = 3 slides (last slide has 2 items)
 
@@ -104,13 +106,13 @@ const ServicesSection = () => {
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
                 <div className="text-center mb-12">
                     <h2 className="font-display text-4xl md:text-5xl mb-4 text-text-dark">
-                        What You'll Find Inside
+                        {copy('home.services.title')}
                     </h2>
                     <p className="text-text-muted text-lg mb-2">
-                        Tools for moving through your days more mindfully.
+                        {copy('home.services.subtitle')}
                     </p>
                     <p className="text-text-muted max-w-2xl mx-auto">
-                        Uncoached offers a growing collection of tools designed to support you across many moments, moods, and seasons. You can reach for what you need, when you need it.
+                        {copy('home.services.intro')}
                     </p>
                 </div>
 
@@ -171,12 +173,12 @@ const ServicesSection = () => {
                         to="/pricing"
                         className="inline-flex items-center gap-2 px-8 py-4 bg-sage text-bone rounded-full font-medium shadow-lg hover:bg-sage/90 hover:scale-105 transition-all duration-300"
                     >
-                        Unlock Everything
+                        {copy('home.services.cta')}
                     </Link>
                 </div>
 
                 <p className="text-center text-text-tertiary text-sm italic mt-12">
-                    Designed to complement therapy and coaching between the sessions, not replace it.
+                    {copy('home.services.footnote')}
                 </p>
             </div>
         </section>

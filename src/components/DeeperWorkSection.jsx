@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useCopy } from '../context/SiteCopyContext';
 
 const DeeperWorkSection = () => {
+    const copy = useCopy();
     return (
         <section className="py-16 lg:py-24 relative overflow-hidden bg-bone" id="deeper-work">
             {/* Background with overlay — desktop only; on mobile the image is stacked above the text */}
@@ -25,39 +27,33 @@ const DeeperWorkSection = () => {
 
                     {/* Right - Content */}
                     <div className="order-1 lg:order-2">
-                        <h2 className="font-display text-4xl md:text-5xl text-text-dark mb-4 leading-tight">
-                            Deeper work, on your<br />own timing
+                        <h2 className="font-display text-4xl md:text-5xl text-text-dark mb-4 leading-tight whitespace-pre-line">
+                            {copy('home.deeper.title')}
                         </h2>
                         <p className="text-text-muted text-lg mb-6">
-                            Because insight matters most when it becomes part of how you live.
+                            {copy('home.deeper.subtitle')}
                         </p>
                         <p className="text-text-muted leading-relaxed mb-4">
-                            Uncoached offers a quiet, supportive space for integrating therapy, coaching, and personal work into specific moments in everyday life.
+                            {copy('home.deeper.body1')}
                         </p>
                         <p className="text-text-muted leading-relaxed mb-8">
-                            No rushing. No fixing. Just tools that help awareness take root gently, privately, and at your own pace.
+                            {copy('home.deeper.body2')}
                         </p>
 
                         <ul className="space-y-4 mb-8">
-                            <li className="flex items-center gap-3">
-                                <span className="text-sage text-lg">✓</span>
-                                <span className="text-text-muted">Building emotional resilience for real life.</span>
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <span className="text-sage text-lg">✓</span>
-                                <span className="text-text-muted">Grounded tools for everyday regulation and clarity.</span>
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <span className="text-sage text-lg">✓</span>
-                                <span className="text-text-muted">A judgment-free space for honest self-connection.</span>
-                            </li>
+                            {['home.deeper.bullet1', 'home.deeper.bullet2', 'home.deeper.bullet3'].map((k) => (
+                                <li key={k} className="flex items-center gap-3">
+                                    <span className="text-sage text-lg">✓</span>
+                                    <span className="text-text-muted">{copy(k)}</span>
+                                </li>
+                            ))}
                         </ul>
 
                         <Link
                             to="/about"
                             className="inline-flex items-center gap-2 px-8 py-4 bg-sage text-bone rounded-full font-medium shadow-lg hover:bg-sage/90 hover:scale-105 transition-all duration-300"
                         >
-                            Our Approach
+                            {copy('home.deeper.cta')}
                         </Link>
                     </div>
                 </div>

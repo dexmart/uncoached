@@ -1,9 +1,12 @@
+import { useCopy } from '../context/SiteCopyContext';
+
 /* GiftSection renders the homepage "Give the Gift of Calm" block. */
 // GiftUp hosted gift-card order page (Stripe-backed).
 const GIFTUP_ORDER_URL =
     'https://giftup.app/place-order/6157e06a-4e78-4d12-2a9f-08de0740f89c?platform=hosted';
 
 const GiftSection = () => {
+    const copy = useCopy();
     return (
         <section id="gift" className="py-16 lg:py-48 relative overflow-hidden scroll-mt-24 bg-bone">
             {/* Background — desktop only; on mobile the image is stacked above the text */}
@@ -29,13 +32,13 @@ const GiftSection = () => {
                     {/* Right - Content */}
                     <div className="lg:col-span-5">
                         <h2 className="font-display text-4xl md:text-5xl mb-4 text-text-dark">
-                            Give the Gift of Calm
+                            {copy('home.gift.title')}
                         </h2>
                         <p className="text-text-muted text-xl mb-6">
-                            Send a thoughtful gift card and support someone in their journey.
+                            {copy('home.gift.subtitle')}
                         </p>
                         <p className="text-text-muted leading-relaxed mb-8">
-                            Choose a stress-free, meaningful gift for the ones in your life who crave more self-connection.
+                            {copy('home.gift.body')}
                         </p>
 
                         <a
@@ -44,7 +47,7 @@ const GiftSection = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            Send a Gift Card Now
+                            {copy('home.gift.cta')}
                         </a>
 
                         <div className="flex flex-wrap gap-6 text-sm text-text-muted">

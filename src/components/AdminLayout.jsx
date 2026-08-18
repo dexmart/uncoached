@@ -216,6 +216,15 @@ const AdminLayout = () => {
                         >
                             Practitioners
                         </Link>
+                        <Link
+                            to="/admin/site-copy"
+                            className={`w-full flex items-center px-4 py-3 rounded-xl transition-colors text-sm font-medium ${isActive('/admin/site-copy')
+                                ? 'bg-clay/10 text-clay shadow-sm'
+                                : 'text-text-dark/70 hover:bg-clay/10 hover:text-text-dark'
+                                }`}
+                        >
+                            Website Text
+                        </Link>
                     </div>
                 </nav>
 
