@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
-import { PRACTITIONER_CATEGORIES, parseFocusAreas } from '../lib/practitionerCategories';
-
-// Same list the application form offers, so every filter matches exactly.
-const CATEGORIES = ['All', ...PRACTITIONER_CATEGORIES];
+import { parseFocusAreas } from '../lib/practitionerCategories';
 
 const STEPS = [
     {
@@ -115,10 +112,14 @@ const PractitionersPage = () => {
             ? practitioners
             : practitioners.filter((p) => parseFocusAreas(p.areas_of_focus).includes(activeCategory));
 
-    // Only offer a filter that would actually return someone.
-    const available = CATEGORIES.filter(
-        (c) => c === 'All' || practitioners.some((p) => parseFocusAreas(p.areas_of_focus).includes(c))
-    );
+    // Focus areas are free text, so build the filters from what practitioners
+    // actually wrote. Every chip is therefore guaranteed to return someone.
+    const available = [
+        'All',
+        ...Array.from(
+            new Set(practitioners.flatMap((p) => parseFocusAreas(p.areas_of_focus)))
+        ).sort((a, b) => a.localeCompare(b)),
+    ];
 
     return (
         <div className="bg-bone text-text-dark font-body antialiased min-h-screen">
