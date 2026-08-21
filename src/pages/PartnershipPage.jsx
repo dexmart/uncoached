@@ -195,7 +195,7 @@ const HowItWorks = () => (
 const CouldShare = () => (
     <>
         <img src={bg('blossom.png')} alt="" draggable="false"
-            style={{ position: 'absolute', right: -46, top: 300, width: 262 }} />
+            style={{ position: 'absolute', right: -52, bottom: -34, width: 248 }} />
         <div style={{ position: 'absolute', left: 50, right: 50, top: 88 }}>
             <Title size={40}>What you could share</Title>
             <div style={{ position: 'relative', margin: '22px 0 32px', padding: '8px 0' }}>
