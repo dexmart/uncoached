@@ -111,7 +111,7 @@ const DashboardPage = () => {
     const voiceNotes = {
         title: 'Voice Notes',
         description: 'Remember who you are.',
-        icon: 'images/Field Icons/field audio breath.png',
+        icon: 'images/Field Icons/field voice notes.png',
         link: '/dashboard/voice-notes',
         color: 'from-sage/20 to-sage/10'
     };

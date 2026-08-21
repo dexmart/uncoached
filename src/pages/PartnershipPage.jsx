@@ -120,7 +120,7 @@ const Welcome = () => (
 const WhatIs = () => (
     <>
         <img src={bg('fern-watermark.png')} alt="" draggable="false"
-            style={{ position: 'absolute', right: -40, bottom: -30, width: 420, mixBlendMode: 'multiply', opacity: 0.45 }} />
+            style={{ position: 'absolute', right: -40, bottom: -30, width: 420, opacity: 1 }} />
         <div style={{ position: 'absolute', left: 50, right: 50, top: 76 }}>
             <Title size={42}>What is the Practitioner<br />Partnership?</Title>
             <div style={{ margin: '30px 0 34px' }}><DividerTrio ruleW={140} /></div>
@@ -153,7 +153,7 @@ const WhatIs = () => (
 const HowItWorks = () => (
     <>
         <img src={bg('fern-watermark.png')} alt="" draggable="false"
-            style={{ position: 'absolute', right: -10, bottom: -20, width: 360, mixBlendMode: 'multiply', opacity: 0.4 }} />
+            style={{ position: 'absolute', right: -10, bottom: -20, width: 360, opacity: 1 }} />
         <div style={{ position: 'absolute', left: 50, right: 50, top: 108, textAlign: 'center' }}>
             <Title size={38} align="center">How our partnership works</Title>
             <p style={{ ...lora, color: GREEN, fontSize: 19, fontStyle: 'italic', marginTop: 8 }}>An exchange that creates impact.</p>
@@ -195,7 +195,7 @@ const HowItWorks = () => (
 const CouldShare = () => (
     <>
         <img src={bg('blossom.png')} alt="" draggable="false"
-            style={{ position: 'absolute', right: -30, top: 60, width: 300 }} />
+            style={{ position: 'absolute', right: -46, top: 300, width: 262 }} />
         <div style={{ position: 'absolute', left: 50, right: 50, top: 88 }}>
             <Title size={40}>What you could share</Title>
             <div style={{ position: 'relative', margin: '22px 0 32px', padding: '8px 0' }}>
@@ -353,9 +353,10 @@ const ReadyToJoin = () => (
                 let's build something that helps them keep going.
             </p>
             <div style={{ marginTop: 34, display: 'flex', justifyContent: 'center' }}>
-                <span style={{ ...bask, backgroundColor: TAN, color: GREEN, fontSize: 22, letterSpacing: '0.04em', padding: '16px 52px', borderRadius: 99, display: 'inline-block' }}>
+                <Link to="/partnership/apply" onClick={(e) => e.stopPropagation()}
+                    style={{ ...bask, backgroundColor: TAN, color: GREEN, fontSize: 22, letterSpacing: '0.04em', padding: '16px 52px', borderRadius: 99, display: 'inline-block', textDecoration: 'none' }}>
                     I'M IN! →
-                </span>
+                </Link>
             </div>
             <img src={logo('logouncoached.png')} alt="Uncoached" draggable="false"
                 style={{ height: 108, margin: '34px auto 0' }} />
@@ -466,8 +467,11 @@ const PartnershipPage = () => {
 
             <header className="absolute top-0 inset-x-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4">
                 <Link to="/"><img src={logo('logo-sage-on-light.png')} alt="Uncoached" className="h-9 w-auto" draggable="false" /></Link>
-                <Link to="/partnership/apply" className="rounded-full px-5 py-2 text-[12px] transition-transform hover:scale-105"
-                    style={{ ...bask, backgroundColor: GREEN, color: CREAM }}>I'm in</Link>
+                <Link to="/partnership/apply"
+                    className="rounded-full px-6 py-2.5 text-[14px] font-semibold transition-transform hover:scale-105 flex items-center gap-2"
+                    style={{ ...bask, backgroundColor: GREEN, color: CREAM, boxShadow: '0 6px 18px rgba(63,93,77,.35)' }}>
+                    Apply now <span aria-hidden="true">→</span>
+                </Link>
             </header>
 
             <div ref={stage} className="absolute left-0 right-0" style={{ top: 68, bottom: 104 }}>

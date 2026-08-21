@@ -34,7 +34,7 @@ const services = [
         description: 'Empowering questions to ask yourself, designed to guide your brain toward supportive answers.'
     },
     {
-        icon: 'images/Field Icons/field audio breath.png',
+        icon: 'images/Field Icons/field voice notes.png',
         title: 'Grounding Voice Notes',
         description: 'Brief, supportive voice notes offering gentle reminders of who you are in moments when you need steadiness, encouragement, or perspective.'
     },
