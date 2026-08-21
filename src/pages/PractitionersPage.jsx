@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
@@ -240,13 +241,13 @@ const PractitionersPage = () => {
                         wellbeing professional and feel your work may be a good fit, you're welcome
                         to reach out.
                     </p>
-                    <a
-                        href="mailto:hello@uncoached.space"
-                        className="inline-flex items-center gap-2 px-8 py-3 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all shadow-lg"
+                    <Link
+                        to="/partnership"
+                        className="inline-flex items-center gap-2 px-9 py-3.5 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all shadow-lg text-lg"
                     >
-                        <span className="material-symbols-outlined text-base">mail</span>
-                        hello@uncoached.space
-                    </a>
+                        Apply Here
+                        <span aria-hidden="true">→</span>
+                    </Link>
                 </div>
             </section>
 
