@@ -195,17 +195,17 @@ const HowItWorks = () => (
 const CouldShare = () => (
     <>
         <img src={bg('blossom.png')} alt="" draggable="false"
-            style={{ position: 'absolute', right: -52, bottom: -34, width: 248 }} />
+            style={{ position: 'absolute', right: -18, top: 392, width: 286 }} />
         <div style={{ position: 'absolute', left: 50, right: 50, top: 88 }}>
             <Title size={40}>What you could share</Title>
             <div style={{ position: 'relative', margin: '22px 0 32px', padding: '10px 0' }}>
                 {/* dry-brush stroke behind the script line, bleeding off the left edge */}
                 <span style={{
-                    position: 'absolute', left: -62, right: -18, top: -10, bottom: -10,
+                    position: 'absolute', left: -62, right: 262, top: -16, bottom: -16,
                     backgroundImage: `url(${bg('swash.png')})`,
                     backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat',
                 }} />
-                <p style={{ ...allura, color: GREEN, fontSize: 32, position: 'relative', paddingLeft: 6 }}>
+                <p style={{ ...allura, color: GREEN, fontSize: 23, position: 'relative', paddingLeft: 8 }}>
                     Something that's already helping the people you work with.
                 </p>
             </div>
@@ -413,6 +413,24 @@ const PartnershipPage = () => {
         return () => window.removeEventListener('resize', measure);
     }, []);
 
+    // Wheel / trackpad paging — the most natural desktop gesture for a deck.
+    useEffect(() => {
+        const el = stage.current;
+        if (!el) return;
+        let lock = false;
+        const onWheel = (e) => {
+            const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+            if (Math.abs(d) < 10) return;
+            e.preventDefault();
+            if (lock) return;
+            lock = true;
+            go(d > 0 ? 1 : -1);
+            setTimeout(() => { lock = false; }, 430);
+        };
+        el.addEventListener('wheel', onWheel, { passive: false });
+        return () => el.removeEventListener('wheel', onWheel);
+    }, [go]);
+
     useEffect(() => {
         const onKey = (e) => {
             if (zoom !== null) { if (e.key === 'Escape') setZoom(null); return; }
@@ -500,6 +518,20 @@ const PartnershipPage = () => {
                         </article>
                     ))}
                 </div>
+
+                {/* large side arrows — the obvious desktop control */}
+                <button onClick={() => go(-1)} disabled={index === 0} aria-label="Previous page"
+                    className="hidden md:flex absolute left-6 lg:left-12 top-1/2 -translate-y-1/2 z-40 w-14 h-14 rounded-full items-center justify-center transition-all hover:scale-110 disabled:opacity-0"
+                    style={{ backgroundColor: '#FFFFFFE6', color: GREEN, boxShadow: '0 8px 24px rgba(31,36,34,.18)' }}>
+                    <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.7"
+                        strokeLinecap="round" strokeLinejoin="round"><path d="M15 19l-7-7 7-7" /></svg>
+                </button>
+                <button onClick={() => go(1)} disabled={index === total - 1} aria-label="Next page"
+                    className="hidden md:flex absolute right-6 lg:right-12 top-1/2 -translate-y-1/2 z-40 w-14 h-14 rounded-full items-center justify-center transition-all hover:scale-110 disabled:opacity-0"
+                    style={{ backgroundColor: '#FFFFFFE6', color: GREEN, boxShadow: '0 8px 24px rgba(31,36,34,.18)' }}>
+                    <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.7"
+                        strokeLinecap="round" strokeLinejoin="round"><path d="M9 5l7 7-7 7" /></svg>
+                </button>
             </div>
 
             <div className="absolute bottom-0 inset-x-0 z-50 pb-5 flex flex-col items-center gap-3">
@@ -525,7 +557,7 @@ const PartnershipPage = () => {
                     </button>
                 </div>
                 <p className="text-[11px]" style={{ ...bask, color: '#8C857A' }}>
-                    Use the arrows, or drag · <span className="hidden sm:inline">click</span><span className="sm:hidden">tap</span> a page to read it
+                    <span className="hidden md:inline">Scroll, use the arrows, or drag · click a page to read it</span><span className="md:hidden">Swipe or use the arrows · tap a page to read it</span>
                 </p>
             </div>
 
