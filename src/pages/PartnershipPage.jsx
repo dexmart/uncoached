@@ -198,8 +198,13 @@ const CouldShare = () => (
             style={{ position: 'absolute', right: -52, bottom: -34, width: 248 }} />
         <div style={{ position: 'absolute', left: 50, right: 50, top: 88 }}>
             <Title size={40}>What you could share</Title>
-            <div style={{ position: 'relative', margin: '22px 0 32px', padding: '8px 0' }}>
-                <span style={{ position: 'absolute', inset: '0 90px 0 -30px', borderRadius: 99, backgroundColor: '#A8AC97', opacity: 0.34 }} />
+            <div style={{ position: 'relative', margin: '22px 0 32px', padding: '10px 0' }}>
+                {/* dry-brush stroke behind the script line, bleeding off the left edge */}
+                <span style={{
+                    position: 'absolute', left: -62, right: -18, top: -10, bottom: -10,
+                    backgroundImage: `url(${bg('swash.png')})`,
+                    backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat',
+                }} />
                 <p style={{ ...allura, color: GREEN, fontSize: 32, position: 'relative', paddingLeft: 6 }}>
                     Something that's already helping the people you work with.
                 </p>
