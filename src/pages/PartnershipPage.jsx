@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { useCopy } from '../context/SiteCopyContext';
 
 // Practitioner Partnership guide — deliberately NOT in the site nav.
 // Johanna shares this link directly with practitioners.
@@ -70,8 +71,16 @@ const Callout = ({ children, pad = 26 }) => (
 );
 
 /* ── Pages ─────────────────────────────────────────────────────────────── */
+// Every page takes `c`, the site-copy lookup, so Johanna can reword the guide
+// from the admin. These pages are a fixed size like a printed page, so the
+// admin warns her when a box grows well past its original length.
 
-const Cover = () => (
+const lines = (t) => (t || '').split('\n').map((l) => l.trim()).filter(Boolean);
+
+/** Render a multi-line field with real line breaks between the lines. */
+const brLines = (t) => lines(t).flatMap((l, i) => (i ? [<br key={`b${i}`} />, l] : [l]));
+
+const Cover = (c) => (
     <>
         <img src={bg('cover-vase.jpg')} alt="" draggable="false"
             style={{ position: 'absolute', inset: 0, width: '100%', height: PAGE_H - 87, objectFit: 'cover', objectPosition: 'left' }} />
@@ -80,92 +89,92 @@ const Cover = () => (
             <img src={logo('logo-sage-on-light.png')} alt="Uncoached" draggable="false"
                 style={{ height: 96, margin: '0 auto 44px' }} />
             <h1 style={{ ...bask, color: GREEN, fontSize: 40, lineHeight: 1.35 }}>
-                Uncoached<br />Practitioner<br />Partnership<br />Guide
+                {brLines(c('partnership.cover.title'))}
             </h1>
             <span style={{ display: 'block', width: 92, height: 1.5, backgroundColor: GREEN, margin: '42px auto' }} />
             <p style={{ ...bask, color: GREEN, fontSize: 17, lineHeight: 1.7 }}>
-                Helping clients between<br />the breakthroughs.
+                {brLines(c('partnership.cover.tagline'))}
             </p>
             <Sprig w={44} style={{ margin: '38px auto 0' }} />
         </div>
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 87, backgroundColor: GREEN, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <span style={{ color: '#fff', fontSize: 17, letterSpacing: '0.25em', textTransform: 'uppercase', ...bask }}>
-                uncoached.space
+                {c('partnership.cover.footer')}
             </span>
         </div>
     </>
 );
 
-const Welcome = () => (
+const Welcome = (c) => (
     <>
         <img src={bg('welcome-sunset.jpg')} alt="" draggable="false"
             style={{ position: 'absolute', right: 0, top: 170, width: 336, height: 908, objectFit: 'cover', borderTopLeftRadius: 170 }} />
         <div style={{ position: 'absolute', left: 52, top: 78, width: 392 }}>
-            <p style={{ ...lora, color: GREEN, fontSize: 33, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Welcome</p>
-            <p style={{ ...bask, color: INK, fontSize: 25, marginTop: 26 }}>Before anything else,</p>
-            <p style={{ ...allura, color: GREEN, fontSize: 55, lineHeight: 1, marginLeft: 6, marginTop: 2 }}>thank you.</p>
+            <p style={{ ...lora, color: GREEN, fontSize: 33, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{c('partnership.welcome.heading')}</p>
+            <p style={{ ...bask, color: INK, fontSize: 25, marginTop: 26 }}>{c('partnership.welcome.lead')}</p>
+            <p style={{ ...allura, color: GREEN, fontSize: 55, lineHeight: 1, marginLeft: 6, marginTop: 2 }}>{c('partnership.welcome.script')}</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 17, marginTop: 30 }}>
-                <Body>One thing I've realized over the years is that insight doesn't automatically become change.</Body>
-                <Body>Someone can leave a session feeling lighter, clearer, and committed to doing things differently. But lasting change isn't built in the hour you spend together. It happens afterwards, in everyday life, when they're trying to remember what they learned and put it into practice.</Body>
-                <Body bold>That's what inspired Uncoached.</Body>
-                <Body>I wanted to create something practitioners would genuinely be excited to share with their clients. A place where clients could reconnect with what they've already learned and continue building on the work they've already started.</Body>
-                <Body bold>Not to replace the work you're already doing, but to help it stick.</Body>
-                <Body>That's what the Practitioner Partnership is all about.</Body>
-                <Body>Together, we can take the tools and ideas that are already changing lives and give them a home where they can continue helping people long after the session ends.</Body>
+                <Body>{c('partnership.welcome.p1')}</Body>
+                <Body>{c('partnership.welcome.p2')}</Body>
+                <Body bold>{c('partnership.welcome.p3')}</Body>
+                <Body>{c('partnership.welcome.p4')}</Body>
+                <Body bold>{c('partnership.welcome.p5')}</Body>
+                <Body>{c('partnership.welcome.p6')}</Body>
+                <Body>{c('partnership.welcome.p7')}</Body>
             </div>
         </div>
     </>
 );
 
-const WhatIs = () => (
+const WhatIs = (c) => (
     <>
         <img src={bg('fern-watermark.png')} alt="" draggable="false"
             style={{ position: 'absolute', right: -40, bottom: -30, width: 420, opacity: 1 }} />
         <div style={{ position: 'absolute', left: 50, right: 50, top: 76 }}>
-            <Title size={42}>What is the Practitioner<br />Partnership?</Title>
+            <Title size={42}>{brLines(c('partnership.what.title'))}</Title>
             <div style={{ margin: '30px 0 34px' }}><DividerTrio ruleW={140} /></div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
-                <Body bold>One of the most rewarding parts of this work is watching someone take what they've learned and truly make it part of their life.</Body>
-                <Body>Every practitioner has exercises, perspectives, and practical tools that make a real difference. Together, we'll turn some of those into polished Uncoached resources that people can return to whenever they need a reminder, a reset, or a different perspective.</Body>
-                <Body><b>These resources aren't designed to replace your work. They're designed to reinforce it.</b> They give your clients a trusted place to return to the tools, exercises, and perspectives you've already introduced, while also discovering complementary perspectives that may deepen what they're learning or help something finally click.</Body>
-                <Body>They're also there for the moments when you need to step away, so your clients still have something meaningful to lean on until you're back.</Body>
-                <Body>As part of the partnership, your expertise becomes a part of a growing library that supports people long after the session ends. <b>You'll also have a professional profile where visitors and members can discover your work, learn about your approach, and connect with you independently.</b></Body>
+                <Body bold>{c('partnership.what.p1')}</Body>
+                <Body>{c('partnership.what.p2')}</Body>
+                <Body><b>{c('partnership.what.p3_bold')}</b> {c('partnership.what.p3_rest')}</Body>
+                <Body>{c('partnership.what.p4')}</Body>
+                <Body>{c('partnership.what.p5')} <b>{c('partnership.what.p5_bold')}</b></Body>
             </div>
         </div>
         <div style={{ position: 'absolute', left: 50, right: 50, bottom: 56, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 18 }}>
             {[
-                ['ico-share.png', 'You share', 'your expertise.'],
-                ['ico-create.png', 'We create a', 'resource together.'],
-                ['ico-heart.png', 'Members get', 'practical support.'],
-                ['ico-sprout.png', 'Your practice', 'gets visibility.'],
-            ].map(([ic, a, b]) => (
-                <div key={a} style={{ textAlign: 'center' }}>
+                ['ico-share.png', 'partnership.what.icon1'],
+                ['ico-create.png', 'partnership.what.icon2'],
+                ['ico-heart.png', 'partnership.what.icon3'],
+                ['ico-sprout.png', 'partnership.what.icon4'],
+            ].map(([ic, k]) => (
+                <div key={k} style={{ textAlign: 'center' }}>
                     <div style={{ width: 94, height: 94, borderRadius: 99, backgroundColor: TAN_LIGHT, margin: '0 auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <img src={bg(ic)} alt="" draggable="false" style={{ width: 54 }} />
                     </div>
-                    <p style={{ ...bask, color: INK, fontSize: 13.5, lineHeight: 1.5 }}>{a}<br />{b}</p>
+                    <p style={{ ...bask, color: INK, fontSize: 13.5, lineHeight: 1.5 }}>{brLines(c(k))}</p>
                 </div>
             ))}
         </div>
     </>
 );
 
-const HowItWorks = () => (
+const HowItWorks = (c) => (
     <>
         <img src={bg('fern-watermark.png')} alt="" draggable="false"
             style={{ position: 'absolute', right: -10, bottom: -20, width: 360, opacity: 1 }} />
         <div style={{ position: 'absolute', left: 50, right: 50, top: 108, textAlign: 'center' }}>
-            <Title size={38} align="center">How our partnership works</Title>
-            <p style={{ ...lora, color: GREEN, fontSize: 19, fontStyle: 'italic', marginTop: 8 }}>An exchange that creates impact.</p>
+            <Title size={38} align="center">{c('partnership.how.title')}</Title>
+            <p style={{ ...lora, color: GREEN, fontSize: 19, fontStyle: 'italic', marginTop: 8 }}>{c('partnership.how.subtitle')}</p>
         </div>
         <div style={{ position: 'absolute', left: 76, right: 60, top: 210 }}>
             {[
-                ['ico-person.png', 'You bring', 'Your expertise, favourite client exercises, practical tools, and the wisdom you find yourself sharing again and again.'],
-                ['ico-bulb.png', 'Together we build', 'We help shape your expertise into a beautiful, practical resource that feels at home inside the Uncoached Library.'],
-                ['ico-hand.png', 'Members receive', 'A growing library of practical tools and resources from a diverse community of practitioners, giving them support they can return to whenever they need it.'],
-                ['ico-eye.png', 'You receive', 'A Community Practitioner profile introducing visitors and members to your independent practice.'],
-            ].map(([ic, t, b], i, arr) => (
-                <div key={t} style={{ display: 'flex', gap: 26 }}>
+                ['ico-person.png', 1],
+                ['ico-bulb.png', 2],
+                ['ico-hand.png', 3],
+                ['ico-eye.png', 4],
+            ].map(([ic, n], i, arr) => (
+                <div key={n} style={{ display: 'flex', gap: 26 }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
                         <div style={{ width: 92, height: 92, borderRadius: 99, backgroundColor: GREEN, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <img src={bg(ic)} alt="" draggable="false" style={{ width: 51 }} />
@@ -178,26 +187,26 @@ const HowItWorks = () => (
                         )}
                     </div>
                     <div style={{ paddingTop: 8, paddingBottom: 12 }}>
-                        <h3 style={{ ...lora, color: GREEN, fontSize: 23, textTransform: 'uppercase', marginBottom: 6 }}>{t}</h3>
-                        <Body>{b}</Body>
+                        <h3 style={{ ...lora, color: GREEN, fontSize: 23, textTransform: 'uppercase', marginBottom: 6 }}>{c(`partnership.how.step${n}_title`)}</h3>
+                        <Body>{c(`partnership.how.step${n}_body`)}</Body>
                     </div>
                 </div>
             ))}
         </div>
         <div style={{ position: 'absolute', left: 130, right: 130, bottom: 74 }}>
             <Callout pad={20}>
-                <Body>Every collaboration looks a little different.<br />That's the beauty of it.</Body>
+                <Body>{brLines(c('partnership.how.callout'))}</Body>
             </Callout>
         </div>
     </>
 );
 
-const CouldShare = () => (
+const CouldShare = (c) => (
     <>
         <img src={bg('blossom.png')} alt="" draggable="false"
             style={{ position: 'absolute', right: -18, top: 392, width: 286 }} />
         <div style={{ position: 'absolute', left: 50, right: 50, top: 88 }}>
-            <Title size={40}>What you could share</Title>
+            <Title size={40}>{c('partnership.share.title')}</Title>
             <div style={{ position: 'relative', margin: '22px 0 32px', padding: '10px 0' }}>
                 {/* dry-brush stroke behind the script line, bleeding off the left edge */}
                 <span style={{
@@ -206,36 +215,19 @@ const CouldShare = () => (
                     backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat',
                 }} />
                 <p style={{ ...allura, color: GREEN, fontSize: 23, position: 'relative', paddingLeft: 8 }}>
-                    Something that's already helping the people you work with.
+                    {c('partnership.share.script')}
                 </p>
             </div>
             <Body style={{ textAlign: 'center', padding: '0 40px' }}>
-                Think about the practical things you already teach, practise, or send home with clients.
-                The exercises they come back to. The tools that help something click. The things you wish
-                they remembered when real life happens between sessions.
+                {c('partnership.share.intro')}
             </Body>
-            <h3 style={{ ...bask, color: INK, fontSize: 22, fontWeight: 700, margin: '30px 0 18px' }}>It could be…</h3>
-            <Bullets gap={7} items={[
-                'A favourite client exercise',
-                'A body-based or grounding practice',
-                'A conversation or communication tool',
-                'A way to recognize or map a recurring pattern',
-                'A skill you regularly teach clients to practise',
-                'A check-in you use to help someone take stock',
-                'An exercise for partners to do together',
-                'A practical coping or regulation strategy',
-                'A decision-making or problem-solving framework',
-                'A reflection or journal prompt that consistently creates insight',
-                'A piece of between-session practice you frequently suggest',
-                "A simple tool that helps clients apply what they've learned in real life",
-            ]} />
+            <h3 style={{ ...bask, color: INK, fontSize: 22, fontWeight: 700, margin: '30px 0 18px' }}>{c('partnership.share.list_heading')}</h3>
+            <Bullets gap={7} items={lines(c('partnership.share.bullets'))} />
         </div>
         <div style={{ position: 'absolute', left: 88, right: 88, bottom: 62 }}>
             <Callout pad={22}>
-                <Body bold>You bring the expertise.</Body>
-                <Body>Share the idea, practice or approach with me and help me understand how you use it.
-                    Together, we'll translate it into a polished Uncoached resource that's clear, practical
-                    and easy to use.</Body>
+                <Body bold>{c('partnership.share.callout_bold')}</Body>
+                <Body>{c('partnership.share.callout_body')}</Body>
             </Callout>
         </div>
     </>
@@ -243,110 +235,92 @@ const CouldShare = () => (
 
 // Page 6 — restored to the printed layout: intro, tan panel of bullets with the
 // script note beside it, then the full-width "things to know" panel.
-const Profile = () => (
+const Profile = (c) => (
     <>
         <img src={bg('profile-books.jpg')} alt="" draggable="false"
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'bottom' }} />
         <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(180deg, ${CREAM} 0%, ${CREAM}f2 30%, ${CREAM}b8 100%)` }} />
 
         <div style={{ position: 'absolute', left: 50, right: 50, top: 106 }}>
-            <Title size={38}>Your practitioner profile</Title>
+            <Title size={38}>{c('partnership.profile.title')}</Title>
             <Body size={15.5} style={{ marginTop: 26, width: 470 }}>
-                Your profile is featured on the public Uncoached website, making it visible to both
-                visitors and members who want to learn more about your work before reaching out.
+                {c('partnership.profile.intro')}
             </Body>
         </div>
 
         <div style={{ position: 'absolute', left: 46, top: 318, width: 442, backgroundColor: TAN, borderRadius: 20, padding: '30px 36px' }}>
             <p style={{ ...bask, color: INK, fontSize: 15, fontWeight: 700, fontStyle: 'italic', marginBottom: 18 }}>
-                Here's what people will see:
+                {c('partnership.profile.panel_heading')}
             </p>
-            <Bullets gap={12} size={15.5} items={[
-                'Professional photo', 'Area(s) of focus', 'Countries you work in',
-                'Virtual and/or in-person availability', 'Languages spoken',
-                'Website and/or booking link', 'Social media (optional)',
-            ]} />
+            <Bullets gap={12} size={15.5} items={lines(c('partnership.profile.panel_items'))} />
         </div>
 
         <div style={{ position: 'absolute', left: 528, top: 336, width: 224 }}>
-            <p style={{ ...allura, color: GREEN, fontSize: 26, lineHeight: 1.55 }}>You don't need to be a copywriter.</p>
-            <p style={{ ...allura, color: GREEN, fontSize: 26, lineHeight: 1.55, marginTop: 22 }}>I'll help bring your profile to life.</p>
+            <p style={{ ...allura, color: GREEN, fontSize: 26, lineHeight: 1.55 }}>{c('partnership.profile.script1')}</p>
+            <p style={{ ...allura, color: GREEN, fontSize: 26, lineHeight: 1.55, marginTop: 22 }}>{c('partnership.profile.script2')}</p>
             <Sprig w={48} style={{ marginTop: 14, marginLeft: 130 }} />
         </div>
 
         <div style={{ position: 'absolute', left: 46, right: 68, bottom: 96, backgroundColor: `${TAN}e6`, borderRadius: 20, padding: '28px 36px' }}>
             <p style={{ ...bask, color: INK, fontSize: 15, fontWeight: 700, fontStyle: 'italic', marginBottom: 16 }}>
-                A few important things to know:
+                {c('partnership.profile.notes_heading')}
             </p>
-            <Bullets gap={8} size={14.5} items={[
-                'Your practice remains completely independent.',
-                'You manage your own clients, fees, and scheduling.',
-                'No referral commissions.',
-                "We'll professionally polish and brand every resource together.",
-                'Your contribution becomes part of the Uncoached Library.',
-                'We periodically review profiles to keep information current.',
-            ]} />
+            <Bullets gap={8} size={14.5} items={lines(c('partnership.profile.notes_items'))} />
         </div>
     </>
 );
 
 // Page 7 — restored: BUILDING / script, divider, narrow letter column clearing
 // the vase, then her real signature.
-const Meaningful = () => (
+const Meaningful = (c) => (
     <>
         <img src={bg('meaningful-vase.jpg')} alt="" draggable="false"
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'right bottom' }} />
         <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(100deg, ${CREAM}f7 0%, ${CREAM}e8 48%, ${CREAM}5c 100%)` }} />
 
         <div style={{ position: 'absolute', left: 50, right: 50, top: 84 }}>
-            <Title size={42}>Building</Title>
-            <p style={{ ...allura, color: GREEN, fontSize: 52, lineHeight: 1, marginTop: 4, marginLeft: 22 }}>Something Meaningful</p>
+            <Title size={42}>{c('partnership.meaning.title')}</Title>
+            <p style={{ ...allura, color: GREEN, fontSize: 52, lineHeight: 1, marginTop: 4, marginLeft: 22 }}>{c('partnership.meaning.script')}</p>
             <div style={{ marginTop: 34 }}><DividerTrio ruleW={140} /></div>
         </div>
 
         <div style={{ position: 'absolute', left: 50, top: 292, width: 462, display: 'flex', flexDirection: 'column', gap: 17 }}>
-            <Body>I don't want Uncoached to become another platform filled with endless content that people scroll past and never use.</Body>
-            <Body>I want it to become a living library built by practitioners who genuinely care about helping people long after the session ends.</Body>
-            <Body>Every practitioner brings a different perspective.</Body>
-            <Body>Every contribution gives someone another way to navigate a difficult day, see themselves differently, or take one small step forward.</Body>
-            <Body>We'll probably never know all the lives those resources will touch.</Body>
-            <Body>I think that's pretty special.</Body>
-            <Body>If that sounds like something you'd like to be part of, I'd love to welcome you to the Uncoached community.</Body>
+            {lines(c('partnership.meaning.body')).map((t, i) => <Body key={i}>{t}</Body>)}
         </div>
 
         <div style={{ position: 'absolute', left: 52, bottom: 96 }}>
             <p style={{ ...allura, color: GREEN, fontSize: 30, lineHeight: 1.5 }}>
-                Thank you for considering it.<br />I'd love to build this with you.
+                {brLines(c('partnership.meaning.closing'))}
             </p>
             <img src={bg('signature.png')} alt="Johanna" draggable="false" style={{ height: 84, marginTop: 14 }} />
-            <p style={{ ...bask, color: INK, fontSize: 13, marginTop: 4, marginLeft: 78 }}>Founder, Uncoached</p>
+            <p style={{ ...bask, color: INK, fontSize: 13, marginTop: 4, marginLeft: 78 }}>{c('partnership.meaning.signature_caption')}</p>
         </div>
     </>
 );
 
-const ReadyToJoin = () => (
+const ReadyToJoin = (c) => (
     <>
         <div style={{ position: 'absolute', inset: 0, backgroundColor: GREEN }} />
         <div style={{ position: 'absolute', left: 33, right: 33, top: 30, height: 712, backgroundColor: '#E4DCD0', padding: '46px 54px' }}>
-            <Title size={38} align="center">Ready to join?</Title>
+            <Title size={38} align="center">{c('partnership.join.title')}</Title>
             <div style={{ margin: '22px 0 20px' }}><DividerTrio ruleW={110} /></div>
-            <p style={{ ...bask, color: INK, fontSize: 18, textAlign: 'center', marginBottom: 36 }}>Here's what happens next.</p>
+            <p style={{ ...bask, color: INK, fontSize: 18, textAlign: 'center', marginBottom: 36 }}>{c('partnership.join.subtitle')}</p>
 
             {[
-                ['01', 'Tell us about you', 'Share a little about your practice, your expertise, and the work you do. This helps us get to know you and how you could fit into the Uncoached community.', 'M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17zM12 11v5.6M12 7.6v.5'],
-                ['02', 'Share your idea', "Have an idea already? Amazing. If not, we'll figure it out together and find something from your expertise that would genuinely add value to the Uncoached Library.", 'M9 17.6h6M10.5 20.4h3M12 3.6a6.2 6.2 0 0 0-3.6 11.2c.4.3.6.8.6 1.3h6c0-.5.2-1 .6-1.3A6.2 6.2 0 0 0 12 3.6zM12 6.6v6'],
-                ['03', "We'll build it together", "We'll work with you to shape your idea into a polished Uncoached resource, create your Practitioner profile, and get everything ready to become part of Uncoached.", 'M2.5 11l4-4 5 4.5M21.5 12l-4.5-4-3.5 3M3 13l3.5-3.5 4 3.5 3-2.5 3.5 3'],
-            ].map(([n, t, b, d]) => (
-                <div key={n} style={{ display: 'flex', gap: 24, marginBottom: 30 }}>
+                ['01', 1, 'M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17zM12 11v5.6M12 7.6v.5'],
+                ['02', 2, 'M9 17.6h6M10.5 20.4h3M12 3.6a6.2 6.2 0 0 0-3.6 11.2c.4.3.6.8.6 1.3h6c0-.5.2-1 .6-1.3A6.2 6.2 0 0 0 12 3.6zM12 6.6v6'],
+                ['03', 3, 'M2.5 11l4-4 5 4.5M21.5 12l-4.5-4-3.5 3M3 13l3.5-3.5 4 3.5 3-2.5 3.5 3'],
+            ].map(([label, n, d]) => (
+                <div key={label} style={{ display: 'flex', gap: 24, marginBottom: 30 }}>
                     <div style={{ width: 94, height: 94, borderRadius: 99, backgroundColor: ROSE, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <svg viewBox="0 0 24 24" style={{ width: 50 }} fill="none" stroke={CREAM} strokeWidth="1.3"
                             strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
                     </div>
                     <div style={{ paddingTop: 8 }}>
                         <h3 style={{ ...bask, fontSize: 24, textTransform: 'uppercase', marginBottom: 8 }}>
-                            <span style={{ color: GOLD }}>{n} ·</span> <span style={{ color: GREEN }}>{t}</span>
+                            <span style={{ color: GOLD }}>{label} ·</span> <span style={{ color: GREEN }}>{c(`partnership.join.step${n}_title`)}</span>
                         </h3>
-                        <Body size={15}>{b}</Body>
+                        <Body size={15}>{c(`partnership.join.step${n}_body`)}</Body>
                     </div>
                 </div>
             ))}
@@ -354,13 +328,12 @@ const ReadyToJoin = () => (
 
         <div style={{ position: 'absolute', left: 70, right: 70, top: 772, textAlign: 'center' }}>
             <p style={{ ...bask, color: CREAM, fontSize: 18, lineHeight: 1.7 }}>
-                If you care deeply about helping people create real change,<br />
-                let's build something that helps them keep going.
+                {brLines(c('partnership.join.closing'))}
             </p>
             <div style={{ marginTop: 34, display: 'flex', justifyContent: 'center' }}>
                 <Link to="/partnership/apply" onClick={(e) => e.stopPropagation()}
                     style={{ ...bask, backgroundColor: TAN, color: GREEN, fontSize: 22, letterSpacing: '0.04em', padding: '16px 52px', borderRadius: 99, display: 'inline-block', textDecoration: 'none' }}>
-                    I'M IN! →
+                    {c('partnership.join.cta')} →
                 </Link>
             </div>
             <img src={logo('logouncoached.png')} alt="Uncoached" draggable="false"
@@ -392,6 +365,7 @@ const Page = ({ children, scale }) => (
 /* ── Deck ──────────────────────────────────────────────────────────────── */
 
 const PartnershipPage = () => {
+    const copy = useCopy();
     const [index, setIndex] = useState(0);
     const [dragDx, setDragDx] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
@@ -493,7 +467,7 @@ const PartnershipPage = () => {
                 <Link to="/partnership/apply"
                     className="rounded-full px-6 py-2.5 text-[14px] font-semibold transition-transform hover:scale-105 flex items-center gap-2"
                     style={{ ...bask, backgroundColor: GREEN, color: CREAM, boxShadow: '0 6px 18px rgba(63,93,77,.35)' }}>
-                    Apply now <span aria-hidden="true">→</span>
+                    {copy('partnership.header.cta')} <span aria-hidden="true">→</span>
                 </Link>
             </header>
 
@@ -514,7 +488,7 @@ const PartnershipPage = () => {
                                 boxShadow: '0 30px 70px -20px rgba(31,36,34,.35), 0 6px 18px rgba(31,36,34,.12)',
                                 transformStyle: 'preserve-3d',
                             }}>
-                            <Page scale={scale}>{s.El()}</Page>
+                            <Page scale={scale}>{s.El(copy)}</Page>
                         </article>
                     ))}
                 </div>
@@ -574,7 +548,7 @@ const PartnershipPage = () => {
                     </button>
                     <div className="flex justify-center py-6" onClick={(e) => e.stopPropagation()}>
                         <div style={{ boxShadow: '0 20px 60px rgba(0,0,0,.4)' }}>
-                            <Page scale={zoomScale}>{SLIDES[zoom].El()}</Page>
+                            <Page scale={zoomScale}>{SLIDES[zoom].El(copy)}</Page>
                         </div>
                     </div>
                 </div>
