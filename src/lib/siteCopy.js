@@ -239,3 +239,30 @@ export const SITE_COPY_GROUPS = SITE_COPY_FIELDS.reduce((groups, f) => {
 }, []);
 
 export const DEFAULT_COPY = Object.fromEntries(SITE_COPY_FIELDS.map((f) => [f.key, f.text]));
+
+/** Groups read "Page — Section" (or just "Page"), so the admin can nest them. */
+export const parseGroup = (group) => {
+    const parts = group.split('\u2014').map((s) => s.trim());
+    return { page: parts[0], section: parts[1] || 'General' };
+};
+
+/** Pages in the order they appear, for the admin's tabs. */
+export const SITE_COPY_PAGES = SITE_COPY_FIELDS.reduce((pages, f) => {
+    const { page } = parseGroup(f.group);
+    if (!pages.includes(page)) pages.push(page);
+    return pages;
+}, []);
+
+/** Sections belonging to a page, in order. */
+export const sectionsForPage = (page) =>
+    SITE_COPY_FIELDS.reduce((secs, f) => {
+        const g = parseGroup(f.group);
+        if (g.page === page && !secs.includes(g.section)) secs.push(g.section);
+        return secs;
+    }, []);
+
+export const fieldsForSection = (page, section) =>
+    SITE_COPY_FIELDS.filter((f) => {
+        const g = parseGroup(f.group);
+        return g.page === page && g.section === section;
+    });
