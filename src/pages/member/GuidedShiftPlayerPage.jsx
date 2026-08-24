@@ -145,7 +145,7 @@ const GuidedShiftPlayerPage = () => {
     if (Array.isArray(shift.use_when)) {
         parsedUseWhen = shift.use_when;
     } else if (typeof shift.use_when === 'string') {
-        try { parsedUseWhen = JSON.parse(shift.use_when); } catch (e) { parsedUseWhen = []; }
+        try { parsedUseWhen = JSON.parse(shift.use_when); } catch { parsedUseWhen = []; }
         if (!Array.isArray(parsedUseWhen)) parsedUseWhen = [];
     }
 

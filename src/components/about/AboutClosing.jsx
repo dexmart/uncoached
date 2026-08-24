@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useCopy } from '../../context/SiteCopyContext';
 
 const AboutClosing = () => {
+    const copy = useCopy();
     return (
         <section className="py-32 relative overflow-hidden">
             {/* Background */}
@@ -17,36 +19,36 @@ const AboutClosing = () => {
 
                 {/* Column 1: Not For Everyone */}
                 <div>
-                    <h3 className="font-display text-3xl mb-6 text-bone">This Is Not For Everyone</h3>
+                    <h3 className="font-display text-3xl mb-6 text-bone">{copy('about.closing.title1')}</h3>
                     <div className="space-y-4 leading-relaxed font-light text-lg">
                         <p>
-                            Uncoached is not for people looking for quick fixes or answers outside themselves.
+                            {copy('about.closing.body1')}
                         </p>
                         <p className="font-medium text-white">There is no magic pill here.</p>
                         <p>
-                            It is for those who are willing to practice, stay present, and integrate what they already know into daily life until it becomes automatic.
+                            {copy('about.closing.body2')}
                         </p>
                         <p>
-                            It is for people who are ready to live their growth, not just understand it.
+                            {copy('about.closing.body3')}
                         </p>
                     </div>
                 </div>
 
                 {/* Column 2: Quiet Invitation */}
                 <div className="border-l border-white/10 pl-8 lg:pl-12">
-                    <h3 className="font-display text-3xl mb-6 text-bone">A Quiet Invitation</h3>
+                    <h3 className="font-display text-3xl mb-6 text-bone">{copy('about.closing.title2')}</h3>
                     <div className="space-y-4 leading-relaxed font-light text-lg">
                         <p className="flex items-start gap-2">
                             <span className="text-golden-light text-xl font-bold flex-shrink-0">✓</span>
-                            <span>If you feel tired of consuming and ready to embody.</span>
+                            <span>{copy('about.closing.invite1')}</span>
                         </p>
                         <p className="flex items-start gap-2">
                             <span className="text-golden-light text-xl font-bold flex-shrink-0">✓</span>
-                            <span>If you want support that meets you in real life, not just in theory.</span>
+                            <span>{copy('about.closing.invite2')}</span>
                         </p>
                         <p className="flex items-start gap-2">
                             <span className="text-golden-light text-xl font-bold flex-shrink-0">✓</span>
-                            <span>If you are ready to become your own most trusted guide.</span>
+                            <span>{copy('about.closing.invite3')}</span>
                         </p>
                         <p className="text-2xl font-display text-golden-light mt-8">Uncoached is here.</p>
                     </div>
@@ -56,7 +58,7 @@ const AboutClosing = () => {
                             className="inline-block px-8 py-4 bg-sage text-bone rounded-full font-medium shadow-lg hover:bg-sage/90 hover:scale-105 transition-all duration-300 text-center"
                             to="/pricing"
                         >
-                            Start Your Journey
+                            {copy('about.closing.cta')}
                         </Link>
                     </div>
                 </div>

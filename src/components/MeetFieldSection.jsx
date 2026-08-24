@@ -15,7 +15,7 @@ const MeetFieldSection = () => {
                 {/* Left - Phone Mockup */}
                 <div className="relative">
                     <img
-                        src={import.meta.env.BASE_URL + "StructureImages/9b769083-9632-43ab-ba34-ef4350da1239-removebg-preview.png"}
+                        src={import.meta.env.BASE_URL + "images/field-chat-interface.png"}
                         alt="Start chatting with Field"
                         className="w-full max-w-xs mx-auto relative z-10 drop-shadow-2xl lg:translate-x-36"
                     />

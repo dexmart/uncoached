@@ -32,7 +32,8 @@ const PartnershipApplyPage = () => {
     const [form, setForm] = useState({
         full_name: '', credentials: '', email: '', bio: '', areas_of_focus: '',
         countries: '', delivery: '', languages: '', website_url: '', social_url: '',
-        expertise_area: '', resource_ideas: '', consent: false,
+        expertise_area: '', resource_ideas: '',
+        consent_publish: false, consent_collaborate: false,
     });
     const [photo, setPhoto] = useState(null);
 
@@ -77,6 +78,7 @@ const PartnershipApplyPage = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...form,
+                    consent: form.consent_publish && form.consent_collaborate,
                     website_url: tidyUrl(form.website_url),
                     social_url: tidyUrl(form.social_url),
                     photo_url,
@@ -230,15 +232,26 @@ const PartnershipApplyPage = () => {
                             placeholder="e.g. an exercise, reflection, worksheet, conversation tool, or practice I use with clients..." />
                     </Field>
 
-                    <label className="flex items-start gap-3 bg-clay/30 rounded-2xl p-5 cursor-pointer">
-                        <input type="checkbox" required checked={form.consent} onChange={set('consent')}
-                            className="mt-1 w-5 h-5 accent-[#3F5D4D] flex-shrink-0" />
-                        <span className="text-sm text-text-dark/85 leading-relaxed">
-                            If accepted into the Practitioner Partnership, I give Uncoached permission to
-                            publish my practitioner profile and I'm open to collaborating on a resource
-                            for the Uncoached Library.
-                        </span>
-                    </label>
+                    <div className="space-y-3">
+                        <label className="flex items-start gap-3 bg-clay/30 rounded-2xl p-5 cursor-pointer">
+                            <input type="checkbox" required checked={form.consent_publish} onChange={set('consent_publish')}
+                                className="mt-1 w-5 h-5 accent-[#3F5D4D] flex-shrink-0" />
+                            <span className="text-sm text-text-dark/85 leading-relaxed">
+                                If accepted into the Practitioner Partnership, I give Uncoached permission to
+                                publish the practitioner profile information and headshot I provide on the
+                                Uncoached website.
+                            </span>
+                        </label>
+                        <label className="flex items-start gap-3 bg-clay/30 rounded-2xl p-5 cursor-pointer">
+                            <input type="checkbox" required checked={form.consent_collaborate} onChange={set('consent_collaborate')}
+                                className="mt-1 w-5 h-5 accent-[#3F5D4D] flex-shrink-0" />
+                            <span className="text-sm text-text-dark/85 leading-relaxed">
+                                I understand that the Practitioner Partnership includes collaborating with
+                                Uncoached on at least one practical resource for the Uncoached Library if my
+                                application is accepted.
+                            </span>
+                        </label>
+                    </div>
 
                     <button type="submit" disabled={submitting}
                         className="w-full py-4 bg-sage text-bone rounded-full font-medium text-lg hover:bg-sage/90 transition-colors disabled:opacity-60">
@@ -247,7 +260,10 @@ const PartnershipApplyPage = () => {
 
                     <p className="text-center text-sm text-text-muted leading-relaxed -mt-2">
                         We'll review your application and be in touch with next steps if it feels like a
-                        good fit.
+                        good fit. By submitting this application, you acknowledge that the information you
+                        provide will be collected and used to review your application and administer the
+                        Practitioner Partnership in accordance with the{' '}
+                        <Link to="/privacy" className="text-sage hover:underline">Uncoached Privacy Policy</Link>.
                     </p>
 
                     <p className="text-center">

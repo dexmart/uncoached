@@ -78,6 +78,152 @@ export const SITE_COPY_FIELDS = [
     { key: 'about.gap.emphasis', group: 'About — The Gap', label: 'Emphasised line', text: 'Change happens in ordinary moments.' },
     { key: 'about.gap.closing', group: 'About — The Gap', label: 'Closing line', multiline: true, text: 'You don\'t need more advice, you need something that helps you come back to yourself in the moment.' },
 
+    { key: 'about.why.title', group: 'About — Why Uncoached Exists', label: 'Section heading', text: 'Why Uncoached Exists' },
+    { key: 'about.why.body1', group: 'About — Why Uncoached Exists', label: 'Paragraph 1', multiline: true, text: 'Uncoached was created as a response to a culture of outsourced authority, endless consumption, and the belief that discomfort needs to be eliminated rather than understood;' },
+    { key: 'about.why.body2', group: 'About — Why Uncoached Exists', label: 'Paragraph 2', multiline: true, text: 'One that prioritises insight over integration, hierarchy over self-trust, and fixing emotions instead of learning how to live with them.' },
+    { key: 'about.why.emphasis', group: 'About — Why Uncoached Exists', label: 'Closing emphasis', multiline: true, text: 'Uncoached exists to support the part of the journey that usually happens alone.' },
+
+    { key: 'about.shift.title', group: 'About — The Shift', label: 'Section heading', text: 'The Shift' },
+    { key: 'about.shift.intro', group: 'About — The Shift', label: 'Intro', text: 'When support becomes available in real time, something changes.' },
+    { key: 'about.shift.point1', group: 'About — The Shift', label: 'Point 1', text: 'You stop treating “bad” moments as problems.' },
+    { key: 'about.shift.point2', group: 'About — The Shift', label: 'Point 2', text: 'You stop chasing “good” moments for relief.' },
+    { key: 'about.shift.point3', group: 'About — The Shift', label: 'Point 3', multiline: true, text: 'You learn how to meet whatever life brings with more steadiness, clarity, and self-trust.' },
+
+    { key: 'about.quote', group: 'About — Core Message', label: 'Quote', multiline: true, text: 'Uncoached exists to turn insight into lived experience by helping people build self-trust, repetition, and support in real time.' },
+
+    { key: 'about.philosophy.title', group: 'About — Philosophy', label: 'Section heading', text: 'A Philosophy of Self-Leadership' },
+    { key: 'about.philosophy.emphasis', group: 'About — Philosophy', label: 'Emphasised line', text: 'It is about coming home to yourself.' },
+    { key: 'about.philosophy.intro', group: 'About — Philosophy', label: 'Lead-in line', multiline: true, text: 'When you learn how to support yourself in both the messy moments and the expansive ones:' },
+    { key: 'about.philosophy.point1', group: 'About — Philosophy', label: 'Point 1', text: 'You stop outsourcing your authority.' },
+    { key: 'about.philosophy.point2', group: 'About — Philosophy', label: 'Point 2', multiline: true, text: 'You start trusting your own capacity to move through life.' },
+
+    { key: 'about.closing.title1', group: 'About — Closing', label: 'Heading 1', text: 'This Is Not For Everyone' },
+    { key: 'about.closing.body1', group: 'About — Closing', label: 'Paragraph 1', multiline: true, text: 'Uncoached is not for people looking for quick fixes or answers outside themselves.' },
+    { key: 'about.closing.body2', group: 'About — Closing', label: 'Paragraph 2', multiline: true, text: 'It is for those who are willing to practice, stay present, and integrate what they already know into daily life until it becomes automatic.' },
+    { key: 'about.closing.body3', group: 'About — Closing', label: 'Paragraph 3', multiline: true, text: 'It is for people who are ready to live their growth, not just understand it.' },
+    { key: 'about.closing.title2', group: 'About — Closing', label: 'Heading 2', text: 'A Quiet Invitation' },
+    { key: 'about.closing.invite1', group: 'About — Closing', label: 'Invitation 1', text: 'If you feel tired of consuming and ready to embody.' },
+    { key: 'about.closing.invite2', group: 'About — Closing', label: 'Invitation 2', multiline: true, text: 'If you want support that meets you in real life, not just in theory.' },
+    { key: 'about.closing.invite3', group: 'About — Closing', label: 'Invitation 3', text: 'If you are ready to become your own most trusted guide.' },
+    { key: 'about.closing.cta', group: 'About — Closing', label: 'Button', text: 'Start Your Journey' },
+
+    // ── Legal pages — whole documents, so sections can be added freely ───
+    { key: 'legal.terms.effective', group: 'Legal — Terms of Use', label: 'Effective date line', text: 'Effective: August 2025' },
+    {
+        key: 'legal.terms.body', group: 'Legal — Terms of Use', label: 'Full document', document: true,
+        help: 'Start a line with ## to make it a heading. Leave a blank line between paragraphs.',
+        text: `Welcome to Uncoached, a product of Emergyng Energy (a sole proprietorship registered in Canada). These Terms of Use govern your access to and use of our digital tools, including Field, our AI companion, and the Clarity Toolkit.
+
+## 1. Acceptance of Terms
+By using our website and digital tools, and downloadable resources (“Services”), you agree to be bound by these Terms of Use. If you do not agree, please do not use the site.
+
+## 2. Description of Services & Disclaimers
+Uncoached offers self-guided digital wellness tools, including downloadable content and AI-powered reflections. Our tools are designed to support personal reflection. They are not a substitute for professional therapy, counseling, or medical advice. Emergyng Energy is not liable for any damages, emotional or otherwise, that result from use of our tools or platform.
+
+Our Services are for self-reflection and clarity-building only. They are not intended to diagnose, treat, or cure any condition. If you're experiencing emotional distress, please seek support from a qualified professional.
+
+Use of Uncoached does not create a therapist-client, coach-client, healthcare provider-patient, fiduciary, or other professional relationship between you and Emergyng Energy.
+
+Our AI assistant, Field, offers reflective conversation support but is not a therapist, coach, or licensed professional. You use Field at your own discretion, and we make no guarantees about outcomes. Field may occasionally generate inaccurate, incomplete, or inappropriate information. You should use your own judgment and should not rely on Field for medical, legal, financial, or other professional advice.
+
+Features, tools, and content available may evolve over time as part of ongoing updates to the service.
+
+## 3. Payment & Access
+Except where required by applicable law, all sales are final. Due to the digital nature of our Services, we do not offer refunds once a payment has been processed.
+
+Your subscription provides access to Field and the Clarity Toolkit, and other tools and add-on tools for the duration of your active billing cycle. If you choose to cancel, you will retain access until the end of your current paid month(s) or paid year. Future tools, expansions, or card bundles may be included in your subscription or offered separately at our discretion.
+
+## 4. User Conduct
+You agree not to misuse our tools. You will not share copyrighted content outside of its intended use or engage in any behavior that harms the experience for others. Reproduction, resale, redistribution, or unauthorized sharing is prohibited without written permission.
+
+You agree not to use Field or any part of the Uncoached experience to share harmful, illegal, threatening, or abusive content. Any such use is strictly prohibited.
+
+## 5. Intellectual Property
+All content provided by Uncoached, including AI tools, printable cards, and digital experiences are owned by Emergyng Energy. You're granted a limited, non-transferable license for personal use only. Reproduction, resale, redistribution, or unauthorized sharing is prohibited without written permission.
+
+## 6. Eligibility
+You must be at least 18 years old to use Uncoached. If you are under 18, you may only use the Services with the permission and supervision of a parent or legal guardian, where permitted by applicable law.
+
+## 7. Modifications to Terms
+We may revise these Terms, including subscription pricing, at any time. Continued use of the service after changes implies acceptance of the updated terms.
+
+## 8. Limitation of Liability
+Emergyng Energy is not liable for any indirect or incidental damages, emotional or otherwise, that result from use (or inability to use) of our tools or platform.
+
+## 9. Contact
+For support, email us at hello@uncoached.space.
+
+## 10. Governing Law
+These Terms are governed by the laws of the Province of Ontario and the federal laws of Canada applicable therein, without regard to conflict of law principles.`
+    },
+
+    { key: 'legal.privacy.effective', group: 'Legal — Privacy Policy', label: 'Effective date line', text: 'Effective Date: September 2025' },
+    {
+        key: 'legal.privacy.body', group: 'Legal — Privacy Policy', label: 'Full document', document: true,
+        help: 'Start a line with ## to make it a heading, or • to make a bullet. Leave a blank line between paragraphs.',
+        text: `Uncoached (“we,” “our,” “us”) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website, downloadable tools, and our AI companion, Field.
+
+By using Uncoached, you agree to the terms of this Privacy Policy.
+
+## 1. Information We Collect
+We collect two main types of information.
+
+Information you provide:
+• When you purchase The Uncoached Essentials (via Stripe), we collect your name, email address, and payment details. Payment information is processed securely by Stripe and is never stored by us.
+• When you interact with Field, you may provide personal reflections, journal-like entries, or other text responses.
+• When you apply to the Practitioner Partnership, we collect the details and headshot you submit in the application form.
+
+Automatically collected information:
+• Basic usage data, such as browser type, device type, IP address, and pages visited on our site.
+• Email opt-ins (if you subscribe), which include your name and email address.
+
+## 2. How We Use Your Information
+• Provide and deliver Uncoached products (printable toolkits, add-on tools, rituals, AI access).
+• Enable and improve your experience with Field, our AI companion.
+• Review Practitioner Partnership applications and administer the partnership.
+• Send you updates you've opted into (e.g., new cards, behind-the-scenes tools, or Field's secret features).
+• Maintain and improve site performance and user experience.
+
+## 3. AI Assistant (Field) and Chatbase
+When you interact with Field, your entries are processed by our service provider Chatbase, which hosts the AI model on our behalf.
+• You do not need a Chatbase account; everything happens directly inside the Uncoached website.
+• Your messages are used to generate responses within Field and to operate, maintain, and improve the functionality and quality of the Services. Your entries are not used to train public AI models.
+• Chatbase processes information on our behalf in accordance with its applicable privacy and security practices.
+• If you delete your cookies, Field will refresh and you will lose any previously stored memories within Field.
+
+We recommend avoiding sensitive personal details (such as medical, financial, or legal information) when using Field.
+
+## 4. How We Share Information
+We do not sell your personal data. We only share information in the following limited ways:
+• Service providers: With trusted partners like Stripe (for payments) and Chatbase (for Field's AI responses).
+• Legal compliance: If required by law or to protect our rights and safety.
+
+## 5. Data Retention
+• Email and purchase details are retained as long as necessary for customer support, tax, and legal obligations.
+• Entries shared with Field are processed by Chatbase and may be stored for a limited period as necessary to provide the Service and improve reliability.
+• Practitioner applications are retained so we can review them and maintain the practitioner community.
+
+## 6. Your Rights
+Depending on your location, you may have the right to:
+• Access, correct, or delete your personal information.
+• Opt out of communications at any time (unsubscribe link provided in every email).
+• Request that we limit or stop processing your data.
+
+To exercise these rights, email us at hello@uncoached.space.
+
+## 7. Security
+We use reasonable measures to protect your personal information. However, no system is 100% secure, and we cannot guarantee absolute security of your data.
+
+## 8. Children's Privacy
+Uncoached is not intended for individuals under 18. We do not knowingly collect personal information from children.
+
+## 9. Updates to This Policy
+We may update this Privacy Policy from time to time. When we do, we'll update the effective date at the top of this page. Significant changes will be communicated clearly.
+
+## 10. Contact
+For privacy concerns, email us at hello@uncoached.space.`
+    },
+
     // ── Pricing ─────────────────────────────────────────────────────────
     { key: 'pricing.title', group: 'Pricing', label: 'Page heading', text: 'Choose your path' },
     { key: 'pricing.subtitle', group: 'Pricing', label: 'Subheading', text: "There's no right pace. Take what you need." },

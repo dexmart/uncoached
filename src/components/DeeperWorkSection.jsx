@@ -7,14 +7,14 @@ const DeeperWorkSection = () => {
         <section className="py-16 lg:py-24 relative overflow-hidden bg-bone" id="deeper-work">
             {/* Background with overlay — desktop only; on mobile the image is stacked above the text */}
             <div className="absolute inset-0 z-0 hidden lg:block">
-                <img src={import.meta.env.BASE_URL + "bg/S3_ Deeper work, on your own timing - homepage.png"} alt="" className="w-full h-full object-cover" />
+                <img src={import.meta.env.BASE_URL + "bg/S3-deeper-work-v2.jpg"} alt="" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-bone/60 to-bone"></div>
             </div>
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
                 {/* Mobile image — Johanna's composed version (subject left, calm space right) */}
                 <img
-                    src={import.meta.env.BASE_URL + "bg/S3-deeper-work-mobile.jpg"}
+                    src={import.meta.env.BASE_URL + "bg/S3-deeper-work-v2.jpg"}
                     alt="Deeper work, on your own timing"
                     className="lg:hidden w-full h-56 object-cover rounded-2xl mb-8 shadow-md"
                 />
