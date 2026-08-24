@@ -1,4 +1,7 @@
+import { useCopy } from '../../context/SiteCopyContext';
+
 const AboutQuote = () => {
+    const copy = useCopy();
     // Requirements: "wide and short"
     return (
         <section className="py-20 relative overflow-hidden flex items-center justify-center text-center">
@@ -15,7 +18,7 @@ const AboutQuote = () => {
 
             <div className="max-w-4xl mx-auto px-6 relative z-10">
                 <h3 className="font-display text-2xl md:text-3xl lg:text-4xl text-bone leading-normal">
-                    Uncoached exists to turn insight into lived experience by helping people build self-trust, repetition, and support in real time.
+                    {copy('about.quote')}
                 </h3>
             </div>
         </section>

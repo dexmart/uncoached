@@ -1,4 +1,7 @@
+import { useCopy } from '../../context/SiteCopyContext';
+
 const AboutWhy = () => {
+    const copy = useCopy();
     return (
         <section className="py-24 relative overflow-hidden -mt-8">
             {/* Background */}
@@ -16,16 +19,16 @@ const AboutWhy = () => {
                 {/* Checking standard layout. Usually alternated. Let's maximize readability. */}
                 {/* Design ref S3 image usually has visual on left. Let's put text on right. */}
                 <div className="lg:col-start-2">
-                    <h2 className="font-display text-4xl mb-6 text-text-dark">Why Uncoached Exists</h2>
+                    <h2 className="font-display text-4xl mb-6 text-text-dark">{copy('about.why.title')}</h2>
                     <div className="text-lg text-text-muted leading-relaxed space-y-6">
                         <p>
-                            Uncoached was created as a response to a culture of outsourced authority, endless consumption, and the belief that discomfort needs to be eliminated rather than understood;
+                            {copy('about.why.body1')}
                         </p>
                         <p>
-                            One that prioritises insight over integration, hierarchy over self-trust, and fixing emotions instead of learning how to live with them.
+                            {copy('about.why.body2')}
                         </p>
                         <p className="font-medium text-text-dark">
-                            Uncoached exists to support the part of the journey that usually happens alone.
+                            {copy('about.why.emphasis')}
                         </p>
                     </div>
                 </div>
