@@ -128,7 +128,15 @@ const AdminSiteCopyPage = () => {
                                     </div>
                                 </div>
 
-                                {f.multiline ? (
+                                {f.help && (
+                                    <p className="text-xs text-text-muted mb-2">{f.help}</p>
+                                )}
+
+                                {f.document ? (
+                                    <textarea id={f.key} rows={26} value={values[f.key] ?? ''}
+                                        onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
+                                        className="w-full px-4 py-3 bg-white border border-clay/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm leading-relaxed font-mono" />
+                                ) : f.multiline ? (
                                     <textarea id={f.key} rows={3} value={values[f.key] ?? ''}
                                         onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
                                         className="w-full px-4 py-3 bg-white border border-clay/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm leading-relaxed" />
