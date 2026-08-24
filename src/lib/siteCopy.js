@@ -230,6 +230,165 @@ For privacy concerns, email us at hello@uncoached.space.`
     { key: 'pricing.universal', group: 'Pricing', label: 'Line above the dropdowns', text: "There's no right pace. Take what you need." },
     { key: 'pricing.disclaimer', group: 'Pricing', label: 'Disclaimer', multiline: true, text: "Uncoached is not therapy or coaching. It's a self-guided space designed to support awareness, regulation, and integration in everyday life. All memberships renew automatically at the end of each billing period. You can cancel at any time before renewal to stop future charges. There's no right pace. Stay for a moment, or make it a rhythm." },
     { key: 'pricing.closing', group: 'Pricing', label: 'Closing statement', multiline: true, text: "You don't need to fix yourself. You just need a place to stay connected to yourself." },
+
+    // ── Practitioners · Hero ────────────────────────────────────────────
+    { key: 'practitioners.hero.eyebrow', group: 'Practitioners — Hero', label: 'Small line above the headline', text: "Trusted Practitioners Around the World" },
+    { key: 'practitioners.hero.title', group: 'Practitioners — Hero', label: 'Headline', text: "Find someone whose approach" },
+    { key: 'practitioners.hero.title_emphasis', group: 'Practitioners — Hero', label: 'Headline (italic ending)', text: "resonates." },
+    { key: 'practitioners.hero.intro', group: 'Practitioners — Hero', label: 'Intro paragraph', multiline: true, text: "The professionals listed here are people personally trusted or worked with. There are no affiliate links and no commissions. This page exists simply to help you find practitioners whose approach may resonate with you." },
+
+    // ── Practitioners · Our Promise ─────────────────────────────────────
+    { key: 'practitioners.promise.card1_title', group: 'Practitioners — Our Promise', label: 'Card 1 title', text: "No affiliate links" },
+    { key: 'practitioners.promise.card1_body', group: 'Practitioners — Our Promise', label: 'Card 1 text', text: "Nothing here is a paid placement." },
+    { key: 'practitioners.promise.card2_title', group: 'Practitioners — Our Promise', label: 'Card 2 title', text: "No commissions or kickbacks" },
+    { key: 'practitioners.promise.card2_body', group: 'Practitioners — Our Promise', label: 'Card 2 text', text: "We never earn from a referral." },
+    { key: 'practitioners.promise.card3_title', group: 'Practitioners — Our Promise', label: 'Card 3 title', text: "Included on trust, not payment" },
+    { key: 'practitioners.promise.card3_body', group: 'Practitioners — Our Promise', label: 'Card 3 text', text: "Listed only when the work aligns." },
+
+    // ── Practitioners · The Directory ───────────────────────────────────
+    { key: 'practitioners.directory.link_website', group: 'Practitioners — The Directory', label: 'Website link wording on a profile card', text: "Visit website" },
+    { key: 'practitioners.directory.empty', group: 'Practitioners — The Directory', label: 'Message when nobody is listed yet', multiline: true, help: 'Shown only while the directory is empty.', text: "Our first practitioners are being welcomed in. Check back soon." },
+    { key: 'practitioners.directory.empty_category', group: 'Practitioners — The Directory', label: 'Message when a filter has no one in it', multiline: true, text: "No practitioners in this category yet." },
+
+    // ── Practitioners · How Practitioners Are Chosen ────────────────────
+    { key: 'practitioners.process.title', group: 'Practitioners — How Practitioners Are Chosen', label: 'Section heading', text: "How practitioners are chosen" },
+    { key: 'practitioners.process.intro', group: 'Practitioners — How Practitioners Are Chosen', label: 'Line under the heading', multiline: true, text: "A small, intentional process to keep this list trustworthy." },
+    { key: 'practitioners.process.step1_title', group: 'Practitioners — How Practitioners Are Chosen', label: 'Step 1 title', text: "Initial Contact" },
+    { key: 'practitioners.process.step1_body', group: 'Practitioners — How Practitioners Are Chosen', label: 'Step 1 text', multiline: true, text: "A short introduction and a website or professional profile is shared." },
+    { key: 'practitioners.process.step2_title', group: 'Practitioners — How Practitioners Are Chosen', label: 'Step 2 title', text: "Connection Conversation" },
+    { key: 'practitioners.process.step2_body', group: 'Practitioners — How Practitioners Are Chosen', label: 'Step 2 text', multiline: true, text: "If aligned, we schedule a brief conversation or sample session to experience the work directly." },
+    { key: 'practitioners.process.step3_title', group: 'Practitioners — How Practitioners Are Chosen', label: 'Step 3 title', text: "Alignment Review" },
+    { key: 'practitioners.process.step3_body', group: 'Practitioners — How Practitioners Are Chosen', label: 'Step 3 text', multiline: true, text: "Practitioners are selected based on alignment with Uncoached's spirit and values — not payment." },
+    { key: 'practitioners.process.step4_title', group: 'Practitioners — How Practitioners Are Chosen', label: 'Step 4 title', text: "Curated Listing" },
+    { key: 'practitioners.process.step4_body', group: 'Practitioners — How Practitioners Are Chosen', label: 'Step 4 text', multiline: true, text: "Not everyone who reaches out is included. The list stays intentionally small and curated." },
+
+    // ── Practitioners · Interested In Being Featured ────────────────────
+    { key: 'practitioners.featured.title', group: 'Practitioners — Interested In Being Featured', label: 'Section heading', text: "Interested in being featured?" },
+    { key: 'practitioners.featured.body', group: 'Practitioners — Interested In Being Featured', label: 'Paragraph', multiline: true, text: "Uncoached occasionally adds new practitioners to this list when their work aligns with the values and approach of the platform. If you are a therapist, counselor, somatic practitioner, nervous system specialist, or other wellbeing professional and feel your work may be a good fit, you're welcome to reach out." },
+    { key: 'practitioners.featured.cta', group: 'Practitioners — Interested In Being Featured', label: 'Button', text: "Apply Here" },
+
+    // ── Partnership Guide · Cover ───────────────────────────────────────
+    { key: 'partnership.header.cta', group: 'Partnership Guide — Cover', label: 'Button in the top corner', fixed: true, text: "Apply now" },
+    { key: 'partnership.cover.title', group: 'Partnership Guide — Cover', label: 'Cover title', multiline: true, list: true, rows: 4, fixed: true, help: 'One line per line of the title.', text: "Uncoached\nPractitioner\nPartnership\nGuide" },
+    { key: 'partnership.cover.tagline', group: 'Partnership Guide — Cover', label: 'Tagline under the line', multiline: true, list: true, rows: 2, fixed: true, help: 'One line per line.', text: "Helping clients between\nthe breakthroughs." },
+    { key: 'partnership.cover.footer', group: 'Partnership Guide — Cover', label: 'Green bar at the bottom', fixed: true, text: "uncoached.space" },
+
+    // ── Partnership Guide · Welcome ─────────────────────────────────────
+    { key: 'partnership.welcome.heading', group: 'Partnership Guide — Welcome', label: 'Heading', fixed: true, text: "Welcome" },
+    { key: 'partnership.welcome.lead', group: 'Partnership Guide — Welcome', label: 'Line above the handwriting', fixed: true, text: "Before anything else," },
+    { key: 'partnership.welcome.script', group: 'Partnership Guide — Welcome', label: 'Handwritten line', fixed: true, text: "thank you." },
+    { key: 'partnership.welcome.p1', group: 'Partnership Guide — Welcome', label: 'Paragraph 1', multiline: true, fixed: true, text: "One thing I've realized over the years is that insight doesn't automatically become change." },
+    { key: 'partnership.welcome.p2', group: 'Partnership Guide — Welcome', label: 'Paragraph 2', multiline: true, fixed: true, text: "Someone can leave a session feeling lighter, clearer, and committed to doing things differently. But lasting change isn't built in the hour you spend together. It happens afterwards, in everyday life, when they're trying to remember what they learned and put it into practice." },
+    { key: 'partnership.welcome.p3', group: 'Partnership Guide — Welcome', label: 'Paragraph 3 (bold)', multiline: true, fixed: true, text: "That's what inspired Uncoached." },
+    { key: 'partnership.welcome.p4', group: 'Partnership Guide — Welcome', label: 'Paragraph 4', multiline: true, fixed: true, text: "I wanted to create something practitioners would genuinely be excited to share with their clients. A place where clients could reconnect with what they've already learned and continue building on the work they've already started." },
+    { key: 'partnership.welcome.p5', group: 'Partnership Guide — Welcome', label: 'Paragraph 5 (bold)', multiline: true, fixed: true, text: "Not to replace the work you're already doing, but to help it stick." },
+    { key: 'partnership.welcome.p6', group: 'Partnership Guide — Welcome', label: 'Paragraph 6', multiline: true, fixed: true, text: "That's what the Practitioner Partnership is all about." },
+    { key: 'partnership.welcome.p7', group: 'Partnership Guide — Welcome', label: 'Paragraph 7', multiline: true, fixed: true, text: "Together, we can take the tools and ideas that are already changing lives and give them a home where they can continue helping people long after the session ends." },
+
+    // ── Partnership Guide · What Is The Partnership ─────────────────────
+    { key: 'partnership.what.title', group: 'Partnership Guide — What Is The Partnership', label: 'Page title', multiline: true, list: true, rows: 2, fixed: true, help: 'One line per line of the title.', text: "What is the Practitioner\nPartnership?" },
+    { key: 'partnership.what.p1', group: 'Partnership Guide — What Is The Partnership', label: 'Paragraph 1 (bold)', multiline: true, fixed: true, text: "One of the most rewarding parts of this work is watching someone take what they've learned and truly make it part of their life." },
+    { key: 'partnership.what.p2', group: 'Partnership Guide — What Is The Partnership', label: 'Paragraph 2', multiline: true, fixed: true, text: "Every practitioner has exercises, perspectives, and practical tools that make a real difference. Together, we'll turn some of those into polished Uncoached resources that people can return to whenever they need a reminder, a reset, or a different perspective." },
+    { key: 'partnership.what.p3_bold', group: 'Partnership Guide — What Is The Partnership', label: 'Paragraph 3 — bold opening', multiline: true, fixed: true, text: "These resources aren't designed to replace your work. They're designed to reinforce it." },
+    { key: 'partnership.what.p3_rest', group: 'Partnership Guide — What Is The Partnership', label: 'Paragraph 3 — rest of the paragraph', multiline: true, fixed: true, text: "They give your clients a trusted place to return to the tools, exercises, and perspectives you've already introduced, while also discovering complementary perspectives that may deepen what they're learning or help something finally click." },
+    { key: 'partnership.what.p4', group: 'Partnership Guide — What Is The Partnership', label: 'Paragraph 4', multiline: true, fixed: true, text: "They're also there for the moments when you need to step away, so your clients still have something meaningful to lean on until you're back." },
+    { key: 'partnership.what.p5', group: 'Partnership Guide — What Is The Partnership', label: 'Paragraph 5 — opening', multiline: true, fixed: true, text: "As part of the partnership, your expertise becomes a part of a growing library that supports people long after the session ends." },
+    { key: 'partnership.what.p5_bold', group: 'Partnership Guide — What Is The Partnership', label: 'Paragraph 5 — bold ending', multiline: true, fixed: true, text: "You'll also have a professional profile where visitors and members can discover your work, learn about your approach, and connect with you independently." },
+    { key: 'partnership.what.icon1', group: 'Partnership Guide — What Is The Partnership', label: 'Icon 1 caption', multiline: true, list: true, rows: 2, fixed: true, help: 'Two short lines.', text: "You share\nyour expertise." },
+    { key: 'partnership.what.icon2', group: 'Partnership Guide — What Is The Partnership', label: 'Icon 2 caption', multiline: true, list: true, rows: 2, fixed: true, help: 'Two short lines.', text: "We create a\nresource together." },
+    { key: 'partnership.what.icon3', group: 'Partnership Guide — What Is The Partnership', label: 'Icon 3 caption', multiline: true, list: true, rows: 2, fixed: true, help: 'Two short lines.', text: "Members get\npractical support." },
+    { key: 'partnership.what.icon4', group: 'Partnership Guide — What Is The Partnership', label: 'Icon 4 caption', multiline: true, list: true, rows: 2, fixed: true, help: 'Two short lines.', text: "Your practice\ngets visibility." },
+
+    // ── Partnership Guide · How Our Partnership Works ───────────────────
+    { key: 'partnership.how.title', group: 'Partnership Guide — How Our Partnership Works', label: 'Page title', fixed: true, text: "How our partnership works" },
+    { key: 'partnership.how.subtitle', group: 'Partnership Guide — How Our Partnership Works', label: 'Italic line under the title', fixed: true, text: "An exchange that creates impact." },
+    { key: 'partnership.how.step1_title', group: 'Partnership Guide — How Our Partnership Works', label: 'Step 1 title', fixed: true, text: "You bring" },
+    { key: 'partnership.how.step1_body', group: 'Partnership Guide — How Our Partnership Works', label: 'Step 1 text', multiline: true, fixed: true, text: "Your expertise, favourite client exercises, practical tools, and the wisdom you find yourself sharing again and again." },
+    { key: 'partnership.how.step2_title', group: 'Partnership Guide — How Our Partnership Works', label: 'Step 2 title', fixed: true, text: "Together we build" },
+    { key: 'partnership.how.step2_body', group: 'Partnership Guide — How Our Partnership Works', label: 'Step 2 text', multiline: true, fixed: true, text: "We help shape your expertise into a beautiful, practical resource that feels at home inside the Uncoached Library." },
+    { key: 'partnership.how.step3_title', group: 'Partnership Guide — How Our Partnership Works', label: 'Step 3 title', fixed: true, text: "Members receive" },
+    { key: 'partnership.how.step3_body', group: 'Partnership Guide — How Our Partnership Works', label: 'Step 3 text', multiline: true, fixed: true, text: "A growing library of practical tools and resources from a diverse community of practitioners, giving them support they can return to whenever they need it." },
+    { key: 'partnership.how.step4_title', group: 'Partnership Guide — How Our Partnership Works', label: 'Step 4 title', fixed: true, text: "You receive" },
+    { key: 'partnership.how.step4_body', group: 'Partnership Guide — How Our Partnership Works', label: 'Step 4 text', multiline: true, fixed: true, text: "A Community Practitioner profile introducing visitors and members to your independent practice." },
+    { key: 'partnership.how.callout', group: 'Partnership Guide — How Our Partnership Works', label: 'Tan box at the bottom', multiline: true, list: true, rows: 2, fixed: true, help: 'One line per line.', text: "Every collaboration looks a little different.\nThat's the beauty of it." },
+
+    // ── Partnership Guide · What You Could Share ────────────────────────
+    { key: 'partnership.share.title', group: 'Partnership Guide — What You Could Share', label: 'Page title', fixed: true, text: "What you could share" },
+    { key: 'partnership.share.script', group: 'Partnership Guide — What You Could Share', label: 'Handwritten line on the green brush stroke', multiline: true, fixed: true, text: "Something that's already helping the people you work with." },
+    { key: 'partnership.share.intro', group: 'Partnership Guide — What You Could Share', label: 'Intro paragraph', multiline: true, fixed: true, text: "Think about the practical things you already teach, practise, or send home with clients. The exercises they come back to. The tools that help something click. The things you wish they remembered when real life happens between sessions." },
+    { key: 'partnership.share.list_heading', group: 'Partnership Guide — What You Could Share', label: 'Heading above the list', fixed: true, text: "It could be…" },
+    { key: 'partnership.share.bullets', group: 'Partnership Guide — What You Could Share', label: 'The bullet list', multiline: true, list: true, rows: 12, fixed: true, help: 'One bullet per line. Adding lines will make this page overflow — swap a line out rather than adding to the list.', text: "A favourite client exercise\nA body-based or grounding practice\nA conversation or communication tool\nA way to recognize or map a recurring pattern\nA skill you regularly teach clients to practise\nA check-in you use to help someone take stock\nAn exercise for partners to do together\nA practical coping or regulation strategy\nA decision-making or problem-solving framework\nA reflection or journal prompt that consistently creates insight\nA piece of between-session practice you frequently suggest\nA simple tool that helps clients apply what they've learned in real life" },
+    { key: 'partnership.share.callout_bold', group: 'Partnership Guide — What You Could Share', label: 'Tan box — bold opening', fixed: true, text: "You bring the expertise." },
+    { key: 'partnership.share.callout_body', group: 'Partnership Guide — What You Could Share', label: 'Tan box — paragraph', multiline: true, fixed: true, text: "Share the idea, practice or approach with me and help me understand how you use it. Together, we'll translate it into a polished Uncoached resource that's clear, practical and easy to use." },
+
+    // ── Partnership Guide · Your Practitioner Profile ───────────────────
+    { key: 'partnership.profile.title', group: 'Partnership Guide — Your Practitioner Profile', label: 'Page title', fixed: true, text: "Your practitioner profile" },
+    { key: 'partnership.profile.intro', group: 'Partnership Guide — Your Practitioner Profile', label: 'Intro paragraph', multiline: true, fixed: true, text: "Your profile is featured on the public Uncoached website, making it visible to both visitors and members who want to learn more about your work before reaching out." },
+    { key: 'partnership.profile.panel_heading', group: 'Partnership Guide — Your Practitioner Profile', label: 'Tan panel heading', fixed: true, text: "Here's what people will see:" },
+    { key: 'partnership.profile.panel_items', group: 'Partnership Guide — Your Practitioner Profile', label: 'Tan panel list', multiline: true, list: true, rows: 7, fixed: true, help: 'One item per line. Seven lines fit this panel.', text: "Professional photo\nArea(s) of focus\nCountries you work in\nVirtual and/or in-person availability\nLanguages spoken\nWebsite and/or booking link\nSocial media (optional)" },
+    { key: 'partnership.profile.script1', group: 'Partnership Guide — Your Practitioner Profile', label: 'Handwritten line 1', multiline: true, fixed: true, text: "You don't need to be a copywriter." },
+    { key: 'partnership.profile.script2', group: 'Partnership Guide — Your Practitioner Profile', label: 'Handwritten line 2', multiline: true, fixed: true, text: "I'll help bring your profile to life." },
+    { key: 'partnership.profile.notes_heading', group: 'Partnership Guide — Your Practitioner Profile', label: 'Bottom panel heading', fixed: true, text: "A few important things to know:" },
+    { key: 'partnership.profile.notes_items', group: 'Partnership Guide — Your Practitioner Profile', label: 'Bottom panel list', multiline: true, list: true, rows: 6, fixed: true, help: 'One item per line. Six lines fit this panel.', text: "Your practice remains completely independent.\nYou manage your own clients, fees, and scheduling.\nNo referral commissions.\nWe'll professionally polish and brand every resource together.\nYour contribution becomes part of the Uncoached Library.\nWe periodically review profiles to keep information current." },
+
+    // ── Partnership Guide · Building Something Meaningful ───────────────
+    { key: 'partnership.meaning.title', group: 'Partnership Guide — Building Something Meaningful', label: 'Page title', fixed: true, text: "Building" },
+    { key: 'partnership.meaning.script', group: 'Partnership Guide — Building Something Meaningful', label: 'Handwritten line under the title', fixed: true, text: "Something Meaningful" },
+    { key: 'partnership.meaning.body', group: 'Partnership Guide — Building Something Meaningful', label: 'The letter', multiline: true, list: true, rows: 8, fixed: true, help: 'One paragraph per line. Leave a line blank and it disappears.', text: "I don't want Uncoached to become another platform filled with endless content that people scroll past and never use.\nI want it to become a living library built by practitioners who genuinely care about helping people long after the session ends.\nEvery practitioner brings a different perspective.\nEvery contribution gives someone another way to navigate a difficult day, see themselves differently, or take one small step forward.\nWe'll probably never know all the lives those resources will touch.\nI think that's pretty special.\nIf that sounds like something you'd like to be part of, I'd love to welcome you to the Uncoached community." },
+    { key: 'partnership.meaning.closing', group: 'Partnership Guide — Building Something Meaningful', label: 'Handwritten sign-off', multiline: true, list: true, rows: 2, fixed: true, help: 'One line per line.', text: "Thank you for considering it.\nI'd love to build this with you." },
+    { key: 'partnership.meaning.signature_caption', group: 'Partnership Guide — Building Something Meaningful', label: 'Caption under your signature', fixed: true, text: "Founder, Uncoached" },
+
+    // ── Partnership Guide · Ready To Join ───────────────────────────────
+    { key: 'partnership.join.title', group: 'Partnership Guide — Ready To Join', label: 'Page title', fixed: true, text: "Ready to join?" },
+    { key: 'partnership.join.subtitle', group: 'Partnership Guide — Ready To Join', label: 'Line under the divider', fixed: true, text: "Here's what happens next." },
+    { key: 'partnership.join.step1_title', group: 'Partnership Guide — Ready To Join', label: 'Step 01 title', fixed: true, text: "Tell us about you" },
+    { key: 'partnership.join.step1_body', group: 'Partnership Guide — Ready To Join', label: 'Step 01 text', multiline: true, fixed: true, text: "Share a little about your practice, your expertise, and the work you do. This helps us get to know you and how you could fit into the Uncoached community." },
+    { key: 'partnership.join.step2_title', group: 'Partnership Guide — Ready To Join', label: 'Step 02 title', fixed: true, text: "Share your idea" },
+    { key: 'partnership.join.step2_body', group: 'Partnership Guide — Ready To Join', label: 'Step 02 text', multiline: true, fixed: true, text: "Have an idea already? Amazing. If not, we'll figure it out together and find something from your expertise that would genuinely add value to the Uncoached Library." },
+    { key: 'partnership.join.step3_title', group: 'Partnership Guide — Ready To Join', label: 'Step 03 title', fixed: true, text: "We'll build it together" },
+    { key: 'partnership.join.step3_body', group: 'Partnership Guide — Ready To Join', label: 'Step 03 text', multiline: true, fixed: true, text: "We'll work with you to shape your idea into a polished Uncoached resource, create your Practitioner profile, and get everything ready to become part of Uncoached." },
+    { key: 'partnership.join.closing', group: 'Partnership Guide — Ready To Join', label: 'Cream text on the green background', multiline: true, list: true, rows: 2, fixed: true, help: 'One line per line.', text: "If you care deeply about helping people create real change,\nlet's build something that helps them keep going." },
+    { key: 'partnership.join.cta', group: 'Partnership Guide — Ready To Join', label: 'The big button', fixed: true, help: 'The arrow is added automatically.', text: "I'M IN!" },
+
+    // ── Application Form · Introduction ─────────────────────────────────
+    { key: 'apply.title', group: 'Application Form — Introduction', label: 'Headline', text: "Tell us about you" },
+    { key: 'apply.intro', group: 'Application Form — Introduction', label: 'Intro paragraph', multiline: true, text: "Share a few details about your practice, the work you do, and what you'd like to bring to Uncoached. We'll review your submission to make sure the partnership feels like a good fit. If approved, we'll be in touch with next steps." },
+
+    // ── Application Form · Questions ────────────────────────────────────
+    { key: 'apply.name.label', group: 'Application Form — Questions', label: 'Full name — question', text: "Full name" },
+    { key: 'apply.credentials.label', group: 'Application Form — Questions', label: 'Credentials — question', text: "Credentials / Training" },
+    { key: 'apply.credentials.hint', group: 'Application Form — Questions', label: 'Credentials — hint', multiline: true, text: "Licences, certifications, professional designations, or relevant training." },
+    { key: 'apply.email.label', group: 'Application Form — Questions', label: 'Email — question', text: "Email" },
+    { key: 'apply.email.hint', group: 'Application Form — Questions', label: 'Email — hint', multiline: true, text: "Where we'll contact you about your submission." },
+    { key: 'apply.photo.label', group: 'Application Form — Questions', label: 'Photo — question', text: "Professional photo" },
+    { key: 'apply.photo.hint', group: 'Application Form — Questions', label: 'Photo — hint', multiline: true, text: "A clear headshot. JPG or PNG, under 5MB." },
+    { key: 'apply.bio.label', group: 'Application Form — Questions', label: 'Bio — question', text: "Short bio" },
+    { key: 'apply.bio.hint', group: 'Application Form — Questions', label: 'Bio — hint', multiline: true, text: "Tell us a little about your work, who you support, and your approach." },
+    { key: 'apply.focus.label', group: 'Application Form — Questions', label: 'Areas of focus — question', text: "Area(s) of focus" },
+    { key: 'apply.focus.hint', group: 'Application Form — Questions', label: 'Areas of focus — hint', multiline: true, text: "Choose up to 5 areas that best represent the work you do." },
+    { key: 'apply.countries.label', group: 'Application Form — Questions', label: 'Countries — question', text: "Country / countries you can work in" },
+    { key: 'apply.languages.label', group: 'Application Form — Questions', label: 'Languages — question', text: "Languages" },
+    { key: 'apply.delivery.label', group: 'Application Form — Questions', label: 'Virtual or in-person — question', text: "How do you work with clients?" },
+    { key: 'apply.website.label', group: 'Application Form — Questions', label: 'Website — question', text: "Website / booking link or email" },
+    { key: 'apply.social.label', group: 'Application Form — Questions', label: 'Social media — question', text: "Social media" },
+    { key: 'apply.expertise.label', group: 'Application Form — Questions', label: 'Expertise — question', multiline: true, text: "What expertise would you most like to contribute from?" },
+    { key: 'apply.expertise.hint', group: 'Application Form — Questions', label: 'Expertise — hint', multiline: true, text: "The thing you find yourself teaching again and again." },
+    { key: 'apply.ideas.label', group: 'Application Form — Questions', label: 'Resource idea — question', multiline: true, text: "Do you already have a resource or practice in mind?" },
+    { key: 'apply.ideas.hint', group: 'Application Form — Questions', label: 'Resource idea — hint', multiline: true, text: "No idea yet? That's completely fine. We can explore it together during your Partnership Chat." },
+
+    // ── Application Form · Consent & Submit ─────────────────────────────
+    { key: 'apply.consent1', group: 'Application Form — Consent & Submit', label: 'First tick box', multiline: true, text: "If accepted into the Practitioner Partnership, I give Uncoached permission to publish the practitioner profile information and headshot I provide on the Uncoached website." },
+    { key: 'apply.consent2', group: 'Application Form — Consent & Submit', label: 'Second tick box', multiline: true, text: "I understand that the Practitioner Partnership includes collaborating with Uncoached on at least one practical resource for the Uncoached Library if my application is accepted." },
+    { key: 'apply.submit', group: 'Application Form — Consent & Submit', label: 'Submit button', text: "Submit application" },
+    { key: 'apply.privacy_note', group: 'Application Form — Consent & Submit', label: 'Line under the button', multiline: true, help: 'The Privacy Policy link is added to the end of this sentence automatically.', text: "We'll review your application and be in touch with next steps if it feels like a good fit. By submitting this application, you acknowledge that the information you provide will be collected and used to review your application and administer the Practitioner Partnership in accordance with the" },
+    { key: 'apply.privacy_link', group: 'Application Form — Consent & Submit', label: 'Wording of the Privacy Policy link', text: "Uncoached Privacy Policy" },
+    { key: 'apply.back', group: 'Application Form — Consent & Submit', label: 'Link back to the guide', help: 'The arrow is added automatically.', text: "Back to the guide" },
+
+    // ── Application Form · After Submitting ─────────────────────────────
+    { key: 'apply.thanks.title', group: 'Application Form — After Submitting', label: 'Thank you headline', text: "Thank you." },
+    { key: 'apply.thanks.body', group: 'Application Form — After Submitting', label: 'Thank you paragraph', multiline: true, text: "Your application is with Johanna. She reads every one personally and will be in touch by email — if it feels like a fit, she'll send you a link to book a call." },
+    { key: 'apply.thanks.back', group: 'Application Form — After Submitting', label: 'Link back to the guide', help: 'The arrow is added automatically.', text: "Back to the Partnership Guide" },
+
 ];
 
 /** Ordered list of group names, for the admin screen. */

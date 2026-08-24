@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { parseFocusAreas } from '../lib/practitionerCategories';
+import { useCopy } from '../context/SiteCopyContext';
 
 const Field = ({ label, hint, optional, children }) => (
     <label className="block">
@@ -29,6 +30,7 @@ const tidyUrl = (value) => {
 };
 
 const PartnershipApplyPage = () => {
+    const copy = useCopy();
     const [form, setForm] = useState({
         full_name: '', credentials: '', email: '', bio: '', areas_of_focus: '',
         countries: '', delivery: '', languages: '', website_url: '', social_url: '',
@@ -105,13 +107,12 @@ const PartnershipApplyPage = () => {
                         alt="Uncoached"
                         className="h-20 w-auto mx-auto mb-8"
                     />
-                    <h1 className="font-display text-3xl md:text-4xl text-sage mb-4">Thank you.</h1>
+                    <h1 className="font-display text-3xl md:text-4xl text-sage mb-4">{copy('apply.thanks.title')}</h1>
                     <p className="text-text-muted leading-relaxed mb-8">
-                        Your application is with Johanna. She reads every one personally and will be in
-                        touch by email — if it feels like a fit, she'll send you a link to book a call.
+                        {copy('apply.thanks.body')}
                     </p>
                     <Link to="/partnership" className="text-sage hover:underline">
-                        ← Back to the Partnership Guide
+                        ← {copy('apply.thanks.back')}
                     </Link>
                 </div>
             </div>
@@ -128,12 +129,10 @@ const PartnershipApplyPage = () => {
                         className="h-16 w-auto mx-auto mb-8"
                     />
                     <h1 className="font-display text-3xl md:text-4xl text-sage mb-3">
-                        Tell us about you
+                        {copy('apply.title')}
                     </h1>
                     <p className="text-text-muted leading-relaxed">
-                        Share a few details about your practice, the work you do, and what you'd like to
-                        bring to Uncoached. We'll review your submission to make sure the partnership
-                        feels like a good fit. If approved, we'll be in touch with next steps.
+                        {copy('apply.intro')}
                     </p>
                 </div>
 
@@ -143,33 +142,32 @@ const PartnershipApplyPage = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid sm:grid-cols-2 gap-6">
-                        <Field label="Full name">
+                        <Field label={copy('apply.name.label')}>
                             <input required value={form.full_name} onChange={set('full_name')}
                                 className={inputClass} placeholder="Jane Doe" />
                         </Field>
-                        <Field label="Credentials / Training"
-                            hint="Licences, certifications, professional designations, or relevant training.">
+                        <Field label={copy('apply.credentials.label')} hint={copy('apply.credentials.hint')}>
                             <input required value={form.credentials} onChange={set('credentials')}
                                 className={inputClass} placeholder="RP, MSW, RSW…" />
                         </Field>
                     </div>
 
-                    <Field label="Email" hint="Where we'll contact you about your submission.">
+                    <Field label={copy('apply.email.label')} hint={copy('apply.email.hint')}>
                         <input required type="email" value={form.email} onChange={set('email')}
                             className={inputClass} placeholder="you@yourpractice.com" />
                     </Field>
 
-                    <Field label="Professional photo" hint="A clear headshot. JPG or PNG, under 5MB." optional>
+                    <Field label={copy('apply.photo.label')} hint={copy('apply.photo.hint')} optional>
                         <input type="file" accept="image/*" onChange={(e) => setPhoto(e.target.files[0] || null)}
                             className="w-full text-sm text-text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:bg-sage file:text-bone file:font-medium hover:file:bg-sage/90 file:cursor-pointer" />
                     </Field>
 
-                    <Field label="Short bio" hint="Tell us a little about your work, who you support, and your approach.">
+                    <Field label={copy('apply.bio.label')} hint={copy('apply.bio.hint')}>
                         <textarea rows={4} value={form.bio} onChange={set('bio')}
                             className={inputClass} placeholder="Tell us about your practice..." />
                     </Field>
 
-                    <Field label="Area(s) of focus" hint="Choose up to 5 areas that best represent the work you do.">
+                    <Field label={copy('apply.focus.label')} hint={copy('apply.focus.hint')}>
                         <input value={form.areas_of_focus} onChange={set('areas_of_focus')}
                             className={inputClass}
                             placeholder="e.g. Trauma Therapy, Somatic Practice, EMDR, Couples Therapy..." />
@@ -181,17 +179,17 @@ const PartnershipApplyPage = () => {
                     </Field>
 
                     <div className="grid sm:grid-cols-2 gap-6">
-                        <Field label="Country / countries you can work in">
+                        <Field label={copy('apply.countries.label')}>
                             <input value={form.countries} onChange={set('countries')}
                                 className={inputClass} placeholder="Canada, USA…" />
                         </Field>
-                        <Field label="Languages">
+                        <Field label={copy('apply.languages.label')}>
                             <input value={form.languages} onChange={set('languages')}
                                 className={inputClass} placeholder="English, Spanish…" />
                         </Field>
                     </div>
 
-                    <Field label="How do you work with clients?">
+                    <Field label={copy('apply.delivery.label')}>
                         <div className="flex flex-wrap gap-3">
                             {['Virtual', 'In-person', 'Both'].map((opt) => (
                                 <label key={opt}
@@ -209,24 +207,22 @@ const PartnershipApplyPage = () => {
                     </Field>
 
                     <div className="grid sm:grid-cols-2 gap-6">
-                        <Field label="Website / booking link or email">
+                        <Field label={copy('apply.website.label')}>
                             <input type="text" inputMode="url" value={form.website_url} onChange={set('website_url')}
                                 className={inputClass} placeholder="yourpractice.com" />
                         </Field>
-                        <Field label="Social media" optional>
+                        <Field label={copy('apply.social.label')} optional>
                             <input value={form.social_url} onChange={set('social_url')}
                                 className={inputClass} placeholder="@yourhandle or a link" />
                         </Field>
                     </div>
 
-                    <Field label="What expertise would you most like to contribute from?"
-                        hint="The thing you find yourself teaching again and again.">
+                    <Field label={copy('apply.expertise.label')} hint={copy('apply.expertise.hint')}>
                         <textarea rows={3} value={form.expertise_area} onChange={set('expertise_area')}
                             className={inputClass} placeholder="Grounding practices for panic, boundary-setting…" />
                     </Field>
 
-                    <Field label="Do you already have a resource or practice in mind?" optional
-                        hint="No idea yet? That's completely fine. We can explore it together during your Partnership Chat.">
+                    <Field label={copy('apply.ideas.label')} hint={copy('apply.ideas.hint')} optional>
                         <textarea rows={3} value={form.resource_ideas} onChange={set('resource_ideas')}
                             className={inputClass}
                             placeholder="e.g. an exercise, reflection, worksheet, conversation tool, or practice I use with clients..." />
@@ -237,38 +233,31 @@ const PartnershipApplyPage = () => {
                             <input type="checkbox" required checked={form.consent_publish} onChange={set('consent_publish')}
                                 className="mt-1 w-5 h-5 accent-[#3F5D4D] flex-shrink-0" />
                             <span className="text-sm text-text-dark/85 leading-relaxed">
-                                If accepted into the Practitioner Partnership, I give Uncoached permission to
-                                publish the practitioner profile information and headshot I provide on the
-                                Uncoached website.
+                                {copy('apply.consent1')}
                             </span>
                         </label>
                         <label className="flex items-start gap-3 bg-clay/30 rounded-2xl p-5 cursor-pointer">
                             <input type="checkbox" required checked={form.consent_collaborate} onChange={set('consent_collaborate')}
                                 className="mt-1 w-5 h-5 accent-[#3F5D4D] flex-shrink-0" />
                             <span className="text-sm text-text-dark/85 leading-relaxed">
-                                I understand that the Practitioner Partnership includes collaborating with
-                                Uncoached on at least one practical resource for the Uncoached Library if my
-                                application is accepted.
+                                {copy('apply.consent2')}
                             </span>
                         </label>
                     </div>
 
                     <button type="submit" disabled={submitting}
                         className="w-full py-4 bg-sage text-bone rounded-full font-medium text-lg hover:bg-sage/90 transition-colors disabled:opacity-60">
-                        {submitting ? 'Sending…' : 'Submit application'}
+                        {submitting ? 'Sending…' : copy('apply.submit')}
                     </button>
 
                     <p className="text-center text-sm text-text-muted leading-relaxed -mt-2">
-                        We'll review your application and be in touch with next steps if it feels like a
-                        good fit. By submitting this application, you acknowledge that the information you
-                        provide will be collected and used to review your application and administer the
-                        Practitioner Partnership in accordance with the{' '}
-                        <Link to="/privacy" className="text-sage hover:underline">Uncoached Privacy Policy</Link>.
+                        {copy('apply.privacy_note')}{' '}
+                        <Link to="/privacy" className="text-sage hover:underline">{copy('apply.privacy_link')}</Link>.
                     </p>
 
                     <p className="text-center">
                         <Link to="/partnership" className="text-sm text-text-muted hover:text-sage hover:underline">
-                            ← Back to the guide
+                            ← {copy('apply.back')}
                         </Link>
                     </p>
                 </form>

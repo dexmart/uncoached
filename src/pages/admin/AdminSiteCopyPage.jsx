@@ -79,6 +79,26 @@ const AdminSiteCopyPage = () => {
 
     const editedOn = (p) => SITE_COPY_FIELDS.filter((f) => parseGroup(f.group).page === p && isCustom(f)).length;
 
+    // The Partnership guide pages are a fixed size, like printed pages — nothing
+    // scrolls inside them. So for those fields we show how the length compares
+    // to the original, and warn before wording overflows the page.
+    const LengthGuide = ({ f }) => {
+        const now = (values[f.key] ?? '').length;
+        const original = f.text.length;
+        const ratio = original ? now / original : 1;
+        const over = ratio > 1.3;
+        const near = !over && ratio > 1.12;
+        return (
+            <p className={`text-xs mt-1.5 ${over ? 'text-red-600' : near ? 'text-golden-deep' : 'text-text-tertiary'}`}>
+                {over
+                    ? `This is quite a bit longer than the original (${now} characters vs ${original}). This page is a fixed size, so the wording may run off it — please let Boye check this one.`
+                    : near
+                        ? `A little longer than the original (${now} vs ${original} characters). Should still fit, but worth a look at the page.`
+                        : `${now} characters — the original was ${original}.`}
+            </p>
+        );
+    };
+
     const FieldCard = ({ f, showWhere }) => (
         <div className="bg-white border border-clay/25 rounded-xl p-4">
             <div className="flex items-start justify-between gap-3 mb-2">
@@ -107,14 +127,15 @@ const AdminSiteCopyPage = () => {
                     onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
                     className="w-full px-3.5 py-2.5 bg-bone/40 border border-clay/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm leading-relaxed font-mono" />
             ) : f.multiline ? (
-                <textarea id={f.key} rows={3} value={values[f.key] ?? ''}
+                <textarea id={f.key} rows={f.rows || 3} value={values[f.key] ?? ''}
                     onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 bg-bone/40 border border-clay/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm leading-relaxed" />
+                    className={`w-full px-3.5 py-2.5 bg-bone/40 border border-clay/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm leading-relaxed ${f.list ? 'font-mono' : ''}`} />
             ) : (
                 <input id={f.key} value={values[f.key] ?? ''}
                     onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
                     className="w-full px-3.5 py-2.5 bg-bone/40 border border-clay/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm" />
             )}
+            {f.fixed && <LengthGuide f={f} />}
         </div>
     );
 
@@ -177,6 +198,18 @@ const AdminSiteCopyPage = () => {
                             );
                         })}
                     </div>
+
+                    {page === 'Partnership Guide' && (
+                        <div className="max-w-3xl mb-5 bg-golden-light/15 border border-golden-light/40 rounded-2xl px-5 py-4">
+                            <p className="text-sm text-text-dark leading-relaxed">
+                                <b>A note on this one.</b> The Partnership Guide pages are a fixed size,
+                                like printed pages — nothing scrolls inside them. Rewording is completely
+                                fine; just try to keep each box roughly the same length as it is now. Each
+                                box tells you how it compares, and warns you if it has grown enough to run
+                                off the page.
+                            </p>
+                        </div>
+                    )}
 
                     {/* Sections, one open at a time */}
                     <div className="space-y-3 max-w-3xl">

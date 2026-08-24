@@ -4,25 +4,11 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
 import { parseFocusAreas } from '../lib/practitionerCategories';
+import { useCopy } from '../context/SiteCopyContext';
 
-const STEPS = [
-    {
-        title: 'Initial Contact',
-        body: 'A short introduction and a website or professional profile is shared.',
-    },
-    {
-        title: 'Connection Conversation',
-        body: 'If aligned, we schedule a brief conversation or sample session to experience the work directly.',
-    },
-    {
-        title: 'Alignment Review',
-        body: "Practitioners are selected based on alignment with Uncoached's spirit and values — not payment.",
-    },
-    {
-        title: 'Curated Listing',
-        body: 'Not everyone who reaches out is included. The list stays intentionally small and curated.',
-    },
-];
+const STEP_KEYS = [1, 2, 3, 4];
+const PROMISE_KEYS = [1, 2, 3];
+const PROMISE_ICONS = ['link_off', 'payments', 'verified'];
 
 const initials = (name = '') =>
     name.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase();
@@ -34,7 +20,7 @@ const Detail = ({ icon, children }) => (
     </div>
 );
 
-const PractitionerCard = ({ p }) => (
+const PractitionerCard = ({ p, copy }) => (
     <div className="flex flex-col bg-white rounded-2xl border border-clay/30 shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden">
         {p.photo_url ? (
             <img src={p.photo_url} alt={p.full_name} className="w-full aspect-[4/3] object-cover" />
@@ -69,7 +55,7 @@ const PractitionerCard = ({ p }) => (
                 {p.website_url && (
                     <a href={p.website_url} target="_blank" rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-sm font-medium text-sage hover:underline">
-                        Visit website
+                        {copy('practitioners.directory.link_website')}
                         <span className="material-symbols-outlined text-base">arrow_outward</span>
                     </a>
                 )}
@@ -86,6 +72,7 @@ const PractitionerCard = ({ p }) => (
 );
 
 const PractitionersPage = () => {
+    const copy = useCopy();
     const [activeCategory, setActiveCategory] = useState('All');
     const [practitioners, setPractitioners] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -131,15 +118,14 @@ const PractitionersPage = () => {
                 <div className="absolute inset-0 bg-gradient-to-b from-charcoal to-sage/90" />
                 <div className="relative z-10 max-w-3xl mx-auto text-center">
                     <p className="text-golden-light uppercase tracking-[0.2em] text-xs md:text-sm mb-5">
-                        Trusted Practitioners Around the World
+                        {copy('practitioners.hero.eyebrow')}
                     </p>
                     <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-bone leading-tight mb-6">
-                        Find someone whose approach <span className="italic">resonates</span>.
+                        {copy('practitioners.hero.title')}{' '}
+                        <span className="italic">{copy('practitioners.hero.title_emphasis')}</span>
                     </h1>
                     <p className="text-bone/85 text-base md:text-lg leading-relaxed font-light">
-                        The professionals listed here are people personally trusted or worked with.
-                        There are no affiliate links and no commissions. This page exists simply to
-                        help you find practitioners whose approach may resonate with you.
+                        {copy('practitioners.hero.intro')}
                     </p>
                 </div>
             </section>
@@ -147,15 +133,11 @@ const PractitionersPage = () => {
             {/* Core principles */}
             <section className="px-6 lg:px-12 py-16 md:py-20">
                 <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    {[
-                        { icon: 'link_off', title: 'No affiliate links', body: 'Nothing here is a paid placement.' },
-                        { icon: 'payments', title: 'No commissions or kickbacks', body: 'We never earn from a referral.' },
-                        { icon: 'verified', title: 'Included on trust, not payment', body: 'Listed only when the work aligns.' },
-                    ].map((item) => (
-                        <div key={item.title} className="bg-white rounded-2xl border border-clay/30 p-6 text-center">
-                            <span className="material-symbols-outlined text-golden-deep text-3xl mb-3">{item.icon}</span>
-                            <h3 className="font-display text-lg text-text-dark mb-2">{item.title}</h3>
-                            <p className="text-text-muted text-sm">{item.body}</p>
+                    {PROMISE_KEYS.map((n, i) => (
+                        <div key={n} className="bg-white rounded-2xl border border-clay/30 p-6 text-center">
+                            <span className="material-symbols-outlined text-golden-deep text-3xl mb-3">{PROMISE_ICONS[i]}</span>
+                            <h3 className="font-display text-lg text-text-dark mb-2">{copy(`practitioners.promise.card${n}_title`)}</h3>
+                            <p className="text-text-muted text-sm">{copy(`practitioners.promise.card${n}_body`)}</p>
                         </div>
                     ))}
                 </div>
@@ -188,7 +170,7 @@ const PractitionersPage = () => {
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {visible.map((p) => (
-                                <PractitionerCard key={p.id} p={p} />
+                                <PractitionerCard key={p.id} p={p} copy={copy} />
                             ))}
                         </div>
                     )}
@@ -196,8 +178,8 @@ const PractitionersPage = () => {
                     {!loading && visible.length === 0 && (
                         <p className="text-center text-text-muted mt-10">
                             {practitioners.length === 0
-                                ? 'Our first practitioners are being welcomed in. Check back soon.'
-                                : 'No practitioners in this category yet.'}
+                                ? copy('practitioners.directory.empty')
+                                : copy('practitioners.directory.empty_category')}
                         </p>
                     )}
                 </div>
@@ -208,20 +190,20 @@ const PractitionersPage = () => {
                 <div className="max-w-5xl mx-auto">
                     <div className="text-center mb-12">
                         <h2 className="font-display text-3xl md:text-4xl text-text-dark mb-3">
-                            How practitioners are chosen
+                            {copy('practitioners.process.title')}
                         </h2>
                         <p className="text-text-muted max-w-xl mx-auto">
-                            A small, intentional process to keep this list trustworthy.
+                            {copy('practitioners.process.intro')}
                         </p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {STEPS.map((step, idx) => (
-                            <div key={step.title} className="bg-bone rounded-2xl p-6 border border-clay/40">
+                        {STEP_KEYS.map((n) => (
+                            <div key={n} className="bg-bone rounded-2xl p-6 border border-clay/40">
                                 <div className="h-9 w-9 rounded-full bg-sage text-bone flex items-center justify-center font-display mb-4">
-                                    {idx + 1}
+                                    {n}
                                 </div>
-                                <h3 className="font-display text-lg text-text-dark mb-2">{step.title}</h3>
-                                <p className="text-text-muted text-sm leading-relaxed">{step.body}</p>
+                                <h3 className="font-display text-lg text-text-dark mb-2">{copy(`practitioners.process.step${n}_title`)}</h3>
+                                <p className="text-text-muted text-sm leading-relaxed">{copy(`practitioners.process.step${n}_body`)}</p>
                             </div>
                         ))}
                     </div>
@@ -232,20 +214,16 @@ const PractitionersPage = () => {
             <section className="px-6 lg:px-12 py-16 md:py-24">
                 <div className="max-w-3xl mx-auto text-center">
                     <h2 className="font-display text-3xl md:text-4xl text-text-dark mb-5">
-                        Interested in being featured?
+                        {copy('practitioners.featured.title')}
                     </h2>
                     <p className="text-text-muted text-base md:text-lg leading-relaxed mb-8">
-                        Uncoached occasionally adds new practitioners to this list when their work
-                        aligns with the values and approach of the platform. If you are a therapist,
-                        counselor, somatic practitioner, nervous system specialist, or other
-                        wellbeing professional and feel your work may be a good fit, you're welcome
-                        to reach out.
+                        {copy('practitioners.featured.body')}
                     </p>
                     <Link
                         to="/partnership"
                         className="inline-flex items-center gap-2 px-9 py-3.5 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all shadow-lg text-lg"
                     >
-                        Apply Here
+                        {copy('practitioners.featured.cta')}
                         <span aria-hidden="true">→</span>
                     </Link>
                 </div>
