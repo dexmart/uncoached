@@ -269,6 +269,10 @@ For privacy concerns, email us at hello@uncoached.space.`
     { key: 'practitioners.directory.empty', group: 'Practitioners — The Directory', label: 'Message when nobody is listed yet', multiline: true, help: 'Shown only while the directory is empty.', text: "Our first practitioners are being welcomed in. Check back soon." },
     { key: 'practitioners.directory.empty_category', group: 'Practitioners — The Directory', label: 'Message when a filter has no one in it', multiline: true, text: "No practitioners in this category yet." },
 
+    // ── Practitioners · Disclaimer ────────────────────────────────
+    { key: 'practitioners.disclaimer.body', group: 'Practitioners — Disclaimer', label: 'Disclaimer paragraph', multiline: true, rows: 6, help: 'Shown in italics under the practitioner profiles.', text: "Practitioners featured on Uncoached operate independently and are responsible for their own services, qualifications, fees, policies, and client relationships. Their inclusion on Uncoached does not guarantee or endorse their services or suitability for any individual. Any professional relationship you choose to enter into with a practitioner is between you and that practitioner, independently of Uncoached." },
+    { key: 'practitioners.disclaimer.link', group: 'Practitioners — Disclaimer', label: 'Link at the end of the paragraph', help: 'Opens the Practitioner Disclaimer section of your Terms page.', text: "Read full Practitioner Disclaimer" },
+
     // ── Practitioners · How Practitioners Are Chosen ────────────────────
     { key: 'practitioners.process.title', group: 'Practitioners — How Practitioners Are Chosen', label: 'Section heading', text: "How practitioners are chosen" },
     { key: 'practitioners.process.intro', group: 'Practitioners — How Practitioners Are Chosen', label: 'Line under the heading', multiline: true, text: "A small, intentional process to keep this list trustworthy." },
