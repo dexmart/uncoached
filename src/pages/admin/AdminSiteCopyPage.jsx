@@ -4,6 +4,87 @@ import {
     SITE_COPY_FIELDS, SITE_COPY_PAGES, sectionsForPage, fieldsForSection, parseGroup,
 } from '../../lib/siteCopy';
 
+// NOTE: FieldCard and LengthGuide MUST stay at module scope. Declaring a
+// component inside AdminSiteCopyPage creates a brand-new component type on
+// every render, so React unmounts and remounts the <input> on each keystroke
+// and the caret is lost after a single character.
+
+const inputClass =
+    'w-full px-3.5 py-2.5 bg-bone/40 border border-clay/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm';
+
+/**
+ * The Partnership guide pages are a fixed size, like printed pages — nothing
+ * scrolls inside them. For those fields we show how the wording compares to the
+ * original, and warn before it would run off the page.
+ */
+const LengthGuide = ({ f, value }) => {
+    const now = (value ?? '').length;
+    const original = f.text.length;
+    const ratio = original ? now / original : 1;
+    const over = ratio > 1.3;
+    const near = !over && ratio > 1.12;
+    return (
+        <p className={`text-xs mt-1.5 ${over ? 'text-red-600' : near ? 'text-golden-deep' : 'text-text-tertiary'}`}>
+            {over
+                ? `That is quite a bit longer than the original (${now} characters vs ${original}). This page is a fixed size, so the wording may run off it — worth sending Boye a note to check this one.`
+                : near
+                    ? `A little longer than the original (${now} vs ${original} characters). It should still fit, but take a look at the page.`
+                    : `${now} characters — the original was ${original}.`}
+        </p>
+    );
+};
+
+const FieldCard = ({ f, value, saved, busy, showWhere, onChange, onSave, onRevert }) => {
+    const original = f.text;
+    const isCustom = saved !== undefined && saved !== '' && saved !== original;
+    const isChanged = (value ?? '') !== (saved || original);
+
+    return (
+        <div className="bg-white border border-clay/25 rounded-xl p-4">
+            <div className="flex items-start justify-between gap-3 mb-2">
+                <div>
+                    <label htmlFor={f.key} className="font-medium text-text-dark text-sm">{f.label}</label>
+                    {showWhere && <p className="text-[11px] text-text-tertiary mt-0.5">{f.group}</p>}
+                    {f.help && <p className="text-xs text-text-muted mt-1">{f.help}</p>}
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                    {isCustom && (
+                        <span className="text-[10px] uppercase tracking-wider bg-sage/15 text-sage px-2 py-0.5 rounded-full">edited</span>
+                    )}
+                    <button onClick={() => onRevert(f)} className="text-xs text-text-muted hover:text-text-dark underline">
+                        Revert
+                    </button>
+                    <button onClick={() => onSave(f)} disabled={busy || !isChanged}
+                        className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-sage text-bone hover:bg-sage/90 disabled:opacity-35">
+                        Save
+                    </button>
+                </div>
+            </div>
+
+            {f.document ? (
+                <textarea id={f.key} rows={22} value={value ?? ''}
+                    onChange={(e) => onChange(f.key, e.target.value)}
+                    className={`${inputClass} leading-relaxed font-mono`} />
+            ) : f.multiline ? (
+                <textarea id={f.key} rows={f.rows || 4} value={value ?? ''}
+                    onChange={(e) => onChange(f.key, e.target.value)}
+                    className={`${inputClass} leading-relaxed ${f.list ? 'font-mono' : ''}`} />
+            ) : (
+                <input id={f.key} value={value ?? ''}
+                    onChange={(e) => onChange(f.key, e.target.value)}
+                    className={inputClass} />
+            )}
+
+            {f.fixed && <LengthGuide f={f} value={value} />}
+            {f.multiline && !f.list && !f.fixed && !f.document && (
+                <p className="text-xs text-text-tertiary mt-1.5">
+                    Press Enter twice to start a new paragraph. The spacing shows on the website.
+                </p>
+            )}
+        </div>
+    );
+};
+
 const AdminSiteCopyPage = () => {
     const [values, setValues] = useState({});   // what's in the boxes
     const [saved, setSaved] = useState({});     // what's stored
@@ -34,14 +115,22 @@ const AdminSiteCopyPage = () => {
     useEffect(() => { load(); }, [load]);
     useEffect(() => { setOpenSection(sectionsForPage(page)[0] ?? null); }, [page]);
 
-    const isCustom = (f) => saved[f.key] !== undefined && saved[f.key] !== '' && saved[f.key] !== f.text;
-    const isChanged = (f) => (values[f.key] ?? '') !== (saved[f.key] || f.text);
-    const unsaved = useMemo(
-        () => SITE_COPY_FIELDS.filter((f) => (values[f.key] ?? '') !== (saved[f.key] || f.text)),
+    const isCustom = useCallback(
+        (f) => saved[f.key] !== undefined && saved[f.key] !== '' && saved[f.key] !== f.text,
+        [saved]
+    );
+    const isChanged = useCallback(
+        (f) => (values[f.key] ?? '') !== (saved[f.key] || f.text),
         [values, saved]
     );
 
-    const saveFields = async (fields) => {
+    const unsaved = useMemo(() => SITE_COPY_FIELDS.filter(isChanged), [isChanged]);
+
+    const setValue = useCallback((key, value) => {
+        setValues((v) => ({ ...v, [key]: value }));
+    }, []);
+
+    const saveFields = useCallback(async (fields) => {
         if (!fields.length) return;
         setBusy(true); setError(''); setNotice('');
         try {
@@ -56,18 +145,20 @@ const AdminSiteCopyPage = () => {
                 return next;
             });
             setNotice(fields.length === 1
-                ? `Saved. Refresh your website to see it.`
+                ? 'Saved. Refresh your website to see it.'
                 : `Saved ${fields.length} changes. Refresh your website to see them.`);
             setTimeout(() => setNotice(''), 5000);
         } catch (err) {
             console.error('Save failed:', err);
             setError('Could not save. Please try again.');
         } finally { setBusy(false); }
-    };
+    }, [values]);
 
-    const revert = (f) => setValues((v) => ({ ...v, [f.key]: f.text }));
+    const saveOne = useCallback((f) => saveFields([f]), [saveFields]);
+    const revert = useCallback((f) => setValues((v) => ({ ...v, [f.key]: f.text })), []);
 
-    // Search looks across every page, so she can find a phrase without knowing where it lives
+    // Search looks across every page, so she can find a phrase without knowing
+    // which page it lives on.
     const searchHits = useMemo(() => {
         const q = search.trim().toLowerCase();
         if (q.length < 2) return null;
@@ -79,64 +170,10 @@ const AdminSiteCopyPage = () => {
 
     const editedOn = (p) => SITE_COPY_FIELDS.filter((f) => parseGroup(f.group).page === p && isCustom(f)).length;
 
-    // The Partnership guide pages are a fixed size, like printed pages — nothing
-    // scrolls inside them. So for those fields we show how the length compares
-    // to the original, and warn before wording overflows the page.
-    const LengthGuide = ({ f }) => {
-        const now = (values[f.key] ?? '').length;
-        const original = f.text.length;
-        const ratio = original ? now / original : 1;
-        const over = ratio > 1.3;
-        const near = !over && ratio > 1.12;
-        return (
-            <p className={`text-xs mt-1.5 ${over ? 'text-red-600' : near ? 'text-golden-deep' : 'text-text-tertiary'}`}>
-                {over
-                    ? `This is quite a bit longer than the original (${now} characters vs ${original}). This page is a fixed size, so the wording may run off it — please let Boye check this one.`
-                    : near
-                        ? `A little longer than the original (${now} vs ${original} characters). Should still fit, but worth a look at the page.`
-                        : `${now} characters — the original was ${original}.`}
-            </p>
-        );
-    };
-
-    const FieldCard = ({ f, showWhere }) => (
-        <div className="bg-white border border-clay/25 rounded-xl p-4">
-            <div className="flex items-start justify-between gap-3 mb-2">
-                <div>
-                    <label htmlFor={f.key} className="font-medium text-text-dark text-sm">{f.label}</label>
-                    {showWhere && (
-                        <p className="text-[11px] text-text-tertiary mt-0.5">{f.group}</p>
-                    )}
-                    {f.help && <p className="text-xs text-text-muted mt-1">{f.help}</p>}
-                </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
-                    {isCustom(f) && (
-                        <span className="text-[10px] uppercase tracking-wider bg-sage/15 text-sage px-2 py-0.5 rounded-full">edited</span>
-                    )}
-                    <button onClick={() => revert(f)} className="text-xs text-text-muted hover:text-text-dark underline">
-                        Revert
-                    </button>
-                    <button onClick={() => saveFields([f])} disabled={busy || !isChanged(f)}
-                        className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-sage text-bone hover:bg-sage/90 disabled:opacity-35">
-                        Save
-                    </button>
-                </div>
-            </div>
-            {f.document ? (
-                <textarea id={f.key} rows={22} value={values[f.key] ?? ''}
-                    onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 bg-bone/40 border border-clay/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm leading-relaxed font-mono" />
-            ) : f.multiline ? (
-                <textarea id={f.key} rows={f.rows || 3} value={values[f.key] ?? ''}
-                    onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
-                    className={`w-full px-3.5 py-2.5 bg-bone/40 border border-clay/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm leading-relaxed ${f.list ? 'font-mono' : ''}`} />
-            ) : (
-                <input id={f.key} value={values[f.key] ?? ''}
-                    onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 bg-bone/40 border border-clay/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/40 text-text-dark text-sm" />
-            )}
-            {f.fixed && <LengthGuide f={f} />}
-        </div>
+    const card = (f, showWhere) => (
+        <FieldCard key={f.key} f={f} showWhere={showWhere}
+            value={values[f.key]} saved={saved[f.key]} busy={busy}
+            onChange={setValue} onSave={saveOne} onRevert={revert} />
     );
 
     return (
@@ -147,7 +184,7 @@ const AdminSiteCopyPage = () => {
                 <p className="text-text-muted mt-2 max-w-2xl">
                     Change the wording on your public pages. Pick a page, open a section, edit the box and
                     press <b>Save</b> — then refresh your website to see it. <b>Revert</b> puts the original
-                    wording back, so you can't get stuck.
+                    wording back, so you can&apos;t get stuck.
                 </p>
             </div>
 
@@ -174,7 +211,7 @@ const AdminSiteCopyPage = () => {
                     <p className="text-sm text-text-muted">
                         {searchHits.length} {searchHits.length === 1 ? 'result' : 'results'} for “{search.trim()}”
                     </p>
-                    {searchHits.map((f) => <FieldCard key={f.key} f={f} showWhere />)}
+                    {searchHits.map((f) => card(f, true))}
                     {searchHits.length === 0 && (
                         <p className="text-text-muted py-8 text-center">Nothing matched that. Try fewer words.</p>
                     )}
@@ -243,7 +280,7 @@ const AdminSiteCopyPage = () => {
                                     </button>
                                     {open && (
                                         <div className="px-5 pb-5 space-y-3 border-t border-clay/20 pt-4">
-                                            {fields.map((f) => <FieldCard key={f.key} f={f} />)}
+                                            {fields.map((f) => card(f))}
                                         </div>
                                     )}
                                 </div>

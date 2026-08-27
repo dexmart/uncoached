@@ -4,7 +4,7 @@ const AboutQuote = () => {
     const copy = useCopy();
     // Requirements: "wide and short"
     return (
-        <section className="py-20 relative overflow-hidden flex items-center justify-center text-center">
+        <section className="whitespace-pre-line py-20 relative overflow-hidden flex items-center justify-center text-center">
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 {/* This likely needs to be dark text on light, or light on dark. S5 name implies quote. */}

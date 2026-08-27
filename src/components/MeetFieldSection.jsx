@@ -4,7 +4,7 @@ import { useCopy } from '../context/SiteCopyContext';
 const MeetFieldSection = () => {
     const copy = useCopy();
     return (
-        <section className="py-16 lg:py-24 px-6 lg:px-12 relative bg-bone" id="chat">
+        <section className="whitespace-pre-line py-16 lg:py-24 px-6 lg:px-12 relative bg-bone" id="chat">
             {/* Background — desktop only; on mobile the phone mockup stacks above the text */}
             <div className="absolute inset-0 z-0 overflow-hidden bg-bone hidden lg:block">
                 <img src={import.meta.env.BASE_URL + "bg/S5_ Meet Field - homepage.png"} alt="" className="w-full h-full object-cover object-left" />

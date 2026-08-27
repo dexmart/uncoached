@@ -110,7 +110,7 @@ const PractitionersPage = () => {
     ];
 
     return (
-        <div className="bg-bone text-text-dark font-body antialiased min-h-screen">
+        <div className="whitespace-pre-line bg-bone text-text-dark font-body antialiased min-h-screen">
             <Navbar />
 
             {/* Hero */}
