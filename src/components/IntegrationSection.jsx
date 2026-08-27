@@ -33,7 +33,7 @@ const pillars = [
 const IntegrationSection = () => {
     const copy = useCopy();
     return (
-        <section className="py-24 relative overflow-hidden" id="integrate">
+        <section className="whitespace-pre-line py-24 relative overflow-hidden" id="integrate">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img

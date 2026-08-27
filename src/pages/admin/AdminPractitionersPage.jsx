@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
+import PractitionerEditor from '../../components/admin/PractitionerEditor';
 
 const STATUSES = [
     { key: 'pending', label: 'Pending' },
@@ -33,6 +34,7 @@ const AdminPractitionersPage = () => {
     const [busyId, setBusyId] = useState(null);
     const [error, setError] = useState('');
     const [openId, setOpenId] = useState(null);
+    const [editId, setEditId] = useState(null);      // row being edited, or 'new'
     const [counts, setCounts] = useState({});
 
     const load = useCallback(async () => {
@@ -99,6 +101,19 @@ const AdminPractitionersPage = () => {
         }
     };
 
+    // Saving from the editor: replace the row in place, or drop a newly added
+    // practitioner in at the top and switch to the tab it landed in.
+    const onSaved = (saved, isNew) => {
+        if (isNew) {
+            setRows((rs) => [saved, ...rs]);
+            setCounts((c) => ({ ...c, approved: (c.approved || 0) + 1 }));
+            setFilter('approved');
+        } else {
+            setRows((rs) => rs.map((r) => (r.id === saved.id ? saved : r)));
+        }
+        setEditId(null);
+    };
+
     const visible = rows.filter((r) => r.status === filter);
 
     return (
@@ -108,7 +123,8 @@ const AdminPractitionersPage = () => {
                 <h1 className="font-display text-4xl md:text-5xl text-text-dark">Practitioners</h1>
                 <p className="text-text-muted mt-2 max-w-2xl">
                     Applications from the Partnership guide. Approving one publishes their profile on
-                    the public Practitioners page.
+                    the public Practitioners page. You can edit anyone&apos;s profile here — their photo,
+                    bio, focus areas and links — or add someone who never filled in the form.
                 </p>
             </div>
 
@@ -129,7 +145,21 @@ const AdminPractitionersPage = () => {
                     className="px-5 py-2 rounded-full text-sm bg-white/70 border border-clay/30 text-text-muted hover:bg-white">
                     Refresh
                 </button>
+                <button onClick={() => setEditId(editId === 'new' ? null : 'new')}
+                    className="ml-auto px-5 py-2 rounded-full text-sm font-medium bg-sage text-bone hover:bg-sage/90">
+                    {editId === 'new' ? 'Cancel' : '+ Add a practitioner'}
+                </button>
             </div>
+
+            {editId === 'new' && (
+                <div className="bg-white/70 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-sm mb-6">
+                    <h2 className="font-display text-xl text-text-dark">Add a practitioner</h2>
+                    <p className="text-text-muted text-sm mt-1">
+                        For someone you have already agreed with directly, outside the application form.
+                    </p>
+                    <PractitionerEditor onSaved={onSaved} onCancel={() => setEditId(null)} />
+                </div>
+            )}
 
             {loading ? (
                 <div className="flex justify-center py-20">
@@ -144,6 +174,7 @@ const AdminPractitionersPage = () => {
                     {visible.map((r) => {
                         const b = badge(r.status);
                         const open = openId === r.id;
+                        const editing = editId === r.id;
                         return (
                             <div key={r.id}
                                 className="bg-white/70 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-sm">
@@ -194,7 +225,11 @@ const AdminPractitionersPage = () => {
                                                 Reopen
                                             </button>
                                         )}
-                                        <button onClick={() => setOpenId(open ? null : r.id)}
+                                        <button onClick={() => { setEditId(editing ? null : r.id); setOpenId(null); }}
+                                            className="px-4 py-2 rounded-xl text-sm bg-white border border-clay/40 text-text-muted hover:bg-bone">
+                                            {editing ? 'Close' : 'Edit profile'}
+                                        </button>
+                                        <button onClick={() => { setOpenId(open ? null : r.id); setEditId(null); }}
                                             className="px-4 py-2 rounded-xl text-sm bg-white border border-clay/40 text-text-muted hover:bg-bone">
                                             {open ? 'Hide' : 'Details'}
                                         </button>
@@ -205,6 +240,10 @@ const AdminPractitionersPage = () => {
                                         </button>
                                     </div>
                                 </div>
+
+                                {editing && (
+                                    <PractitionerEditor row={r} onSaved={onSaved} onCancel={() => setEditId(null)} />
+                                )}
 
                                 {open && (
                                     <dl className="mt-5 pt-5 border-t border-clay/20 grid sm:grid-cols-2 gap-x-8 gap-y-3">
