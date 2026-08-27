@@ -4,7 +4,7 @@ import { useCopy } from '../../context/SiteCopyContext';
 const AboutHero = () => {
     const copy = useCopy();
     return (
-        <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden">
+        <section className="whitespace-pre-line relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden">
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <img

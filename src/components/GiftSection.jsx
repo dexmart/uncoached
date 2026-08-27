@@ -8,7 +8,7 @@ const GIFTUP_ORDER_URL =
 const GiftSection = () => {
     const copy = useCopy();
     return (
-        <section id="gift" className="py-16 lg:py-48 relative overflow-hidden scroll-mt-24 bg-bone">
+        <section id="gift" className="whitespace-pre-line py-16 lg:py-48 relative overflow-hidden scroll-mt-24 bg-bone">
             {/* Background — desktop only; on mobile the image is stacked above the text */}
             <div className="absolute inset-0 z-0 hidden lg:block">
                 <img src={import.meta.env.BASE_URL + "bg/S7_ Give The Gift of Calm.png"} alt="" className="w-full h-full object-cover object-left" />

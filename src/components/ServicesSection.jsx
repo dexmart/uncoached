@@ -3,47 +3,24 @@ import { Link } from 'react-router-dom';
 import { useCopy } from '../context/SiteCopyContext';
 
 const services = [
-    {
-        icon: 'images/Field Icons/field chat.png',
-        title: 'Field',
-        description: 'Chat with Field in real time, like reflecting with a trusted friend that helps you hear yourself more clearly, without advice or pressure.'
-    },
-    {
-        icon: 'images/Field Icons/field audio breath.png',
-        title: 'Audio Breaths',
-        description: 'Soft, short audio practices to help regulate your nervous system and ground your body in the moment.'
-    },
-    {
-        icon: 'images/Field Icons/field clarity cards.png',
-        title: 'Clarity Cards',
-        description: 'Journaling cards with thoughtful questions and exercises to untangle your mind and spark a deeper clarity.'
-    },
-    {
-        icon: 'images/Field Icons/field pocket prompts.png',
-        title: 'Pocket Prompts',
-        description: 'Structured prompt experiences that guide reflection and next steps, helping insight turn into real change over time.'
-    },
-    {
-        icon: 'images/Field Icons/field guided shift.png',
-        title: 'Guided Shifts',
-        description: 'Short, guided experiences that help you reset your state and reconnect with yourself in the moment.'
-    },
-    {
-        icon: 'images/Field Icons/field affirmation.png',
-        title: <>Af<span className="italic text-sage">for</span>mations</>,
-        description: 'Empowering questions to ask yourself, designed to guide your brain toward supportive answers.'
-    },
-    {
-        icon: 'images/Field Icons/field voice notes.png',
-        title: 'Grounding Voice Notes',
-        description: 'Brief, supportive voice notes offering gentle reminders of who you are in moments when you need steadiness, encouragement, or perspective.'
-    },
-    {
-        icon: 'images/Field Icons/field coming soon2.png',
-        title: 'More Coming Soon',
-        description: 'A growing space, shaped with care. New tools and experiences will be added intentionally, always with the same focus on safety, integration, and self-trust.'
-    }
-];
+    'images/Field Icons/field chat.png',
+    'images/Field Icons/field audio breath.png',
+    'images/Field Icons/field clarity cards.png',
+    'images/Field Icons/field pocket prompts.png',
+    'images/Field Icons/field guided shift.png',
+    'images/Field Icons/field affirmation.png',
+    'images/Field Icons/field voice notes.png',
+    'images/Field Icons/field coming soon2.png',
+].map((icon, i) => ({ icon, titleKey: `home.services.card${i + 1}_title`, bodyKey: `home.services.card${i + 1}_body` }));
+
+// Card titles support *stars* for a sage italic run, which is how the "for" in
+// Af*for*mations is set. Plain titles are unaffected.
+const emphasise = (text) =>
+    (text || '').split(/\*(.+?)\*/g).map((part, i) =>
+        (i % 2 ? <span key={i} className="italic text-sage">{part}</span> : part));
+
+const plain = (text) => (text || '').replace(/\*/g, '');
+
 
 const ServicesSection = () => {
     const copy = useCopy();
@@ -80,20 +57,22 @@ const ServicesSection = () => {
             <div className="mb-6">
                 <img
                     src={import.meta.env.BASE_URL + service.icon}
-                    alt={service.title}
+                    alt={plain(copy(service.titleKey))}
                     className="w-32 h-32 object-contain drop-shadow-lg"
                     style={{ imageRendering: 'crisp-edges' }}
                 />
             </div>
-            <h3 className="font-display text-lg font-semibold text-text-dark mb-3">{service.title}</h3>
+            <h3 className="font-display text-lg font-semibold text-text-dark mb-3">
+                {emphasise(copy(service.titleKey))}
+            </h3>
             <p className="text-text-muted text-sm leading-relaxed">
-                {service.description}
+                {copy(service.bodyKey)}
             </p>
         </div>
     );
 
     return (
-        <section className="py-24 relative overflow-hidden" id="whats-inside">
+        <section className="whitespace-pre-line py-24 relative overflow-hidden" id="whats-inside">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img

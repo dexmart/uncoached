@@ -4,7 +4,7 @@ import { useCopy } from '../context/SiteCopyContext';
 const DeeperWorkSection = () => {
     const copy = useCopy();
     return (
-        <section className="py-16 lg:py-24 relative overflow-hidden bg-bone" id="deeper-work">
+        <section className="whitespace-pre-line py-16 lg:py-24 relative overflow-hidden bg-bone" id="deeper-work">
             {/* Background with overlay — desktop only; on mobile the image is stacked above the text */}
             <div className="absolute inset-0 z-0 hidden lg:block">
                 <img src={import.meta.env.BASE_URL + "bg/S3-deeper-work-v2.jpg"} alt="" className="w-full h-full object-cover" />
@@ -12,11 +12,14 @@ const DeeperWorkSection = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-                {/* Mobile image — Johanna's composed version (subject left, calm space right) */}
+                {/* Mobile image. The desktop banner is 2.36:1 with the subject on the
+                    left and deliberately empty light space on the right for the text to
+                    sit over. Cropped to a portrait-friendly frame here, so phones get
+                    the scene rather than the empty half. */}
                 <img
-                    src={import.meta.env.BASE_URL + "bg/S3-deeper-work-v2.jpg"}
+                    src={import.meta.env.BASE_URL + "bg/S3-deeper-work-mobile.jpg"}
                     alt="Deeper work, on your own timing"
-                    className="lg:hidden w-full h-56 object-cover rounded-2xl mb-8 shadow-md"
+                    className="lg:hidden w-full aspect-[745/570] object-cover rounded-2xl mb-8 shadow-md"
                 />
 
                 <div className="grid lg:grid-cols-2 gap-12 items-center">

@@ -3,7 +3,7 @@ import { useCopy } from '../../context/SiteCopyContext';
 const AboutWhy = () => {
     const copy = useCopy();
     return (
-        <section className="py-24 relative overflow-hidden -mt-8">
+        <section className="whitespace-pre-line py-24 relative overflow-hidden -mt-8">
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <img

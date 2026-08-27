@@ -41,7 +41,7 @@ const SubscribeSection = () => {
     };
 
     return (
-        <section className="py-40 lg:py-60 relative overflow-hidden">
+        <section className="whitespace-pre-line py-40 lg:py-60 relative overflow-hidden">
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <img src={import.meta.env.BASE_URL + "bg/S8 - Subscribe.png"} alt="" className="w-full h-full object-cover object-bottom" />

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ContactLink from './ContactLink';
 
 const NAV_LINKS = [
     { label: 'Home', to: '/' },
     { label: 'About', to: '/about' },
     { label: 'Practitioners', to: '/practitioners' },
     { label: 'Gift', to: '/gift' },
-    { label: 'Contact Us', href: 'mailto:hello@uncoached.space' },
+    { label: 'Contact Us', contact: true },
 ];
 
 const Navbar = () => {
@@ -34,10 +35,8 @@ const Navbar = () => {
     }, [menuOpen]);
 
     const renderLink = (link, className, onClick) =>
-        link.href ? (
-            <a key={link.label} className={className} href={link.href} onClick={onClick}>
-                {link.label}
-            </a>
+        link.contact ? (
+            <ContactLink key={link.label} className={className} label={link.label} onNavigate={onClick} />
         ) : (
             <Link key={link.label} className={className} to={link.to} onClick={onClick}>
                 {link.label}

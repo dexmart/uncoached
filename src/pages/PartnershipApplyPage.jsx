@@ -120,7 +120,7 @@ const PartnershipApplyPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-bone text-text-dark font-body antialiased px-6 py-16 md:py-24">
+        <div className="whitespace-pre-line min-h-screen bg-bone text-text-dark font-body antialiased px-6 py-16 md:py-24">
             <div className="max-w-2xl mx-auto">
                 <div className="text-center mb-12">
                     <img

@@ -4,7 +4,7 @@ import { useCopy } from '../../context/SiteCopyContext';
 const AboutClosing = () => {
     const copy = useCopy();
     return (
-        <section className="py-32 relative overflow-hidden">
+        <section className="whitespace-pre-line py-32 relative overflow-hidden">
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <img
