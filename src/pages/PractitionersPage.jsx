@@ -182,6 +182,16 @@ const PractitionersPage = () => {
                                 : copy('practitioners.directory.empty_category')}
                         </p>
                     )}
+
+                    {/* Independence disclaimer. Links to the Practitioner Disclaimer
+                        section of the Terms, matched by its heading. */}
+                    <p className="max-w-3xl mx-auto mt-14 text-center text-sm md:text-[15px] italic text-text-muted leading-relaxed">
+                        {copy('practitioners.disclaimer.body')}{' '}
+                        <Link to="/terms#practitioner-disclaimer"
+                            className="text-sage not-italic font-medium hover:underline">
+                            {copy('practitioners.disclaimer.link')}
+                        </Link>
+                    </p>
                 </div>
             </section>
 

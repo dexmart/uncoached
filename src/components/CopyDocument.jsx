@@ -1,9 +1,14 @@
 // Renders an editable long-form document (Terms, Privacy) from plain text.
 //
 // Deliberately simple so Johanna can edit it in a normal textarea:
-//   "## Heading"  -> a section heading
+//   "## Heading"  -> a section heading (also gets an id, so pages can link to it)
 //   "• item"      -> a bullet
 //   blank line    -> new paragraph
+// "Practitioner Disclaimer:" -> "practitioner-disclaimer", so a link elsewhere
+// keeps working as long as the heading keeps its name.
+const slug = (heading) =>
+    heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
 const CopyDocument = ({ text }) => {
     const blocks = (text || '').split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
 
@@ -18,7 +23,9 @@ const CopyDocument = ({ text }) => {
                     const rest = lines.slice(1);
                     return (
                         <div key={i} className="space-y-3">
-                            <h2 className="font-display text-xl text-text-dark">{heading}</h2>
+                            <h2 id={slug(heading)} className="font-display text-xl text-text-dark scroll-mt-28">
+                                {heading}
+                            </h2>
                             {rest.length > 0 && <Lines lines={rest} />}
                         </div>
                     );
