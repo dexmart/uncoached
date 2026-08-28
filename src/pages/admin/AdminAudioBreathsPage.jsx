@@ -323,7 +323,7 @@ const AdminAudioBreathsPage = () => {
                                         file:mr-4 file:py-2 file:px-4
                                         file:rounded-full file:border-0
                                         file:text-sm file:font-medium
-                                        file:bg-clay/10 file:text-clay
+                                        file:bg-clay/10 file:text-sage
                                         hover:file:bg-clay/20 cursor-pointer"
                                 />
                                 {audioNotice && (
@@ -382,7 +382,7 @@ const AdminAudioBreathsPage = () => {
                         {/* DEEP CORNERS */}
                         <div className="grid md:grid-cols-2 gap-6 pt-4 border-t border-text-dark/10">
                             <div className="space-y-4">
-                                <h3 className="text-lg font-medium text-clay drop-shadow-sm">Science Corner</h3>
+                                <h3 className="text-lg font-medium text-sage">Science Corner</h3>
                                 <div>
                                     <label className="block text-sm font-medium text-text-dark mb-1">Text</label>
                                     <textarea
@@ -405,7 +405,7 @@ const AdminAudioBreathsPage = () => {
                             </div>
 
                             <div className="space-y-4">
-                                <h3 className="text-lg font-medium text-clay drop-shadow-sm">Spiritual Corner</h3>
+                                <h3 className="text-lg font-medium text-sage">Spiritual Corner</h3>
                                 <div>
                                     <label className="block text-sm font-medium text-text-dark mb-1">Text</label>
                                     <textarea
@@ -450,7 +450,7 @@ const AdminAudioBreathsPage = () => {
                                 ) : 'Save Audio Breath'}
                             </button>
                             {uploadProgress && (
-                                <span className="text-sm font-medium text-clay animate-pulse">{uploadProgress}</span>
+                                <span className="text-sm font-medium text-sage animate-pulse">{uploadProgress}</span>
                             )}
                         </div>
                     </form>

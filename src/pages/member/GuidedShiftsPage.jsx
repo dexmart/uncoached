@@ -95,7 +95,7 @@ const GuidedShiftsPage = () => {
                     <ul className="space-y-2 mb-8 inline-block text-left mx-auto">
                         {['No long meditations.', 'No breath-counting.', 'No fixing yourself.'].map(item => (
                             <li key={item} className="flex items-center gap-2 text-text-dark/80">
-                                <span className="text-clay">✓</span>
+                                <span className="text-sage">✓</span>
                                 <span>{item}</span>
                             </li>
                         ))}
@@ -153,15 +153,15 @@ const GuidedShiftsPage = () => {
                                 </p>
                                 <ul className="text-left space-y-3 mt-6 inline-block">
                                     <li className="flex gap-3">
-                                        <span className="text-clay">✓</span>
+                                        <span className="text-sage">✓</span>
                                         <span>The nervous system responds faster than thought</span>
                                     </li>
                                     <li className="flex gap-3">
-                                        <span className="text-clay">✓</span>
+                                        <span className="text-sage">✓</span>
                                         <span>Small internal shifts create immediate relief</span>
                                     </li>
                                     <li className="flex gap-3">
-                                        <span className="text-clay">✓</span>
+                                        <span className="text-sage">✓</span>
                                         <span>Regulation comes from safety, not effort</span>
                                     </li>
                                 </ul>
@@ -201,15 +201,15 @@ const GuidedShiftsPage = () => {
                                     <p className="text-text-dark/70 mb-3 text-center">A regulated state restores:</p>
                                     <ul className="space-y-2 text-text-dark/80">
                                         <li className="flex gap-3">
-                                            <span className="text-clay">✓</span>
+                                            <span className="text-sage">✓</span>
                                             <span>perspective</span>
                                         </li>
                                         <li className="flex gap-3">
-                                            <span className="text-clay">✓</span>
+                                            <span className="text-sage">✓</span>
                                             <span>choice</span>
                                         </li>
                                         <li className="flex gap-3">
-                                            <span className="text-clay">✓</span>
+                                            <span className="text-sage">✓</span>
                                             <span>access to your inner signals</span>
                                         </li>
                                     </ul>
@@ -247,14 +247,14 @@ const GuidedShiftsPage = () => {
                             "you need to move forward but feel stuck"
                         ].map((item, i) => (
                             <li key={i} className="flex gap-3 text-text-dark/90 text-sm md:text-base">
-                                <span className="text-clay">✓</span>
+                                <span className="text-sage">✓</span>
                                 <span>{item}</span>
                             </li>
                         ))}
                     </ul>
 
                     <div className="space-y-4">
-                        <p className="text-lg font-medium text-clay">Most are under 5 minutes.</p>
+                        <p className="text-lg font-medium text-sage">Most are under 5 minutes.</p>
                         <p className="text-text-dark/80">
                             With practice, these learned techniques can land in your body in under 60 seconds.
                         </p>
@@ -284,7 +284,7 @@ const GuidedShiftsPage = () => {
                             "Let the guidance do the work"
                         ].map((step, i) => (
                             <div key={i} className="flex gap-4">
-                                <span className="text-clay font-medium text-lg">✓</span>
+                                <span className="text-sage font-medium text-lg">✓</span>
                                 <span className="text-text-dark text-lg">{step}</span>
                             </div>
                         ))}

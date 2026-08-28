@@ -249,7 +249,7 @@ const AudioBreathPlayerPage = () => {
                             {/* Background Decoration */}
                             <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-clay/5 rounded-full blur-3xl"></div>
 
-                            <h4 className="font-display text-base uppercase tracking-widest text-clay mb-4">
+                            <h4 className="font-display text-base uppercase tracking-widest text-sage mb-4">
                                 Science Corner
                             </h4>
                             <p className="text-text-dark/80 text-base leading-relaxed mb-6">
@@ -272,7 +272,7 @@ const AudioBreathPlayerPage = () => {
                             {/* Background Decoration */}
                             <div className="absolute -top-10 -left-10 w-40 h-40 bg-clay/5 rounded-full blur-3xl"></div>
 
-                            <h4 className="font-display text-base uppercase tracking-widest text-clay mb-4">
+                            <h4 className="font-display text-base uppercase tracking-widest text-sage mb-4">
                                 Spiritual Corner
                             </h4>
                             <p className="text-text-dark/80 text-base leading-relaxed mb-6">

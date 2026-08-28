@@ -121,7 +121,7 @@ const DashboardPage = () => {
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <span className="text-3xl text-clay/50 font-display">
+                            <span className="text-3xl text-sage/80 font-display">
                                 {displayName?.charAt(0).toUpperCase() || 'U'}
                             </span>
                         )}
