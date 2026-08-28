@@ -266,6 +266,9 @@ For privacy concerns, email us at hello@uncoached.space.`
 
     // ── Practitioners · The Directory ───────────────────────────────────
     { key: 'practitioners.directory.link_website', group: 'Practitioners — The Directory', label: 'Website link wording on a profile card', text: "Visit website" },
+    { key: 'practitioners.directory.resource_label', group: 'Practitioners — The Directory', label: 'Label above a practitioner’s Uncoached resource', help: 'Only shows on profiles where you have filled that in.', text: "Contributed to Uncoached" },
+    { key: 'practitioners.directory.show_more', group: 'Practitioners — The Directory', label: 'Button to show more practitioners', help: 'The number remaining is added automatically.', text: "Show more practitioners" },
+    { key: 'practitioners.directory.show_fewer', group: 'Practitioners — The Directory', label: 'Button to collapse the list again', text: "Show fewer" },
     { key: 'practitioners.directory.empty', group: 'Practitioners — The Directory', label: 'Message when nobody is listed yet', multiline: true, help: 'Shown only while the directory is empty.', text: "Our first practitioners are being welcomed in. Check back soon." },
     { key: 'practitioners.directory.empty_category', group: 'Practitioners — The Directory', label: 'Message when a filter has no one in it', multiline: true, text: "No practitioners in this category yet." },
 

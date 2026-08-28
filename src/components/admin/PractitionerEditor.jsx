@@ -10,7 +10,7 @@ import { parseFocusAreas } from '../../lib/practitionerCategories';
 const BLANK = {
     full_name: '', credentials: '', email: '', photo_url: '', bio: '',
     areas_of_focus: '', countries: '', delivery: '', languages: '',
-    website_url: '', social_url: '',
+    website_url: '', social_url: '', uncoached_resource: '',
 };
 
 const input =
@@ -75,6 +75,7 @@ const PractitionerEditor = ({ row, onSaved, onCancel }) => {
             languages: form.languages?.trim() || null,
             website_url: tidyUrl(form.website_url),
             social_url: tidyUrl(form.social_url),
+            uncoached_resource: form.uncoached_resource?.trim() || null,
         };
 
         try {
@@ -191,6 +192,14 @@ const PractitionerEditor = ({ row, onSaved, onCancel }) => {
 
                 <Row label="Social media" hint="A link, or a handle like @theirname." wide>
                     <input value={form.social_url || ''} onChange={set('social_url')} className={input} />
+                </Row>
+
+                <Row label="Uncoached resource (optional)"
+                    hint="What they contributed to the Library. Shown on their card so visitors can see their work. Leave it empty and the card simply doesn't show the line."
+                    wide>
+                    <input value={form.uncoached_resource || ''} onChange={set('uncoached_resource')}
+                        className={input}
+                        placeholder="Grounding Practice for Panic — Audio Breath" />
                 </Row>
             </div>
 
