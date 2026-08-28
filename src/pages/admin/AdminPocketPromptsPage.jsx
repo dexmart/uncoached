@@ -304,7 +304,7 @@ const AdminPocketPromptsPage = () => {
                                     id="is_active"
                                     checked={formData.is_active}
                                     onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                                    className="w-5 h-5 rounded border-text-dark/20 text-clay focus:ring-clay"
+                                    className="w-5 h-5 rounded border-text-dark/20 text-sage focus:ring-clay"
                                 />
                                 <label htmlFor="is_active" className="text-sm font-medium text-text-dark cursor-pointer">
                                     Active (Visible in Portal)
@@ -364,7 +364,7 @@ const AdminPocketPromptsPage = () => {
                                         "{prompt.content_free}"
                                     </p>
                                     {prompt.content_premium && (
-                                        <div className="mt-2 text-xs text-clay bg-clay/10 px-2 py-1 rounded inline-block">
+                                        <div className="mt-2 text-xs text-sage bg-clay/10 px-2 py-1 rounded inline-block">
                                             + Premium Content Attached
                                         </div>
                                     )}

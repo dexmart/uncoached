@@ -149,7 +149,7 @@ const ProfilePage = () => {
                             {avatarUrl ? (
                                 <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
                             ) : (
-                                <span className="text-4xl text-clay/50 font-display">
+                                <span className="text-4xl text-sage/80 font-display">
                                     {displayName?.charAt(0).toUpperCase() || 'U'}
                                 </span>
                             )}
