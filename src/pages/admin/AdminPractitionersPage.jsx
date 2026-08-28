@@ -19,6 +19,7 @@ const FIELDS = [
     ['Social media', 'social_url'],
     ['Expertise to contribute', 'expertise_area'],
     ['Resource ideas', 'resource_ideas'],
+    ['Uncoached resource', 'uncoached_resource'],
 ];
 
 const badge = (status) => ({
@@ -248,7 +249,7 @@ const AdminPractitionersPage = () => {
                                 {open && (
                                     <dl className="mt-5 pt-5 border-t border-clay/20 grid sm:grid-cols-2 gap-x-8 gap-y-3">
                                         {FIELDS.filter(([, k]) => r[k]).map(([label, k]) => (
-                                            <div key={k} className={k === 'bio' || k === 'resource_ideas' ? 'sm:col-span-2' : ''}>
+                                            <div key={k} className={k === 'bio' || k === 'resource_ideas' || k === 'uncoached_resource' ? 'sm:col-span-2' : ''}>
                                                 <dt className="text-[11px] uppercase tracking-wider text-text-tertiary mb-0.5">{label}</dt>
                                                 <dd className="text-sm text-text-dark whitespace-pre-line break-words">
                                                     {/^https?:\/\//i.test(r[k]) ? (

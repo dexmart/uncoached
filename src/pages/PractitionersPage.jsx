@@ -10,6 +10,27 @@ const STEP_KEYS = [1, 2, 3, 4];
 const PROMISE_KEYS = [1, 2, 3];
 const PROMISE_ICONS = ['link_off', 'payments', 'verified'];
 
+// The directory grows as practitioners are added, so only a first page is shown
+// and the rest are revealed on request. Six fills two rows of three on desktop;
+// on a phone the cards stack, so six is a lot of scrolling and three is plenty.
+const PAGE_DESKTOP = 6;
+const PAGE_MOBILE = 3;
+const WIDE = '(min-width: 640px)';
+
+const usePageSize = () => {
+    const [size, setSize] = useState(() =>
+        (typeof window !== 'undefined' && window.matchMedia(WIDE).matches ? PAGE_DESKTOP : PAGE_MOBILE));
+
+    useEffect(() => {
+        const mq = window.matchMedia(WIDE);
+        const onChange = () => setSize(mq.matches ? PAGE_DESKTOP : PAGE_MOBILE);
+        mq.addEventListener('change', onChange);
+        return () => mq.removeEventListener('change', onChange);
+    }, []);
+
+    return size;
+};
+
 const initials = (name = '') =>
     name.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase();
 
@@ -31,25 +52,39 @@ const PractitionerCard = ({ p, copy }) => (
         )}
 
         <div className="flex flex-col flex-1 p-6">
-            <h3 className="font-display text-lg text-text-dark leading-tight">
-                {p.full_name}
-                {p.credentials && (
-                    <span className="text-text-muted text-sm font-body"> · {p.credentials}</span>
-                )}
-            </h3>
+            {/* Name, credentials and focus areas each on their own line. Run
+                together they crowded the top of the card, and the separator
+                dot was left dangling whenever the credentials wrapped. */}
+            <h3 className="font-display text-xl text-text-dark leading-snug">{p.full_name}</h3>
+
+            {p.credentials && (
+                <p className="text-sm text-text-muted leading-snug mt-1.5">{p.credentials}</p>
+            )}
+
             {p.areas_of_focus && (
-                <p className="text-text-tertiary text-xs uppercase tracking-wide mt-1">{p.areas_of_focus}</p>
+                <p className="text-[11px] uppercase tracking-[0.11em] text-text-tertiary leading-relaxed mt-3">
+                    {p.areas_of_focus}
+                </p>
             )}
 
             {p.bio && (
-                <p className="text-sm text-text-muted leading-relaxed mt-3">{p.bio}</p>
+                <p className="text-sm text-text-muted leading-relaxed mt-4 pt-4 border-t border-clay/25">{p.bio}</p>
             )}
 
-            <dl className="space-y-2 text-sm text-text-muted mt-4 mb-6">
+            <dl className="space-y-2 text-sm text-text-muted mt-5 mb-6">
                 {p.countries && <Detail icon="location_on">{p.countries}</Detail>}
                 {p.delivery && <Detail icon="videocam">{p.delivery}</Detail>}
                 {p.languages && <Detail icon="translate">{p.languages}</Detail>}
             </dl>
+
+            {p.uncoached_resource && (
+                <div className="mb-5 rounded-xl bg-sage/8 border border-sage/15 px-4 py-3">
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-sage font-semibold mb-1">
+                        {copy('practitioners.directory.resource_label')}
+                    </p>
+                    <p className="text-sm text-text-dark leading-snug">{p.uncoached_resource}</p>
+                </div>
+            )}
 
             <div className="mt-auto flex flex-wrap items-center gap-4">
                 {p.website_url && (
@@ -76,6 +111,10 @@ const PractitionersPage = () => {
     const [activeCategory, setActiveCategory] = useState('All');
     const [practitioners, setPractitioners] = useState([]);
     const [loading, setLoading] = useState(true);
+    // Counted in pages, not cards, so turning a phone sideways re-flows to the
+    // wider page size instead of stranding a half-filled row.
+    const [pages, setPages] = useState(1);
+    const pageSize = usePageSize();
 
     // Approved applications are published through a view that exposes only the
     // fields the Partnership guide promises will be shown publicly.
@@ -99,6 +138,9 @@ const PractitionersPage = () => {
         activeCategory === 'All'
             ? practitioners
             : practitioners.filter((p) => parseFocusAreas(p.areas_of_focus).includes(activeCategory));
+
+    const onPage = visible.slice(0, pages * pageSize);
+    const remaining = visible.length - onPage.length;
 
     // Focus areas are free text, so build the filters from what practitioners
     // actually wrote. Every chip is therefore guaranteed to return someone.
@@ -151,7 +193,7 @@ const PractitionersPage = () => {
                         {available.map((category) => (
                             <button
                                 key={category}
-                                onClick={() => setActiveCategory(category)}
+                                onClick={() => { setActiveCategory(category); setPages(1); }}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                                     activeCategory === category
                                         ? 'bg-sage text-bone'
@@ -168,11 +210,33 @@ const PractitionersPage = () => {
                             <div className="w-10 h-10 border-4 border-sage border-t-transparent rounded-full animate-spin" />
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {visible.map((p) => (
-                                <PractitionerCard key={p.id} p={p} copy={copy} />
-                            ))}
-                        </div>
+                        <>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+                                {onPage.map((p) => (
+                                    <PractitionerCard key={p.id} p={p} copy={copy} />
+                                ))}
+                            </div>
+
+                            {visible.length > pageSize && (
+                                <div className="flex flex-col items-center gap-3 mt-12">
+                                    <p className="text-sm text-text-muted">
+                                        Showing {onPage.length} of {visible.length}
+                                    </p>
+                                    {remaining > 0 ? (
+                                        <button onClick={() => setPages((n) => n + 1)}
+                                            className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-sage text-bone font-medium hover:bg-sage/90 transition-colors shadow-sm">
+                                            {copy('practitioners.directory.show_more')}
+                                            <span className="text-bone/70 text-sm">({remaining})</span>
+                                        </button>
+                                    ) : (
+                                        <button onClick={() => setPages(1)}
+                                            className="px-6 py-2.5 rounded-full border border-clay/50 text-text-muted text-sm hover:border-sage/40 hover:text-text-dark transition-colors">
+                                            {copy('practitioners.directory.show_fewer')}
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                        </>
                     )}
 
                     {!loading && visible.length === 0 && (
