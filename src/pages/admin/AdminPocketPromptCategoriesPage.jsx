@@ -230,7 +230,7 @@ const AdminPocketPromptCategoriesPage = () => {
                                     <span className="text-xs text-text-dark/40 mr-4">Order: {category.sort_order}</span>
                                     <button
                                         onClick={() => handleEdit(category)}
-                                        className="text-text-dark/50 hover:text-clay transition-colors"
+                                        className="text-text-dark/50 hover:text-sage transition-colors"
                                     >
                                         Edit
                                     </button>

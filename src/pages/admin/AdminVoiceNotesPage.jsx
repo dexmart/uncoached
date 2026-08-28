@@ -281,7 +281,7 @@ const AdminVoiceNotesPage = () => {
                                         file:mr-4 file:py-2 file:px-4
                                         file:rounded-full file:border-0
                                         file:text-sm file:font-medium
-                                        file:bg-clay/10 file:text-clay
+                                        file:bg-clay/10 file:text-sage
                                         hover:file:bg-clay/20 cursor-pointer"
                                 />
                                 {audioNotice && (
@@ -298,7 +298,7 @@ const AdminVoiceNotesPage = () => {
                                 id="is_active"
                                 checked={formData.is_active}
                                 onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                                className="w-5 h-5 rounded border-text-dark/20 text-clay focus:ring-clay"
+                                className="w-5 h-5 rounded border-text-dark/20 text-sage focus:ring-clay"
                             />
                             <label htmlFor="is_active" className="text-sm font-medium text-text-dark cursor-pointer">
                                 Active (Visible in Member Portal)
@@ -327,7 +327,7 @@ const AdminVoiceNotesPage = () => {
                                 ) : 'Save Voice Note'}
                             </button>
                             {uploadProgress && (
-                                <span className="text-sm font-medium text-clay animate-pulse">{uploadProgress}</span>
+                                <span className="text-sm font-medium text-sage animate-pulse">{uploadProgress}</span>
                             )}
                         </div>
                     </form>

@@ -130,7 +130,7 @@ const GuidedShiftPlayerPage = () => {
                     {fetchError ? (
                         <>
                             <p className="text-red-500 mb-4 font-mono text-sm bg-red-50 p-4 rounded-xl">{fetchError}</p>
-                            <Link to="/dashboard/guided-shifts" className="text-[#C89A5B] hover:underline">← Back to Guided Shifts</Link>
+                            <Link to="/dashboard/guided-shifts" className="text-[#8F6A3D] hover:underline">← Back to Guided Shifts</Link>
                         </>
                     ) : (
                         <p className="text-[#5E6A65]">Shift not found.</p>
@@ -204,7 +204,7 @@ const GuidedShiftPlayerPage = () => {
 
                     {/* Category Icon */}
                     <div className="text-center mb-6">
-                        <div className="inline-flex items-center justify-center w-20 h-20 bg-[#C89A5B]/15 backdrop-blur-sm rounded-full text-[#C89A5B] shadow-sm border border-[#C89A5B]/20">
+                        <div className="inline-flex items-center justify-center w-20 h-20 bg-[#C89A5B]/15 backdrop-blur-sm rounded-full text-[#8F6A3D] shadow-sm border border-[#C89A5B]/20">
                             {renderCategoryIcon()}
                         </div>
                     </div>
@@ -234,7 +234,7 @@ const GuidedShiftPlayerPage = () => {
                                 onClick={togglePlay}
                                 className={`w-14 h-14 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm ${isPlaying
                                     ? 'bg-[#3F5D4D] text-white'
-                                    : 'bg-[#C89A5B]/15 text-[#C89A5B] hover:bg-[#C89A5B] hover:text-white'
+                                    : 'bg-[#C89A5B]/15 text-[#8F6A3D] hover:bg-[#C89A5B] hover:text-white'
                                     }`}
                             >
                                 {isPlaying ? (
@@ -280,7 +280,7 @@ const GuidedShiftPlayerPage = () => {
                         <div className="mb-8">
                             <div className="flex items-center gap-4 mb-5">
                                 <div className="h-px bg-[#D6C7B8]/50 flex-1"></div>
-                                <h3 className="text-[13px] uppercase tracking-[0.2em] text-[#C89A5B] font-bold text-center">
+                                <h3 className="text-[13px] uppercase tracking-[0.2em] text-[#8F6A3D] font-bold text-center">
                                     Use This When
                                 </h3>
                                 <div className="h-px bg-[#D6C7B8]/50 flex-1"></div>
@@ -290,7 +290,7 @@ const GuidedShiftPlayerPage = () => {
                                 {parsedUseWhen.map((item, index) => (
                                     <div key={index} className="flex items-start gap-3 bg-white/70 backdrop-blur-sm rounded-xl px-5 py-3.5 border border-white/40">
                                         <div className="shrink-0 w-5 h-5 rounded-full bg-[#C89A5B]/20 flex items-center justify-center mt-0.5">
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C89A5B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8F6A3D" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                                 <path d="M20 6L9 17l-5-5" />
                                             </svg>
                                         </div>
@@ -344,14 +344,14 @@ const GuidedShiftPlayerPage = () => {
 
                                     {/* Lotus icon */}
                                     <div className="flex justify-center mb-3">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C89A5B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8F6A3D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z" />
                                             <path d="M12 8v8" />
                                             <path d="M8 12h8" />
                                         </svg>
                                     </div>
 
-                                    <h4 className="text-[12px] uppercase tracking-[0.2em] text-[#C89A5B] font-bold mb-3 text-center">
+                                    <h4 className="text-[12px] uppercase tracking-[0.2em] text-[#8F6A3D] font-bold mb-3 text-center">
                                         Science Corner
                                     </h4>
                                     <p className="text-[#1F2422]/75 text-[14px] leading-[1.7]">
@@ -375,13 +375,13 @@ const GuidedShiftPlayerPage = () => {
 
                                     {/* Lotus icon */}
                                     <div className="flex justify-center mb-3">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C89A5B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8F6A3D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M12 22c-4.97 0-9-2.24-9-5v-1c0-2.76 4.03-5 9-5s9 2.24 9 5v1c0 2.76-4.03 5-9 5z" />
                                             <path d="M12 2a4 4 0 0 0-4 4c0 2.76 1.79 6 4 6s4-3.24 4-6a4 4 0 0 0-4-4z" />
                                         </svg>
                                     </div>
 
-                                    <h4 className="text-[12px] uppercase tracking-[0.2em] text-[#C89A5B] font-bold mb-3 text-center">
+                                    <h4 className="text-[12px] uppercase tracking-[0.2em] text-[#8F6A3D] font-bold mb-3 text-center">
                                         Spiritual Corner
                                     </h4>
                                     <p className="text-[#1F2422]/75 text-[14px] leading-[1.7]">

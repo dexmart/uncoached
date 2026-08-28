@@ -182,7 +182,7 @@ const AudioBreathsPage = () => {
                             </h3>
                             <ul className="space-y-6">
                                 <li className="flex items-center gap-5">
-                                    <div className="text-clay opacity-80 shrink-0">
+                                    <div className="text-sage opacity-80 shrink-0">
                                         {/* Heart Icon */}
                                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
@@ -191,7 +191,7 @@ const AudioBreathsPage = () => {
                                     <span className="text-text-dark/80 text-base md:text-lg">Slows a racing heart and breath</span>
                                 </li>
                                 <li className="flex items-center gap-5">
-                                    <div className="text-clay opacity-80 shrink-0">
+                                    <div className="text-sage opacity-80 shrink-0">
                                         {/* Sparkles Icon */}
                                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
@@ -202,7 +202,7 @@ const AudioBreathsPage = () => {
                                     <span className="text-text-dark/80 text-base md:text-lg">Signals safety through the vagus nerve</span>
                                 </li>
                                 <li className="flex items-center gap-5">
-                                    <div className="text-clay opacity-80 shrink-0">
+                                    <div className="text-sage opacity-80 shrink-0">
                                         {/* Sun/Sunset Icon */}
                                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M12 9a4 4 0 0 1 4 4" />
@@ -217,7 +217,7 @@ const AudioBreathsPage = () => {
                                     <span className="text-text-dark/80 text-base md:text-lg">Improves emotional regulation and focus</span>
                                 </li>
                                 <li className="flex items-center gap-5">
-                                    <div className="text-clay opacity-80 shrink-0">
+                                    <div className="text-sage opacity-80 shrink-0">
                                         {/* Plant Icon */}
                                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M7 20h10" />
@@ -276,7 +276,7 @@ const AudioBreathsPage = () => {
                                 'When you want to strengthen a good or joyful feeling'
                             ].map((useCase, index) => (
                                 <li key={index} className="flex items-start gap-4">
-                                    <span className="text-clay text-lg mt-0.5 opacity-80">✓</span>
+                                    <span className="text-sage text-lg mt-0.5 opacity-80">✓</span>
                                     <span className="text-text-dark/90 leading-relaxed text-sm md:text-base">{useCase}</span>
                                 </li>
                             ))}
@@ -431,7 +431,7 @@ const AudioBreathsPage = () => {
                                         <span className="font-semibold text-text-dark block mb-0.5">Use when:</span>
                                         {family.useWhen}
                                     </p>
-                                    <span className="text-clay/60 group-hover/footer:text-clay transition-colors">
+                                    <span className="text-sage/70 group-hover/footer:text-sage transition-colors">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M9 18l6-6-6-6" />
                                         </svg>

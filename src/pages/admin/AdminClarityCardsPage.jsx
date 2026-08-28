@@ -182,7 +182,7 @@ const AdminClarityCardsPage = () => {
                                 id="is_active"
                                 checked={formData.is_active}
                                 onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                                className="w-5 h-5 rounded border-text-dark/20 text-clay focus:ring-clay"
+                                className="w-5 h-5 rounded border-text-dark/20 text-sage focus:ring-clay"
                             />
                             <label htmlFor="is_active" className="text-sm font-medium text-text-dark cursor-pointer">
                                 Active (Visible in Member Portal)
@@ -229,7 +229,7 @@ const AdminClarityCardsPage = () => {
                                     <span className="text-xs text-text-dark/40 mr-4">Order: {card.sort_order}</span>
                                     <button
                                         onClick={() => handleEdit(card)}
-                                        className="text-text-dark/50 hover:text-clay transition-colors"
+                                        className="text-text-dark/50 hover:text-sage transition-colors"
                                     >
                                         Edit
                                     </button>
