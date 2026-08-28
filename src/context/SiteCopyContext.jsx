@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { DEFAULT_COPY } from '../lib/siteCopy';
+import SNAPSHOT from '../lib/siteCopySnapshot.json';
 
 const SiteCopyContext = createContext({ copy: (k) => DEFAULT_COPY[k] ?? '' });
 
@@ -12,11 +13,19 @@ export const useCopy = () => useContext(SiteCopyContext).copy;
 // every visit paints the original wording for a moment and then swaps to hers —
 // the flash she noticed on the homepage headline.
 //
-// So we keep the last copy we fetched in the browser and read it back
-// synchronously on the next visit, before the first paint. A returning visitor
-// therefore sees the right words immediately; the fetch still runs and quietly
-// corrects anything that changed since. Only a brand-new visitor, on their very
-// first page load, can still see the original wording briefly.
+// Two things stop that, and between them the first paint is already correct:
+//
+//   1. SNAPSHOT — her wording as it stood at the last deploy, baked into the
+//      bundle by scripts/snapshot-site-copy.mjs. Covers a brand-new visitor,
+//      who has nothing stored in their browser yet.
+//   2. The cache — the copy we fetched on this visitor's last visit, read back
+//      synchronously here. Covers anyone returning, and is newer than the
+//      snapshot if she has edited since the last deploy.
+//
+// The live fetch still runs and still wins, so nothing can go stale for long.
+// The cache is preferred whole rather than merged over the snapshot: it is a
+// complete picture of the database at the moment it was written, so a field she
+// has since reverted is correctly absent from it.
 const CACHE_KEY = 'uncoached.siteCopy.v1';
 
 const readCache = () => {
@@ -38,8 +47,13 @@ const writeCache = (map) => {
     }
 };
 
+const initialCopy = () => {
+    const cached = readCache();
+    return Object.keys(cached).length ? cached : SNAPSHOT;
+};
+
 export const SiteCopyProvider = ({ children }) => {
-    const [overrides, setOverrides] = useState(readCache);
+    const [overrides, setOverrides] = useState(initialCopy);
 
     useEffect(() => {
         let active = true;
@@ -48,7 +62,8 @@ export const SiteCopyProvider = ({ children }) => {
             .select('key,value')
             .then(({ data, error }) => {
                 // If the table isn't there yet, or the fetch fails, every field
-                // simply falls back to the cache and then to its original wording.
+                // falls back to the cache, then the snapshot, then its original
+                // wording — so the page is never blank and never half-written.
                 if (error) return;
                 if (!active || !data) return;
                 const map = {};
