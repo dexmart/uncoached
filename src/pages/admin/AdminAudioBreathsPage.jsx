@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { checkAudioFile, explainUploadError } from '../../lib/audioUpload';
 
 const AdminAudioBreathsPage = () => {
     const [breaths, setBreaths] = useState([]);
@@ -28,6 +29,7 @@ const AdminAudioBreathsPage = () => {
     });
 
     const [audioFile, setAudioFile] = useState(null);
+    const [audioNotice, setAudioNotice] = useState(null);
 
     useEffect(() => {
         fetchData();
@@ -86,7 +88,8 @@ const AdminAudioBreathsPage = () => {
             sort_order: breath.sort_order || 0
         });
         setCurrentBreath(breath);
-        setAudioFile(null); // Reset file input
+        setAudioFile(null);
+        setAudioNotice(null); // Reset file input
         setIsEditing(true);
     };
 
@@ -108,6 +111,7 @@ const AdminAudioBreathsPage = () => {
         });
         setCurrentBreath(null);
         setAudioFile(null);
+        setAudioNotice(null);
         setIsEditing(true);
     };
 
@@ -115,12 +119,16 @@ const AdminAudioBreathsPage = () => {
         setIsEditing(false);
         setCurrentBreath(null);
         setAudioFile(null);
+        setAudioNotice(null);
         setUploadProgress('');
     };
 
     const handleFileChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
-            setAudioFile(e.target.files[0]);
+            const file = e.target.files[0];
+            setAudioFile(file);
+            // Say up front if it is too big, rather than after a long upload.
+            setAudioNotice(checkAudioFile(file));
         }
     };
 
@@ -141,6 +149,11 @@ const AdminAudioBreathsPage = () => {
 
             // 1. If a new file was selected, upload it to Supabase Storage first
             if (audioFile) {
+                if (audioNotice?.level === 'error') {
+                    alert(audioNotice.text);
+                    setIsSaving(false);
+                    return;
+                }
                 setUploadProgress('Uploading audio file...');
                 const fileExt = audioFile.name.split('.').pop();
                 const fileName = `${breathId}-${Date.now()}.${fileExt}`;
@@ -190,7 +203,7 @@ const AdminAudioBreathsPage = () => {
             setUploadProgress('');
         } catch (error) {
             console.error('Error saving breath:', error);
-            alert(`Failed to save Audio Breath: ${error.message || 'Unknown error'}`);
+            alert(`Failed to save Audio Breath: ${explainUploadError(error, audioFile)}`);
         } finally {
             setIsSaving(false);
             setUploadProgress('');
@@ -313,6 +326,11 @@ const AdminAudioBreathsPage = () => {
                                         file:bg-clay/10 file:text-clay
                                         hover:file:bg-clay/20 cursor-pointer"
                                 />
+                                {audioNotice && (
+                                    <p className={`mt-2 text-sm leading-relaxed ${audioNotice.level === 'error' ? 'text-red-600' : 'text-golden-deep'}`}>
+                                        {audioNotice.text}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
