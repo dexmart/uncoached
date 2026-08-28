@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/snapshot-site-copy.mjs && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "snapshot:copy": "node scripts/snapshot-site-copy.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.94.0",
