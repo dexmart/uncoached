@@ -412,6 +412,24 @@ For privacy concerns, email us at hello@uncoached.space.`
     { key: 'apply.thanks.body', group: 'Application Form — After Submitting', label: 'Thank you paragraph', multiline: true, text: "Your application is with Johanna. She reads every one personally and will be in touch by email — if it feels like a fit, she'll send you a link to book a call." },
     { key: 'apply.thanks.back', group: 'Application Form — After Submitting', label: 'Link back to the guide', help: 'The arrow is added automatically.', text: "Back to the Partnership Guide" },
 
+
+    // ── Members Area · Dashboard Cards ──────────────────────────
+    // The tiles a member sees after signing in.
+    { key: 'member.card1_title', group: 'Members Area — Dashboard Cards', label: 'Card 1 title', text: "Field" },
+    { key: 'member.card1_body', group: 'Members Area — Dashboard Cards', label: 'Card 1 text', multiline: true, text: "Support in the moment." },
+    { key: 'member.card2_title', group: 'Members Area — Dashboard Cards', label: 'Card 2 title', text: "Audio Breaths" },
+    { key: 'member.card2_body', group: 'Members Area — Dashboard Cards', label: 'Card 2 text', multiline: true, text: "Breathe, then continue." },
+    { key: 'member.card3_title', group: 'Members Area — Dashboard Cards', label: 'Card 3 title', text: "Guided Shifts" },
+    { key: 'member.card3_body', group: 'Members Area — Dashboard Cards', label: 'Card 3 text', multiline: true, text: "Small practices, real shifts." },
+    { key: 'member.card4_title', group: 'Members Area — Dashboard Cards', label: 'Card 4 title', text: "Pocket Prompts" },
+    { key: 'member.card4_body', group: 'Members Area — Dashboard Cards', label: 'Card 4 text', multiline: true, text: "Clarity through questions." },
+    { key: 'member.card5_title', group: 'Members Area — Dashboard Cards', label: 'Card 5 title', text: "Clarity Cards" },
+    { key: 'member.card5_body', group: 'Members Area — Dashboard Cards', label: 'Card 5 text', multiline: true, text: "Work it out on paper." },
+    { key: 'member.card6_title', group: 'Members Area — Dashboard Cards', label: 'Card 6 title', help: 'Anything between *stars* shows in sage italic.', text: "Af*for*mations" },
+    { key: 'member.card6_body', group: 'Members Area — Dashboard Cards', label: 'Card 6 text', multiline: true, text: "Generate a positive response in your mind." },
+    { key: 'member.card7_title', group: 'Members Area — Dashboard Cards', label: 'Card 7 title', text: "Voice Notes" },
+    { key: 'member.card7_body', group: 'Members Area — Dashboard Cards', label: 'Card 7 text', multiline: true, text: "Remember who you are." },
+
 ];
 
 /** Ordered list of group names, for the admin screen. */

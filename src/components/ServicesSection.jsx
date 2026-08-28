@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCopy } from '../context/SiteCopyContext';
+import { emphasise, plain } from '../lib/emphasise';
 
 const services = [
     'images/Field Icons/field chat.png',
@@ -12,15 +13,6 @@ const services = [
     'images/Field Icons/field voice notes.png',
     'images/Field Icons/field coming soon2.png',
 ].map((icon, i) => ({ icon, titleKey: `home.services.card${i + 1}_title`, bodyKey: `home.services.card${i + 1}_body` }));
-
-// Card titles support *stars* for a sage italic run, which is how the "for" in
-// Af*for*mations is set. Plain titles are unaffected.
-const emphasise = (text) =>
-    (text || '').split(/\*(.+?)\*/g).map((part, i) =>
-        (i % 2 ? <span key={i} className="italic text-sage">{part}</span> : part));
-
-const plain = (text) => (text || '').replace(/\*/g, '');
-
 
 const ServicesSection = () => {
     const copy = useCopy();

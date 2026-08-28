@@ -20,7 +20,9 @@
   <!-- Material Symbols -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
-</head>
+    <!-- Site wording is fetched from Supabase on load; warm the connection early. -->
+    <link rel="preconnect" href="%VITE_SUPABASE_URL%" crossorigin />
+  </head>
 
 <body>
   <div id="root"></div>
