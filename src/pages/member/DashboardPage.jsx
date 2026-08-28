@@ -2,9 +2,12 @@ import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useCopy } from '../../context/SiteCopyContext';
+import { emphasise, plain } from '../../lib/emphasise';
 
 const DashboardPage = () => {
     const { user, signOut } = useAuth();
+    const copy = useCopy();
 
     const meta = user?.user_metadata || {};
     // display_name (email signup), full_name/name (Google OAuth), then email prefix.
@@ -63,54 +66,26 @@ const DashboardPage = () => {
             .slice(0, 8);
     }, [query, searchIndex]);
 
+    // Wording comes from Website Text > Members Area, so Johanna can reword the
+    // tiles herself. Icons, links and colours stay in code.
     const navigationItems = [
-        {
-            title: 'Field',
-            description: 'Support in the moment.',
-            icon: 'images/Field Icons/field chat.png',
-            link: '/dashboard/field',
-            color: 'from-sage/20 to-sage/10'
-        },
-        {
-            title: 'Audio Breaths',
-            description: 'Breathe, then continue.',
-            icon: 'images/Field Icons/field audio breath.png',
-            link: '/dashboard/audio-breaths',
-            color: 'from-golden/20 to-golden/10'
-        },
-        {
-            title: 'Guided Shifts',
-            description: 'Small practices, real shifts.',
-            icon: 'images/Field Icons/field guided shift.png',
-            link: '/dashboard/guided-shifts',
-            color: 'from-clay/20 to-clay/10'
-        },
-        {
-            title: 'Pocket Prompts',
-            description: 'Clarity through questions.',
-            icon: 'images/Field Icons/field pocket prompts.png',
-            link: '/dashboard/pocket-prompts',
-            color: 'from-sage/20 to-sage/10'
-        },
-        {
-            title: 'Clarity Cards',
-            description: 'Work it out on paper.',
-            icon: 'images/Field Icons/field clarity cards.png',
-            link: '/dashboard/clarity-cards',
-            color: 'from-golden/20 to-golden/10'
-        },
-        {
-            title: <>Af<span className="italic text-sage font-serif">for</span>mations</>,
-            description: 'Generate a positive response in your mind.',
-            icon: 'images/Field Icons/field affirmation.png',
-            link: '/dashboard/afformations',
-            color: 'from-clay/20 to-clay/10'
-        }
-    ];
+        { n: 1, icon: 'images/Field Icons/field chat.png', link: '/dashboard/field', color: 'from-sage/20 to-sage/10' },
+        { n: 2, icon: 'images/Field Icons/field audio breath.png', link: '/dashboard/audio-breaths', color: 'from-golden/20 to-golden/10' },
+        { n: 3, icon: 'images/Field Icons/field guided shift.png', link: '/dashboard/guided-shifts', color: 'from-clay/20 to-clay/10' },
+        { n: 4, icon: 'images/Field Icons/field pocket prompts.png', link: '/dashboard/pocket-prompts', color: 'from-sage/20 to-sage/10' },
+        { n: 5, icon: 'images/Field Icons/field clarity cards.png', link: '/dashboard/clarity-cards', color: 'from-golden/20 to-golden/10' },
+        { n: 6, icon: 'images/Field Icons/field affirmation.png', link: '/dashboard/afformations', color: 'from-clay/20 to-clay/10' },
+    ].map((c) => ({
+        ...c,
+        title: emphasise(copy(`member.card${c.n}_title`), 'italic text-sage font-serif'),
+        alt: plain(copy(`member.card${c.n}_title`)),
+        description: copy(`member.card${c.n}_body`),
+    }));
 
     const voiceNotes = {
-        title: 'Voice Notes',
-        description: 'Remember who you are.',
+        title: emphasise(copy('member.card7_title'), 'italic text-sage font-serif'),
+        alt: plain(copy('member.card7_title')),
+        description: copy('member.card7_body'),
         icon: 'images/Field Icons/field voice notes.png',
         link: '/dashboard/voice-notes',
         color: 'from-sage/20 to-sage/10'
@@ -219,7 +194,7 @@ const DashboardPage = () => {
                             >
                                 <img
                                     src={import.meta.env.BASE_URL + item.icon}
-                                    alt={item.title}
+                                    alt={item.alt}
                                     className="w-16 h-16 mx-auto mb-4 object-contain"
                                 />
                                 <h3 className="font-display text-lg text-text-dark font-semibold mb-1">
@@ -240,7 +215,7 @@ const DashboardPage = () => {
                         >
                             <img
                                 src={import.meta.env.BASE_URL + voiceNotes.icon}
-                                alt={voiceNotes.title}
+                                alt={voiceNotes.alt}
                                 className="w-16 h-16 mx-auto mb-4 object-contain"
                             />
                             <h3 className="font-display text-lg text-text-dark font-semibold mb-1">

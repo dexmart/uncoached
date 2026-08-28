@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { checkAudioFile, explainUploadError } from '../../lib/audioUpload';
 
 const AdminGuidedShiftsPage = () => {
     const [shifts, setShifts] = useState([]);
@@ -30,6 +31,7 @@ const AdminGuidedShiftsPage = () => {
     });
 
     const [audioFile, setAudioFile] = useState(null);
+    const [audioNotice, setAudioNotice] = useState(null);
 
     useEffect(() => {
         fetchData();
@@ -90,7 +92,8 @@ const AdminGuidedShiftsPage = () => {
             sort_order: shift.sort_order || 0
         });
         setCurrentShift(shift);
-        setAudioFile(null); // Reset file input
+        setAudioFile(null);
+        setAudioNotice(null); // Reset file input
         setIsEditing(true);
     };
 
@@ -114,6 +117,7 @@ const AdminGuidedShiftsPage = () => {
         });
         setCurrentShift(null);
         setAudioFile(null);
+        setAudioNotice(null);
         setIsEditing(true);
     };
 
@@ -121,12 +125,16 @@ const AdminGuidedShiftsPage = () => {
         setIsEditing(false);
         setCurrentShift(null);
         setAudioFile(null);
+        setAudioNotice(null);
         setUploadProgress('');
     };
 
     const handleFileChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
-            setAudioFile(e.target.files[0]);
+            const file = e.target.files[0];
+            setAudioFile(file);
+            // Say up front if it is too big, rather than after a long upload.
+            setAudioNotice(checkAudioFile(file));
         }
     };
 
@@ -147,6 +155,11 @@ const AdminGuidedShiftsPage = () => {
 
             // 1. If a new file was selected, upload it to Supabase Storage first
             if (audioFile) {
+                if (audioNotice?.level === 'error') {
+                    alert(audioNotice.text);
+                    setIsSaving(false);
+                    return;
+                }
                 setUploadProgress('Uploading audio file to guided-shifts bucket...');
                 const fileExt = audioFile.name.split('.').pop();
                 const fileName = `${shiftId}-${Date.now()}.${fileExt}`;
@@ -198,7 +211,7 @@ const AdminGuidedShiftsPage = () => {
             setUploadProgress('');
         } catch (error) {
             console.error('Error saving shift:', error);
-            alert(`Failed to save Guided Shift: ${error.message || 'Unknown error'}`);
+            alert(`Failed to save Guided Shift: ${explainUploadError(error, audioFile)}`);
         } finally {
             setIsSaving(false);
             setUploadProgress('');
@@ -346,6 +359,11 @@ const AdminGuidedShiftsPage = () => {
                                         file:bg-clay/10 file:text-clay
                                         hover:file:bg-clay/20 cursor-pointer"
                                 />
+                                {audioNotice && (
+                                    <p className={`mt-2 text-sm leading-relaxed ${audioNotice.level === 'error' ? 'text-red-600' : 'text-golden-deep'}`}>
+                                        {audioNotice.text}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
