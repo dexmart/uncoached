@@ -137,6 +137,54 @@ router.post("/create-checkout-session", async (req, res) => {
     }
 });
 
+// Confirm a $2 prompt purchase straight after checkout.
+//
+// The webhook also records purchases, but it depends on Stripe reaching Render
+// in time and on the table existing — and the buyer is looking at the page
+// *now*. So when they land back with a session_id we ask Stripe directly
+// whether that session is paid, and record it ourselves. Whichever of the two
+// gets there first wins; the upsert makes running both harmless.
+router.post("/verify-prompt-purchase", async (req, res) => {
+    const { sessionId, userId } = req.body;
+
+    if (!sessionId || !userId) {
+        return res.status(400).json({ error: "Missing sessionId or userId" });
+    }
+
+    try {
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+        if (session.metadata?.type !== "prompt_purchase") {
+            return res.status(400).json({ unlocked: false, error: "Not a prompt purchase" });
+        }
+        // Never let one signed-in user claim another user's session.
+        if (session.metadata.userId !== userId) {
+            return res.status(403).json({ unlocked: false, error: "Session belongs to a different account" });
+        }
+        if (session.payment_status !== "paid") {
+            return res.json({ unlocked: false, status: session.payment_status });
+        }
+
+        const promptId = session.metadata.promptId;
+        const { error } = await supabaseAdmin.from("prompt_purchases").upsert(
+            { user_id: userId, prompt_id: promptId },
+            { onConflict: "user_id,prompt_id" }
+        );
+        if (error) {
+            // Most likely the prompt_purchases table is missing — say so plainly
+            // in the logs, since the buyer has already paid.
+            console.error(`PAID BUT NOT RECORDED — prompt ${promptId} for ${userId}:`, error.message);
+            return res.status(500).json({ unlocked: false, error: "Payment received but could not be saved" });
+        }
+
+        console.log(`Prompt ${promptId} verified and recorded for ${userId}`);
+        res.json({ unlocked: true, promptId });
+    } catch (err) {
+        console.error("verify-prompt-purchase error:", err.message);
+        res.status(500).json({ unlocked: false, error: "Could not verify payment" });
+    }
+});
+
 // Create a one-time $2 checkout for a single high-level Pocket Prompt
 router.post("/create-prompt-checkout", async (req, res) => {
     const { userId, userEmail, promptId, promptTitle } = req.body;
@@ -159,7 +207,7 @@ router.post("/create-prompt-checkout", async (req, res) => {
                 },
                 quantity: 1
             }],
-            success_url: `${process.env.FRONTEND_URL}/dashboard/pocket-prompts?unlocked=${promptId}`,
+            success_url: `${process.env.FRONTEND_URL}/dashboard/pocket-prompts?unlocked=${promptId}&session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.FRONTEND_URL}/dashboard/pocket-prompts`,
             client_reference_id: userId,
             customer_email: userEmail,
