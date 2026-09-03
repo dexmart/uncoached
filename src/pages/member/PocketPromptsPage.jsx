@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
@@ -10,6 +10,10 @@ const PocketPromptsPage = () => {
     const [activeCategory, setActiveCategory] = useState('all');
     const [purchasedIds, setPurchasedIds] = useState(new Set());
     const [unlockingId, setUnlockingId] = useState(null);
+    const [unlockNotice, setUnlockNotice] = useState(() =>
+        new URLSearchParams(window.location.search).has('session_id')
+            ? { level: 'info', text: 'Confirming your payment…' }
+            : null);
 
     const [categories, setCategories] = useState([{ id: 'all', title: 'All Prompts', slug: 'all' }]);
     const [prompts, setPrompts] = useState([]);
@@ -76,19 +80,57 @@ const PocketPromptsPage = () => {
     };
 
     // Which high-level prompts this member has unlocked ($2 each).
-    // Re-runs on return from Stripe checkout (location.search carries ?unlocked=).
-    useEffect(() => {
+    const loadPurchases = useCallback(async () => {
         if (!user) return;
-        let active = true;
-        supabase
+        const { data, error } = await supabase
             .from('prompt_purchases')
             .select('prompt_id')
-            .eq('user_id', user.id)
-            .then(({ data }) => {
-                if (active) setPurchasedIds(new Set((data || []).map(r => r.prompt_id)));
-            });
+            .eq('user_id', user.id);
+        // A missing table or a blocked read used to fail silently here and just
+        // leave everything locked. Say so, so it can be found.
+        if (error) console.error('Could not load prompt purchases:', error.message);
+        setPurchasedIds(new Set((data || []).map(r => r.prompt_id)));
+    }, [user]);
+
+    useEffect(() => { loadPurchases(); }, [loadPurchases]);
+
+    // Back from Stripe checkout: confirm the payment with the server and record
+    // it, rather than hoping the webhook has already landed. Then reload.
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const sessionId = params.get('session_id');
+        if (!sessionId || !user) return;
+
+        let active = true;
+        (async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/stripe/verify-prompt-purchase`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId, userId: user.id }),
+                });
+                const data = await res.json();
+                if (!active) return;
+
+                if (data.unlocked) {
+                    await loadPurchases();
+                    setUnlockNotice({ level: 'ok', text: 'Payment received — your high-level prompt is unlocked and yours to keep.' });
+                } else if (data.status && data.status !== 'paid') {
+                    setUnlockNotice({ level: 'warn', text: 'Your payment is still processing. Give it a moment and refresh this page.' });
+                } else {
+                    setUnlockNotice({ level: 'error', text: `Your payment went through, but we couldn't save the unlock: ${data.error || 'unknown error'}. Please email hello@uncoached.space and it will be sorted by hand — you won't be charged twice.` });
+                }
+            } catch (err) {
+                if (!active) return;
+                console.error('verify-prompt-purchase failed:', err);
+                setUnlockNotice({ level: 'warn', text: "We couldn’t confirm the payment just now. If the prompt still shows as locked in a minute, refresh this page." });
+            } finally {
+                // Drop the checkout params so a refresh doesn't re-run this.
+                window.history.replaceState({}, '', location.pathname);
+            }
+        })();
         return () => { active = false; };
-    }, [user, location.search]);
+    }, [location.search, location.pathname, user, loadPurchases]);
 
     // First N lines of the high-level prompt, shown as a free taste.
     const previewOf = (text, lines = 8) => (text || '').split('\n').slice(0, lines).join('\n');
@@ -151,6 +193,19 @@ const PocketPromptsPage = () => {
                     </svg>
                     <span className="text-sm font-medium tracking-wide">Back to Portal</span>
                 </Link>
+
+                {/* Payment confirmation, after returning from checkout */}
+                {unlockNotice && (
+                    <div className="px-6 pt-[100px] md:pt-[120px] -mb-[70px] md:-mb-[100px] flex justify-center">
+                        <div role="status" className={`w-full max-w-[700px] rounded-2xl px-5 py-3.5 text-sm shadow-sm border backdrop-blur-md ${
+                            unlockNotice.level === 'ok' ? 'bg-sage/95 text-bone border-sage'
+                            : unlockNotice.level === 'error' ? 'bg-red-50/95 text-red-700 border-red-200'
+                            : unlockNotice.level === 'warn' ? 'bg-golden-light/25 text-golden-deep border-golden-light/50'
+                            : 'bg-[#F4F1EC]/90 text-text-dark border-white/40'}`}>
+                            {unlockNotice.text}
+                        </div>
+                    </div>
+                )}
 
                 {/* SECTION 1: INTRO / HERO AREA */}
                 <section className="px-6 pt-[120px] pb-[60px] md:pt-[160px] md:pb-[80px] flex items-center justify-center">

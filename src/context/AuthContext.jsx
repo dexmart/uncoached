@@ -211,7 +211,7 @@ export const AuthProvider = ({ children }) => {
         signInWithGoogle,
         signOut,
         updateProfile,
-        isSubscribed: subscription?.status === 'active',
+        isSubscribed: subscription?.status === 'active' || subscription?.status === 'trialing',
         isAdmin,
         isRoleLoading
     };
