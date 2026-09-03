@@ -76,7 +76,7 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requireSubscription={true}>
                 <DashboardPage />
               </ProtectedRoute>
             }
@@ -124,7 +124,7 @@ function App() {
           <Route
             path="/dashboard/pocket-prompts"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requireSubscription={true}>
                 <PocketPromptsPage />
               </ProtectedRoute>
             }
