@@ -28,7 +28,8 @@ export const AuthProvider = ({ children }) => {
 
             if (error) {
                 console.error('Error fetching subscription:', error);
-            } else if (data && data.status === 'active') {
+            } else if (data && (data.status === 'active' || data.status === 'trialing')) {
+                // 'trialing' is how a gifted membership looks (see server/lib/redeemGift.js).
                 setSubscription(data);
                 return;
             }
@@ -211,6 +212,7 @@ export const AuthProvider = ({ children }) => {
         signInWithGoogle,
         signOut,
         updateProfile,
+        refreshSubscription: () => (user ? fetchSubscription(user.id, user.email) : Promise.resolve()),
         isSubscribed: subscription?.status === 'active' || subscription?.status === 'trialing',
         isAdmin,
         isRoleLoading

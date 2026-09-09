@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useCopy } from '../context/SiteCopyContext';
 
 /* GiftSection renders the homepage "Give the Gift of Calm" block. */
@@ -49,6 +50,12 @@ const GiftSection = () => {
                         >
                             {copy('home.gift.cta')}
                         </a>
+
+                        <p className="text-sm text-text-muted mb-8">
+                            <Link to="/redeem" className="text-sage hover:underline">
+                                {copy('home.gift.redeem_link')}
+                            </Link>
+                        </p>
 
                         <div className="flex flex-wrap gap-6 text-sm text-text-muted">
                             <div className="flex items-center gap-2">
