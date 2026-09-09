@@ -251,6 +251,11 @@ const PricingPage = () => {
                     <p className="text-text-muted text-sm">
                         Secure payment powered by Stripe. Cancel anytime.
                     </p>
+                    <p className="text-text-muted text-sm mt-4">
+                        <Link to="/redeem" className="text-sage hover:underline">
+                            {copy('pricing.gift_link')}
+                        </Link>
+                    </p>
                     {!user && (
                         <p className="text-text-muted text-sm mt-4">
                             Already have an account?{' '}

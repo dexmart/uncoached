@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getPendingGiftCode } from '../lib/giftCode';
 
 const SignUpPage = () => {
     const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ const SignUpPage = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const hasGift = Boolean(getPendingGiftCode());
 
     const { signUp, signInWithGoogle } = useAuth();
     const navigate = useNavigate();
@@ -33,8 +35,8 @@ const SignUpPage = () => {
         } else {
             setSuccess(true);
             setLoading(false);
-            // Redirect to pricing after signup
-            setTimeout(() => navigate('/pricing'), 2000);
+            // Redirect to pricing after signup, or back to the gift card they came with
+            setTimeout(() => navigate(hasGift ? '/redeem' : '/pricing'), 2000);
         }
     };
 
@@ -64,7 +66,7 @@ const SignUpPage = () => {
                 {/* Success Message */}
                 {success && (
                     <div className="bg-sage/10 text-sage p-4 rounded-xl mb-6 text-center">
-                        Account created! Check your email to confirm, then choose a plan.
+                        Account created! Check your email to confirm, then {hasGift ? 'redeem your gift card' : 'choose a plan'}.
                     </div>
                 )}
 

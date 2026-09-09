@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getPendingGiftCode } from '../lib/giftCode';
 
 const ProtectedRoute = ({ children, requireSubscription = false }) => {
     const { user, loading, isSubscribed, isSubscriptionLoading, isAdmin, isRoleLoading } = useAuth();
@@ -21,7 +22,9 @@ const ProtectedRoute = ({ children, requireSubscription = false }) => {
 
     // Admins (e.g. the owner) always have full access, regardless of subscription.
     if (requireSubscription && !isSubscribed && !isAdmin) {
-        return <Navigate to="/pricing" replace />;
+        // Someone who arrived with a gift card and just signed in should finish
+        // redeeming it, not be asked to pay.
+        return <Navigate to={getPendingGiftCode() ? '/redeem' : '/pricing'} replace />;
     }
 
     return children;

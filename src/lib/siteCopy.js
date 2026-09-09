@@ -78,6 +78,7 @@ export const SITE_COPY_FIELDS = [
     { key: 'home.gift.subtitle', group: 'Home — Give the Gift of Calm', label: 'Subheading', text: 'Send a thoughtful gift card and support someone in their journey.' },
     { key: 'home.gift.body', group: 'Home — Give the Gift of Calm', label: 'Paragraph', multiline: true, text: 'Choose a stress-free, meaningful gift for the ones in your life who crave more self-connection.' },
     { key: 'home.gift.cta', group: 'Home — Give the Gift of Calm', label: 'Button', text: 'Send a Gift Card Now' },
+    { key: 'home.gift.redeem_link', group: 'Home — Give the Gift of Calm', label: 'Redeem link (under the button)', text: 'Received a gift card? Redeem it here' },
 
     // ── Home · Newsletter ───────────────────────────────────────────────
     { key: 'home.subscribe.title', group: 'Home — Newsletter', label: 'Heading', text: 'Not another newsletter.' },
@@ -249,6 +250,12 @@ For privacy concerns, email us at hello@uncoached.space.`
     { key: 'pricing.universal', group: 'Pricing', label: 'Line above the dropdowns', text: "There's no right pace. Take what you need." },
     { key: 'pricing.disclaimer', group: 'Pricing', label: 'Disclaimer', multiline: true, text: "Uncoached is not therapy or coaching. It's a self-guided space designed to support awareness, regulation, and integration in everyday life. All memberships renew automatically at the end of each billing period. You can cancel at any time before renewal to stop future charges. There's no right pace. Stay for a moment, or make it a rhythm." },
     { key: 'pricing.closing', group: 'Pricing', label: 'Closing statement', multiline: true, text: "You don't need to fix yourself. You just need a place to stay connected to yourself." },
+    { key: 'pricing.gift_link', group: 'Pricing', label: 'Gift card link (bottom of page)', text: 'Have a gift card? Redeem it here' },
+
+    // ── Redeem a Gift Card ──────────────────────────────────────────────
+    { key: 'redeem.title', group: 'Redeem a Gift Card', label: 'Page heading', text: 'Redeem your gift card' },
+    { key: 'redeem.subtitle', group: 'Redeem a Gift Card', label: 'Subheading', text: 'Enter the code from your gift card email and your membership begins today.' },
+    { key: 'redeem.help', group: 'Redeem a Gift Card', label: 'Help text (bottom of page)', multiline: true, text: "Can't find your code? It's in the email GiftUp sent you, just under the card. If anything isn't working, write to hello@uncoached.space and we'll sort it out." },
 
     // ── Practitioners · Hero ────────────────────────────────────────────
     { key: 'practitioners.hero.eyebrow', group: 'Practitioners — Hero', label: 'Small line above the headline', text: "Trusted Practitioners Around the World" },
