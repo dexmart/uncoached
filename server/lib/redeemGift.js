@@ -84,10 +84,14 @@ export async function redeemGift({ user, code, deps, now = new Date() }) {
     // 4. Mark the card used. If GiftUp won't, undo the membership so the card
     //    can be tried again — never leave access granted on an unspent card.
     try {
-        await giftup.redeemInFull(normalisedCode, {
+        const receipt = await giftup.redeemInFull(normalisedCode, {
             reason: "Uncoached membership",
             metadata: { userEmail: user.email, userId: user.id, stripeSubscriptionId: sub.id }
         });
+        // A 200 that took nothing off the card (a race we lost, or a card GiftUp
+        // no longer counts) is not a redemption.
+        const taken = Number(receipt?.redeemedAmount || 0) + Number(receipt?.redeemedUnits || 0);
+        if (!(taken > 0)) throw new Error(`GiftUp redeemed nothing: ${JSON.stringify(receipt)}`);
     } catch (err) {
         console.error("GiftUp redeem failed, cancelling subscription", sub.id, err.message);
         await stripe.subscriptions.cancel(sub.id).catch((e) => console.error("Cancel after failed redeem also failed:", e.message));

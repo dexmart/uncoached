@@ -91,9 +91,13 @@ const RedeemPage = () => {
                             <div className="text-center">
                                 <div className="w-14 h-14 rounded-full bg-sage/10 text-sage flex items-center justify-center mx-auto mb-5 text-2xl">✓</div>
                                 <h2 className="font-display text-2xl text-text-dark mb-3">Your membership is active</h2>
-                                <p className="text-text-muted mb-8">
+                                <p className="text-text-muted mb-3">
                                     You have {monthsLabel(done.months)} of Uncoached, until {prettyDate(done.endsOn)}.
-                                    Nothing to pay, and no card needed.
+                                </p>
+                                <p className="text-text-muted text-sm mb-8">
+                                    Your access ends by itself on that date. It does not renew, and you will
+                                    not be charged. If you would like to stay on afterwards, you can choose a
+                                    plan then.
                                 </p>
                                 <button
                                     onClick={() => navigate('/dashboard')}
@@ -137,6 +141,9 @@ const RedeemPage = () => {
                                             <p className="text-xs uppercase tracking-widest text-text-tertiary mb-1">Your gift</p>
                                             <p className="font-display text-xl text-text-dark">{card.title || 'Uncoached membership'}</p>
                                             <p className="text-sage text-sm mt-1">{monthsLabel(card.months)} of full access</p>
+                                            <p className="text-text-tertiary text-xs mt-3">
+                                                Ends by itself when the {monthsLabel(card.months)} {card.months === 1 ? 'is' : 'are'} up. No renewal, no card, no charge.
+                                            </p>
                                         </div>
 
                                         {authLoading ? (
