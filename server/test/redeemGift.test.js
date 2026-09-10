@@ -15,7 +15,7 @@ function makeDeps({ card, prices = [monthlyPrice, quarterlyPrice, annualPrice], 
         redeemInFull: async (code, opts) => {
             if (redeemFails) throw new Error("GiftUp POST failed: 500");
             log.redeemed.push({ code, opts });
-            return { transactionId: "t1" };
+            return { transactionId: "t1", redeemedAmount: 22, remainingCredit: 0 };
         }
     };
     const stripe = {
@@ -139,4 +139,57 @@ test("if GiftUp refuses the redemption, the Stripe subscription is cancelled and
     await expectError(redeemGift({ user, code: "B4J24", deps, now }), 502, /try again/i);
     assert.deepEqual(log.cancelled, ["sub_gift"]);
     assert.equal(log.upserts.length, 0);
+});
+
+// ── Johanna's checklist (2026-09-09) ────────────────────────────────────
+
+test("the same code cannot be redeemed twice, even when two requests race", async () => {
+    // GiftUp is the single source of truth: it accepts the first redeem-in-full
+    // and refuses the second. Both requests start before either has finished.
+    let redeemed = 0;
+    const { deps, log } = makeDeps({ card: goodCard });
+    deps.giftup.redeemInFull = async () => {
+        if (redeemed++ > 0) throw new Error("GiftUp POST failed: 400 already redeemed");
+        return { transactionId: "t1", redeemedAmount: 22, remainingCredit: 0 };
+    };
+    const other = { id: "user_2", email: "second@example.com" };
+
+    const results = await Promise.allSettled([
+        redeemGift({ user, code: "B4J24", deps, now }),
+        redeemGift({ user: other, code: "B4J24", deps, now })
+    ]);
+
+    const ok = results.filter((r) => r.status === "fulfilled");
+    const failed = results.filter((r) => r.status === "rejected");
+    assert.equal(ok.length, 1, "exactly one redemption succeeds");
+    assert.equal(failed.length, 1);
+    assert.equal(failed[0].reason.status, 502);
+    assert.equal(log.upserts.length, 1, "only one membership is saved");
+    assert.equal(log.cancelled.length, 1, "the loser's subscription is cancelled");
+});
+
+test("a redeem that GiftUp answers with nothing actually taken off the card is treated as a failure", async () => {
+    const { deps, log } = makeDeps({ card: goodCard });
+    deps.giftup.redeemInFull = async () => ({ transactionId: "t0", redeemedAmount: 0, redeemedUnits: null, remainingCredit: 0 });
+    await expectError(redeemGift({ user, code: "B4J24", deps, now }), 502, /try again/i);
+    assert.deepEqual(log.cancelled, ["sub_gift"]);
+    assert.equal(log.upserts.length, 0);
+});
+
+test("the purchaser is never enrolled: only the signed-in recipient's account is touched", async () => {
+    const cardWithBuyer = { ...goodCard, order: { purchaserEmail: "buyer@example.com" }, recipientEmail: "someone@else.com" };
+    const { deps, log } = makeDeps({ card: cardWithBuyer });
+    await redeemGift({ user, code: "B4J24", deps, now });
+    assert.equal(log.created[0].customer, "cus_new");
+    assert.equal(log.upserts[0].row.user_id, user.id);
+    assert.equal(log.created[0].metadata.user_id, user.id);
+});
+
+test("the membership is set to end by itself, never to renew or charge", async () => {
+    const { deps, log } = makeDeps({ card: goodCard });
+    await redeemGift({ user, code: "B4J24", deps, now });
+    const params = log.created[0];
+    assert.equal(params.trial_settings.end_behavior.missing_payment_method, "cancel");
+    assert.equal(params.default_payment_method, undefined);
+    assert.equal(params.payment_behavior, undefined);
 });
