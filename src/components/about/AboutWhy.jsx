@@ -7,7 +7,7 @@ const AboutWhy = () => {
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "bg/about/S3 Why Uncoached Exists - about.png"}
+                    src={import.meta.env.BASE_URL + "bg/about/S3 Why Uncoached Exists - about.webp"}
                     alt="Why Uncoached Exists Background"
                     className="w-full h-full object-cover"
                 />

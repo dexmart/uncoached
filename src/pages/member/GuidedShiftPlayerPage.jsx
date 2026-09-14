@@ -175,7 +175,7 @@ const GuidedShiftPlayerPage = () => {
             {/* Fixed Background Image */}
             <div className="fixed inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "images/Membership/Guided Shift Hero Section.jpg"}
+                    src={import.meta.env.BASE_URL + "images/Membership/Guided Shift Hero Section.webp"}
                     alt=""
                     className="w-full h-full object-cover"
                 />

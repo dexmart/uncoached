@@ -42,7 +42,7 @@ const ResetPasswordPage = () => {
             <div className="max-w-md w-full">
                 <div className="text-center mb-8">
                     <Link to="/">
-                        <img src={import.meta.env.BASE_URL + "logo/Uncoached Logo Primary Lora Font.png"} alt="Uncoached" className="h-16 mx-auto mb-4" />
+                        <img src={import.meta.env.BASE_URL + "logo/Uncoached Logo Primary Lora Font.webp"} alt="Uncoached" className="h-16 mx-auto mb-4" />
                     </Link>
                     <h1 className="font-display text-3xl text-text-dark">Set a new password</h1>
                 </div>

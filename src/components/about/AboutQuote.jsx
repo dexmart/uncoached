@@ -9,7 +9,7 @@ const AboutQuote = () => {
             <div className="absolute inset-0 z-0">
                 {/* This likely needs to be dark text on light, or light on dark. S5 name implies quote. */}
                 <img
-                    src={import.meta.env.BASE_URL + "bg/about/S5 Uncoached Exists Quote - about.png"}
+                    src={import.meta.env.BASE_URL + "bg/about/S5 Uncoached Exists Quote - about.webp"}
                     alt="Quote Background"
                     className="w-full h-full object-cover"
                 />

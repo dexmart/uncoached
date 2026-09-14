@@ -8,7 +8,7 @@ const AboutClosing = () => {
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "bg/about/S7 This is not for everyone_Quiet invitation.png"}
+                    src={import.meta.env.BASE_URL + "bg/about/S7 This is not for everyone_Quiet invitation.webp"}
                     alt="Looking out window"
                     className="w-full h-full object-cover"
                 />

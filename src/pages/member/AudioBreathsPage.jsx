@@ -74,7 +74,7 @@ const AudioBreathsPage = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths Home Page.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths Home Page.webp"}
                         alt=""
                         className="w-full h-full object-cover"
                     />
@@ -135,7 +135,7 @@ const AudioBreathsPage = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths - Why This Works.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths - Why This Works.webp"}
                         alt=""
                         className="w-full h-full object-cover"
                     />
@@ -248,7 +248,7 @@ const AudioBreathsPage = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths - Built For Real Life.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths - Built For Real Life.webp"}
                         alt=""
                         className="w-full h-full object-cover object-[center_20%]"
                     />
@@ -295,7 +295,7 @@ const AudioBreathsPage = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths How to Use Them.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths How to Use Them.webp"}
                         alt=""
                         className="w-full h-full object-cover"
                     />

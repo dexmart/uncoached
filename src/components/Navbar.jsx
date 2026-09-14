@@ -14,8 +14,8 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
 
-    const logoDefault = import.meta.env.BASE_URL + 'logo/logouncoached.png';
-    const logoScrolled = import.meta.env.BASE_URL + 'logo/logo-notext-golden.png';
+    const logoDefault = import.meta.env.BASE_URL + 'logo/logouncoached.webp';
+    const logoScrolled = import.meta.env.BASE_URL + 'logo/logo-notext-golden.webp';
 
     useEffect(() => {
         const handleScroll = () => {

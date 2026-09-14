@@ -58,7 +58,7 @@ const ClarityCardsPage = () => {
                 {/* Background Image - Full width with gradient to left */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Clarity Card Hero.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Clarity Card Hero.webp"}
                         alt="Woman journaling"
                         className="w-full h-full object-cover"
                     />
@@ -100,7 +100,7 @@ const ClarityCardsPage = () => {
                 {/* Subtle background image */}
                 <div className="absolute inset-0 z-0 opacity-[0.03]">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Clarity Cards How to Use.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Clarity Cards How to Use.webp"}
                         alt=""
                         className="w-full h-full object-cover grayscale"
                     />
@@ -150,7 +150,7 @@ const ClarityCardsPage = () => {
                 {/* Very subtle texture overlay */}
                 <div className="absolute inset-0 z-0 opacity-[0.05]">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Clarity Cards Grid.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Clarity Cards Grid.webp"}
                         alt=""
                         className="w-full h-full object-cover grayscale"
                     />
@@ -193,7 +193,7 @@ const ClarityCardsPage = () => {
                 {/* Background Image overlay for the closing section */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths Home Page.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths Home Page.webp"}
                         alt=""
                         className="w-full h-full object-cover"
                     />

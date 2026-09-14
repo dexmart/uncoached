@@ -103,7 +103,7 @@ const PartnershipApplyPage = () => {
             <div className="min-h-screen bg-bone flex items-center justify-center px-6 text-center">
                 <div className="max-w-md">
                     <img
-                        src={import.meta.env.BASE_URL + 'logo/logo-sage-on-light.png'}
+                        src={import.meta.env.BASE_URL + 'logo/logo-sage-on-light.webp'}
                         alt="Uncoached"
                         className="h-20 w-auto mx-auto mb-8"
                     />
@@ -124,7 +124,7 @@ const PartnershipApplyPage = () => {
             <div className="max-w-2xl mx-auto">
                 <div className="text-center mb-12">
                     <img
-                        src={import.meta.env.BASE_URL + 'logo/logo-sage-on-light.png'}
+                        src={import.meta.env.BASE_URL + 'logo/logo-sage-on-light.webp'}
                         alt="Uncoached"
                         className="h-16 w-auto mx-auto mb-8"
                     />
