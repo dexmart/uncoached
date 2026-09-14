@@ -132,6 +132,11 @@ const DashboardPage = () => {
                     </div>
                 </Link>
 
+                {/* Billing & invoices */}
+                <Link to="/dashboard/billing" className="mb-6 -mt-2 text-sm text-text-muted hover:text-text-dark underline underline-offset-4 transition-colors">
+                    Billing &amp; invoices
+                </Link>
+
                 {/* Welcome */}
                 <h1 className="font-display text-4xl md:text-5xl text-text-dark text-center mb-2">
                     Welcome, {displayName}

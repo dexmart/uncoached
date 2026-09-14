@@ -89,7 +89,27 @@ const PocketPromptsPage = () => {
         // A missing table or a blocked read used to fail silently here and just
         // leave everything locked. Say so, so it can be found.
         if (error) console.error('Could not load prompt purchases:', error.message);
-        setPurchasedIds(new Set((data || []).map(r => r.prompt_id)));
+        const ids = new Set((data || []).map(r => r.prompt_id));
+        setPurchasedIds(ids);
+
+        // Self-heal: ask the server to rebuild unlocks from Stripe, so a prompt
+        // she paid for can't stay locked because a webhook was missed.
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session?.access_token) return;
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/stripe/reconcile-prompt-purchases`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ accessToken: session.access_token }),
+            });
+            const result = await res.json();
+            if (Array.isArray(result.unlocked) && result.unlocked.length) {
+                setPurchasedIds(new Set(result.unlocked));
+            }
+        } catch (err) {
+            // Reconcile is a safety net; the direct read above already ran.
+            console.error('Prompt purchase reconcile failed:', err);
+        }
     }, [user]);
 
     useEffect(() => { loadPurchases(); }, [loadPurchases]);
