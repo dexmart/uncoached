@@ -83,3 +83,30 @@ test("de-duplicates when the same prompt was paid twice", async () => {
     assert.deepEqual(unlocked, ["dup"]);
     assert.equal(log.upserts[0].length, 1);
 });
+
+test("finds a paid prompt even when no Stripe customer exists (guest checkout), via recent sessions", async () => {
+    const log = { upserts: [] };
+    const stripe = {
+        customers: { list: async () => ({ data: [] }) },  // no customer for this email
+        checkout: {
+            sessions: {
+                list: async (params) => {
+                    // per-customer call returns nothing; the global recent scan finds it
+                    if (params && params.customer) return { data: [] };
+                    return { data: [
+                        { payment_status: "paid", metadata: { type: "prompt_purchase", userId: "user_1", promptId: "guest_prompt" } },
+                        { payment_status: "paid", metadata: { type: "prompt_purchase", userId: "other", promptId: "nope" } },
+                    ] };
+                }
+            }
+        }
+    };
+    const db = { from: () => ({
+        select: () => ({ eq: async () => ({ data: [], error: null }) }),
+        upsert: async (rows) => { log.upserts.push(rows); return { error: null }; }
+    }) };
+    const unlocked = await reconcilePromptPurchases({ user, deps: { stripe, db } });
+    assert.deepEqual(unlocked, ["guest_prompt"]);
+    assert.equal(log.upserts.length, 1);
+    assert.deepEqual(log.upserts[0][0], { user_id: "user_1", prompt_id: "guest_prompt" });
+});
