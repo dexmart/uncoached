@@ -2,6 +2,7 @@ import { Router } from "express";
 import express from "express";
 import Stripe from "stripe";
 import { supabaseAdmin } from "../supabaseAdmin.js";
+import { reconcilePromptPurchases } from "../lib/reconcilePrompts.js";
 
 const router = Router();
 
@@ -185,6 +186,25 @@ router.post("/verify-prompt-purchase", async (req, res) => {
     }
 });
 
+// Self-healing unlock: rebuild the member's prompt purchases from Stripe, so a
+// prompt they paid for can never stay locked because a webhook was missed.
+// Identity comes from the JWT, never the body.
+router.post("/reconcile-prompt-purchases", async (req, res) => {
+    const { accessToken } = req.body || {};
+    if (!accessToken) return res.status(401).json({ error: "Not signed in" });
+
+    try {
+        const { data: { user }, error: authErr } = await supabaseAdmin.auth.getUser(accessToken);
+        if (authErr || !user) return res.status(401).json({ error: "Session expired" });
+
+        const unlocked = await reconcilePromptPurchases({ user, deps: { stripe, db: supabaseAdmin } });
+        res.json({ unlocked });
+    } catch (err) {
+        console.error("reconcile-prompt-purchases error:", err.message);
+        res.status(500).json({ error: "Could not reconcile purchases" });
+    }
+});
+
 // Create a one-time $2 checkout for a single high-level Pocket Prompt
 router.post("/create-prompt-checkout", async (req, res) => {
     const { userId, userEmail, promptId, promptTitle } = req.body;
@@ -211,6 +231,8 @@ router.post("/create-prompt-checkout", async (req, res) => {
             cancel_url: `${process.env.FRONTEND_URL}/dashboard/pocket-prompts`,
             client_reference_id: userId,
             customer_email: userEmail,
+            customer_creation: "always", // so the purchase can always be reconciled later
+            payment_intent_data: { metadata: { type: "prompt_purchase", userId, promptId } },
             metadata: { type: "prompt_purchase", userId, promptId }
         });
 

@@ -48,6 +48,7 @@ import ClarityCardDetailPage from './pages/member/ClarityCardDetailPage'
 import AfformationsPage from './pages/member/AfformationsPage'
 import VoiceNotesPage from './pages/member/VoiceNotesPage'
 import ProfilePage from './pages/member/ProfilePage'
+import MemberBillingPage from './pages/member/BillingPage'
 
 function App() {
   return (
@@ -168,6 +169,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/billing"
+            element={
+              <ProtectedRoute>
+                <MemberBillingPage />
               </ProtectedRoute>
             }
           />
