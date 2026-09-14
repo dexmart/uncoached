@@ -105,7 +105,7 @@ const PricingPage = () => {
                 <div className="text-center mb-16">
                     <Link to="/">
                         <img
-                            src={import.meta.env.BASE_URL + "logo/Uncoached Logo Primary Lora Font.png"}
+                            src={import.meta.env.BASE_URL + "logo/Uncoached Logo Primary Lora Font.webp"}
                             alt="Uncoached"
                             className="h-16 mx-auto mb-8"
                         />

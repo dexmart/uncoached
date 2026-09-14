@@ -85,7 +85,7 @@ const TestimonialsSection = () => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "bg/S6_ What Others Say - homepage.png"}
+                    src={import.meta.env.BASE_URL + "bg/S6_ What Others Say - homepage.webp"}
                     alt="Background"
                     className="w-full h-full object-cover"
                 />

@@ -8,7 +8,7 @@ const HeroSection = () => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "bg/S1 Hero Section.png"}
+                    src={import.meta.env.BASE_URL + "bg/S1 Hero Section.webp"}
                     alt="Background"
                     className="w-full h-full object-cover"
                 />
@@ -18,7 +18,7 @@ const HeroSection = () => {
             {/* Centered Content */}
             <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
                 <img
-                    src={import.meta.env.BASE_URL + "logo/Uncoached Logo Primary Lora Font.png"}
+                    src={import.meta.env.BASE_URL + "logo/Uncoached Logo Primary Lora Font.webp"}
                     alt="Uncoached Logo"
                     className="h-32 w-auto mb-16 mx-auto drop-shadow-md -translate-y-12"
                 />

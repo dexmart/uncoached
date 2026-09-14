@@ -4,14 +4,14 @@ import { useCopy } from '../context/SiteCopyContext';
 import { emphasise, plain } from '../lib/emphasise';
 
 const services = [
-    'images/Field Icons/field chat.png',
-    'images/Field Icons/field audio breath.png',
-    'images/Field Icons/field clarity cards.png',
-    'images/Field Icons/field pocket prompts.png',
-    'images/Field Icons/field guided shift.png',
-    'images/Field Icons/field affirmation.png',
-    'images/Field Icons/field voice notes.png',
-    'images/Field Icons/field coming soon2.png',
+    'images/Field Icons/field chat.webp',
+    'images/Field Icons/field audio breath.webp',
+    'images/Field Icons/field clarity cards.webp',
+    'images/Field Icons/field pocket prompts.webp',
+    'images/Field Icons/field guided shift.webp',
+    'images/Field Icons/field affirmation.webp',
+    'images/Field Icons/field voice notes.webp',
+    'images/Field Icons/field coming soon2.webp',
 ].map((icon, i) => ({ icon, titleKey: `home.services.card${i + 1}_title`, bodyKey: `home.services.card${i + 1}_body` }));
 
 const ServicesSection = () => {

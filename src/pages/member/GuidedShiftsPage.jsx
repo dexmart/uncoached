@@ -64,7 +64,7 @@ const GuidedShiftsPage = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shift Hero Section.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shift Hero Section.webp"}
                         alt=""
                         className="w-full h-full object-cover"
                     />
@@ -122,7 +122,7 @@ const GuidedShiftsPage = () => {
             <section className="relative py-20 px-6">
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shifts Why This Works.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shifts Why This Works.webp"}
                         alt=""
                         className="w-full h-full object-cover"
                     />
@@ -227,7 +227,7 @@ const GuidedShiftsPage = () => {
             <section className="relative py-20 px-6">
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shifts Built For Real Life.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shifts Built For Real Life.webp"}
                         alt=""
                         className="w-full h-full object-cover"
                     />
@@ -267,7 +267,7 @@ const GuidedShiftsPage = () => {
             <section className="relative py-20 px-6">
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shifts How to Use Them.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shifts How to Use Them.webp"}
                         alt=""
                         className="w-full h-full object-cover"
                     />
@@ -303,7 +303,7 @@ const GuidedShiftsPage = () => {
             <section id="shift-families" className="py-24 px-6 bg-bone relative">
                 <div className="absolute inset-0 z-0 opacity-50">
                     <img
-                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shift Families.jpg"}
+                        src={import.meta.env.BASE_URL + "images/Membership/Guided Shift Families.webp"}
                         alt=""
                         className="w-full h-full object-cover"
                     />
