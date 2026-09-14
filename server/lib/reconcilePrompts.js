@@ -16,18 +16,27 @@ export async function reconcilePromptPurchases({ user, deps }) {
     const { data: existing } = await db.from("prompt_purchases").select("prompt_id").eq("user_id", user.id);
     const already = new Set((existing || []).map((r) => r.prompt_id));
 
-    // Every Stripe customer under this email, and every checkout they made.
-    const { data: customers } = await stripe.customers.list({ email: user.email, limit: 10 });
     const owned = new Set();
-    for (const customer of customers) {
-        const { data: sessions } = await stripe.checkout.sessions.list({ customer: customer.id, limit: 100 });
-        for (const s of sessions) {
+    const collect = (sessions) => {
+        for (const s of sessions || []) {
             if (s.payment_status !== "paid") continue;
             if (s.metadata?.type !== "prompt_purchase") continue;
             if (s.metadata?.userId !== user.id) continue;   // never unlock from someone else's payment
             if (s.metadata?.promptId) owned.add(s.metadata.promptId);
         }
+    };
+
+    // Every Stripe customer under this email, and every checkout they made.
+    const { data: customers } = await stripe.customers.list({ email: user.email, limit: 10 });
+    for (const customer of customers) {
+        const { data: sessions } = await stripe.checkout.sessions.list({ customer: customer.id, limit: 100 });
+        collect(sessions);
     }
+
+    // Fallback for guest checkouts that never saved a customer: scan recent
+    // checkout sessions and keep only this member's own paid prompt purchases.
+    const { data: recent } = await stripe.checkout.sessions.list({ limit: 100 });
+    collect(recent);
 
     const missing = [...owned].filter((id) => !already.has(id));
     if (missing.length) {
