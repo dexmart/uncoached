@@ -132,7 +132,7 @@ const AudioBreathPlayerPage = () => {
             {/* Background Image */}
             <div className="fixed inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths Home Page.jpg"}
+                    src={import.meta.env.BASE_URL + "images/Membership/Audio Breaths Home Page.webp"}
                     alt=""
                     className="w-full h-full object-cover opacity-100" // Changed opacity to 100 as per common pattern in other pages, handled by overlay if needed
                 />

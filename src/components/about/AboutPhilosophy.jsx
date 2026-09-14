@@ -7,7 +7,7 @@ const AboutPhilosophy = () => {
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "bg/about/S6 A Philosophy - about.png"}
+                    src={import.meta.env.BASE_URL + "bg/about/S6 A Philosophy - about.webp"}
                     alt="Philosophy Background"
                     className="w-full h-full object-cover"
                 />

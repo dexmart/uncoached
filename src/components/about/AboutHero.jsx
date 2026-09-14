@@ -8,7 +8,7 @@ const AboutHero = () => {
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "bg/about/S1 Hero - about.png"}
+                    src={import.meta.env.BASE_URL + "bg/about/S1 Hero - about.webp"}
                     alt="About Hero"
                     className="w-full h-full object-cover"
                 />
@@ -19,7 +19,7 @@ const AboutHero = () => {
                 <div className="max-w-3xl text-center mx-auto">
                     {/* Logo */}
                     <img
-                        src={import.meta.env.BASE_URL + "logo/Uncoached Logo Primary Lora Font.png"}
+                        src={import.meta.env.BASE_URL + "logo/Uncoached Logo Primary Lora Font.webp"}
                         alt="Uncoached Logo"
                         className="h-24 w-auto mb-12 mx-auto drop-shadow-md"
                     />

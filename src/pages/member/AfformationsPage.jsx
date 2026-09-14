@@ -54,7 +54,7 @@ const AfformationsPage = () => {
             {/* Global Fixed Background Image */}
             <div className="fixed inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "images/Extra Backgrounds.jpg"}
+                    src={import.meta.env.BASE_URL + "images/Extra Backgrounds.webp"}
                     alt=""
                     className="w-full h-full object-cover"
                 />

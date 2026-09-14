@@ -42,7 +42,7 @@ const AboutGap = () => {
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "bg/about/S2 The Gap - about.png"}
+                    src={import.meta.env.BASE_URL + "bg/about/S2 The Gap - about.webp"}
                     alt="The Gap Background"
                     className="w-full h-full object-cover"
                 />

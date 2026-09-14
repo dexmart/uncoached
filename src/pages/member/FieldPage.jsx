@@ -10,7 +10,7 @@ const FieldPage = () => {
             {/* Background Image */}
             <div className="fixed inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "images/Membership/Members Field.jpg"}
+                    src={import.meta.env.BASE_URL + "images/Membership/Members Field.webp"}
                     alt=""
                     className="w-full h-full object-cover"
                 />
@@ -33,7 +33,7 @@ const FieldPage = () => {
 
                     <div className="flex items-center gap-2">
                         <img
-                            src={import.meta.env.BASE_URL + "images/Field Icons/field chat.png"}
+                            src={import.meta.env.BASE_URL + "images/Field Icons/field chat.webp"}
                             alt="Field"
                             className="w-8 h-8"
                         />

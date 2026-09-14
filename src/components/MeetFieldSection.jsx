@@ -7,7 +7,7 @@ const MeetFieldSection = () => {
         <section className="whitespace-pre-line py-16 lg:py-24 px-6 lg:px-12 relative bg-bone" id="chat">
             {/* Background — desktop only; on mobile the phone mockup stacks above the text */}
             <div className="absolute inset-0 z-0 overflow-hidden bg-bone hidden lg:block">
-                <img src={import.meta.env.BASE_URL + "bg/S5_ Meet Field - homepage.png"} alt="" className="w-full h-full object-cover object-left" />
+                <img src={import.meta.env.BASE_URL + "bg/S5_ Meet Field - homepage.webp"} alt="" className="w-full h-full object-cover object-left" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_60%,_#F4F1EC_20%,_transparent_80%)]"></div>
             </div>
 
@@ -15,7 +15,7 @@ const MeetFieldSection = () => {
                 {/* Left - Phone Mockup */}
                 <div className="relative">
                     <img
-                        src={import.meta.env.BASE_URL + "images/field-chat-interface.png"}
+                        src={import.meta.env.BASE_URL + "images/field-chat-interface.webp"}
                         alt="Start chatting with Field"
                         className="w-full max-w-xs mx-auto relative z-10 drop-shadow-2xl lg:translate-x-36"
                     />

@@ -37,7 +37,7 @@ const IntegrationSection = () => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "bg/S2_ How We Help You Integrate - homepage.png"}
+                    src={import.meta.env.BASE_URL + "bg/S2_ How We Help You Integrate - homepage.webp"}
                     alt="Background"
                     className="w-full h-full object-cover"
                 />

@@ -69,12 +69,12 @@ const DashboardPage = () => {
     // Wording comes from Website Text > Members Area, so Johanna can reword the
     // tiles herself. Icons, links and colours stay in code.
     const navigationItems = [
-        { n: 1, icon: 'images/Field Icons/field chat.png', link: '/dashboard/field', color: 'from-sage/20 to-sage/10' },
-        { n: 2, icon: 'images/Field Icons/field audio breath.png', link: '/dashboard/audio-breaths', color: 'from-golden/20 to-golden/10' },
-        { n: 3, icon: 'images/Field Icons/field guided shift.png', link: '/dashboard/guided-shifts', color: 'from-clay/20 to-clay/10' },
-        { n: 4, icon: 'images/Field Icons/field pocket prompts.png', link: '/dashboard/pocket-prompts', color: 'from-sage/20 to-sage/10' },
-        { n: 5, icon: 'images/Field Icons/field clarity cards.png', link: '/dashboard/clarity-cards', color: 'from-golden/20 to-golden/10' },
-        { n: 6, icon: 'images/Field Icons/field affirmation.png', link: '/dashboard/afformations', color: 'from-clay/20 to-clay/10' },
+        { n: 1, icon: 'images/Field Icons/field chat.webp', link: '/dashboard/field', color: 'from-sage/20 to-sage/10' },
+        { n: 2, icon: 'images/Field Icons/field audio breath.webp', link: '/dashboard/audio-breaths', color: 'from-golden/20 to-golden/10' },
+        { n: 3, icon: 'images/Field Icons/field guided shift.webp', link: '/dashboard/guided-shifts', color: 'from-clay/20 to-clay/10' },
+        { n: 4, icon: 'images/Field Icons/field pocket prompts.webp', link: '/dashboard/pocket-prompts', color: 'from-sage/20 to-sage/10' },
+        { n: 5, icon: 'images/Field Icons/field clarity cards.webp', link: '/dashboard/clarity-cards', color: 'from-golden/20 to-golden/10' },
+        { n: 6, icon: 'images/Field Icons/field affirmation.webp', link: '/dashboard/afformations', color: 'from-clay/20 to-clay/10' },
     ].map((c) => ({
         ...c,
         title: emphasise(copy(`member.card${c.n}_title`), 'italic text-sage font-serif'),
@@ -86,7 +86,7 @@ const DashboardPage = () => {
         title: emphasise(copy('member.card7_title'), 'italic text-sage font-serif'),
         alt: plain(copy('member.card7_title')),
         description: copy('member.card7_body'),
-        icon: 'images/Field Icons/field voice notes.png',
+        icon: 'images/Field Icons/field voice notes.webp',
         link: '/dashboard/voice-notes',
         color: 'from-sage/20 to-sage/10'
     };
@@ -101,7 +101,7 @@ const DashboardPage = () => {
             {/* Background Image */}
             <div className="fixed inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "images/Membership/Members Welcome.jpg"}
+                    src={import.meta.env.BASE_URL + "images/Membership/Members Welcome.webp"}
                     alt=""
                     className="w-full h-full object-cover"
                 />
