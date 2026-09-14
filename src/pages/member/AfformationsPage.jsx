@@ -1,99 +1,49 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-const AFFORMATIONS_DATA = [
-    {
-        id: '1',
-        title: 'When Anxiety Shows Up',
-        categories: ['Calm', 'Regulation'],
-        questions: [
-            'Why does my body know how to return to calm so naturally?',
-            'Why am I becoming so good at settling my nervous system?',
-            'How is calm becoming my natural response more and more?'
-        ]
-    },
-    {
-        id: '2',
-        title: "When You're Waiting for an Answer",
-        categories: ['Trust'],
-        questions: [
-            'Why do things tend to work out in my favour?',
-            'Why am I so good at trusting the timing of my life?',
-            'Why does patience come more easily to me now?'
-        ]
-    },
-    {
-        id: '3',
-        title: 'When You Feel Invisible',
-        categories: ['Self-Worth'],
-        questions: [
-            'Why am I allowed to take up space exactly as I am?',
-            'Why do people naturally appreciate what I bring to a room?',
-            'Why does my presence matter more than I realize?'
-        ]
-    },
-    {
-        id: '4',
-        title: 'When You Feel Like You Messed Something Up',
-        categories: ['Strength', 'Self-Trust'],
-        questions: [
-            'Why am I so good at learning and growing from mistakes?',
-            'Why do challenges keep making me stronger?',
-            'Why do I bounce back more easily than I expect?'
-        ]
-    },
-    {
-        id: '5',
-        title: "When You're Comparing Yourself",
-        categories: ['Self-Worth'],
-        questions: [
-            'Why is my path unfolding in exactly the right way for me?',
-            'Why do I trust my own timeline more every year?',
-            'Why are my gifts so uniquely valuable?'
-        ]
-    },
-    {
-        id: '6',
-        title: 'When You Need Permission to Rest',
-        categories: ['Calm', 'Permission'],
-        questions: [
-            'Why is it becoming easier for me to honour my need for rest?',
-            'Why does slowing down actually help me thrive?',
-            'Why do I respect my energy more and more?'
-        ]
-    },
-    {
-        id: '7',
-        title: "When You're Overthinking a Decision",
-        categories: ['Trust'],
-        questions: [
-            'Why does clarity always find me when I give it space?',
-            'Why do I trust myself to make the right choice for me right now?',
-            'Why is it safe for me to move forward, even without all the answers?'
-        ]
-    },
-    {
-        id: '8',
-        title: "When You're Afraid to Take a Risk",
-        categories: ['Strength', 'Resilience'],
-        questions: [
-            'Why am I so capable of handling whatever comes next?',
-            'Why does stepping into the unknown keep expanding my life beautifully?',
-            'Why do I believe in my ability to figure things out along the way?'
-        ]
-    }
-];
+import { supabase } from '../../lib/supabase';
 
 const AfformationsPage = () => {
+    const [cards, setCards] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [activeFilter, setActiveFilter] = useState('All');
-    const [expandedCardId, setExpandedCardId] = useState('1'); // Match mockup which has card 1 open
+    const [expandedCardId, setExpandedCardId] = useState(null);
 
-    // Extract unique categories dynamically
-    const uniqueCategories = ['All', ...new Set(AFFORMATIONS_DATA.flatMap(card => card.categories))];
+    useEffect(() => {
+        let active = true;
+        (async () => {
+            const { data, error } = await supabase
+                .from('afformation_cards')
+                .select('id, title, tags, afformation_questions(text, sort_order)')
+                .eq('is_active', true)
+                .order('sort_order', { ascending: true });
+            if (!active) return;
+            if (error) {
+                console.error('Could not load afformations:', error.message);
+                setLoading(false);
+                return;
+            }
+            const mapped = (data || []).map(c => ({
+                id: c.id,
+                title: c.title,
+                categories: c.tags || [],
+                questions: (c.afformation_questions || [])
+                    .slice()
+                    .sort((a, b) => a.sort_order - b.sort_order)
+                    .map(q => q.text),
+            }));
+            setCards(mapped);
+            setExpandedCardId(mapped[0]?.id ?? null);
+            setLoading(false);
+        })();
+        return () => { active = false; };
+    }, []);
+
+    // Filter chips are drawn from the tags actually in use, exactly as before.
+    const uniqueCategories = ['All', ...new Set(cards.flatMap(card => card.categories))];
 
     const filteredCards = activeFilter === 'All'
-        ? AFFORMATIONS_DATA
-        : AFFORMATIONS_DATA.filter(card => card.categories.includes(activeFilter));
+        ? cards
+        : cards.filter(card => card.categories.includes(activeFilter));
 
     const toggleCard = (id) => {
         setExpandedCardId(prev => (prev === id ? null : id));
@@ -223,7 +173,7 @@ const AfformationsPage = () => {
                         })}
                     </div>
 
-                    {filteredCards.length === 0 && (
+                    {!loading && filteredCards.length === 0 && (
                         <div className="text-center py-20 bg-[#FFFFFF] rounded-[16px] border border-[#D6C7B8]/50">
                             <p className="text-[16px] text-[#5E6A65]">No afformation moments found in this category.</p>
                         </div>
