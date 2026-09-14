@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
 import { parseFocusAreas } from '../lib/practitionerCategories';
 import { useCopy } from '../context/SiteCopyContext';
+import Seo from '../components/Seo';
 
 const STEP_KEYS = [1, 2, 3, 4];
 const PROMISE_KEYS = [1, 2, 3];
@@ -153,6 +154,7 @@ const PractitionersPage = () => {
 
     return (
         <div className="whitespace-pre-line bg-bone text-text-dark font-body antialiased min-h-screen">
+            <Seo title="Trusted Practitioners" description="Meet the independent therapists and coaches featured on Uncoached, and filter by their areas of focus." path="/practitioners" />
             <Navbar />
 
             {/* Hero */}

@@ -16,6 +16,9 @@ import TermsPage from './pages/legal/TermsPage'
 import PrivacyPage from './pages/legal/PrivacyPage'
 import BillingPage from './pages/legal/BillingPage'
 import ScrollToTop from './components/ScrollToTop'
+import StickyMobileCTA from './components/StickyMobileCTA'
+import NotFoundPage from './pages/NotFoundPage'
+import { Analytics } from '@vercel/analytics/react'
 import ProtectedRoute from './components/ProtectedRoute'
 import AdminProtectedRoute from './components/AdminProtectedRoute'
 import AdminLayout from './components/AdminLayout'
@@ -57,6 +60,7 @@ function App() {
       <SiteCopyProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <StickyMobileCTA />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
@@ -211,7 +215,10 @@ function App() {
             <Route path="practitioners" element={<AdminPractitionersPage />} />
             <Route path="site-copy" element={<AdminSiteCopyPage />} />
           </Route>
+          {/* 404 — any unknown URL */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        <Analytics />
       </BrowserRouter>
       </SiteCopyProvider>
     </AuthProvider>

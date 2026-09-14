@@ -8,10 +8,12 @@ import TestimonialsSection from '../components/TestimonialsSection'
 import GiftSection from '../components/GiftSection'
 import SubscribeSection from '../components/SubscribeSection'
 import Footer from '../components/Footer'
+import Seo from '../components/Seo';
 
 function LandingPage() {
     return (
         <div className="bg-bone text-text-dark font-body antialiased">
+            <Seo title="" description="Where insight finally becomes lived. A quiet, self-guided space for integrating therapy, coaching, and inner work into real, everyday moments." path="/" />
             <Navbar />
             <HeroSection />
             <IntegrationSection />
