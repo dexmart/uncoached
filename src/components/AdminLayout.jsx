@@ -161,39 +161,17 @@ const AdminLayout = () => {
                         </Link>
                     </div>
 
-                    {/* Afformations Accordion */}
+                    {/* Afformations (Flat link) */}
                     <div className="space-y-1">
-                        <button
-                            onClick={() => toggleSection('affirmations')}
-                            className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors text-sm font-medium text-text-dark/70 hover:bg-clay/10 hover:text-text-dark focus:outline-none"
+                        <Link
+                            to="/admin/afformations"
+                            className={`w-full flex items-center px-4 py-3 rounded-xl transition-colors text-sm font-medium ${isActive('/admin/afformations')
+                                ? 'bg-clay/10 text-clay'
+                                : 'text-text-dark/70 hover:bg-clay/10 hover:text-text-dark'
+                                }`}
                         >
-                            <span>Afformations</span>
-                            <svg className={`w-4 h-4 transition-transform duration-200 ${openSections.affirmations ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        {openSections.affirmations && (
-                            <div className="pl-4 pr-2 space-y-1 pt-1 pb-2">
-                                <Link
-                                    to="/admin/affirmation-categories"
-                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/affirmation-categories')
-                                        ? 'bg-clay/10 text-clay'
-                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
-                                        }`}
-                                >
-                                    Categories
-                                </Link>
-                                <Link
-                                    to="/admin/affirmations"
-                                    className={`w-full flex items-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${isActive('/admin/affirmations')
-                                        ? 'bg-clay/10 text-clay'
-                                        : 'text-text-dark/60 hover:bg-clay/10 hover:text-text-dark'
-                                        }`}
-                                >
-                                    Afformations
-                                </Link>
-                            </div>
-                        )}
+                            Afformations
+                        </Link>
                     </div>
 
                     {/* Voice Notes (Flat link) */}

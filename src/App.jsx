@@ -31,6 +31,7 @@ import AdminPocketPromptsPage from './pages/admin/AdminPocketPromptsPage'
 import AdminClarityCardsPage from './pages/admin/AdminClarityCardsPage'
 import AdminAffirmationCategoriesPage from './pages/admin/AdminAffirmationCategoriesPage'
 import AdminAffirmationsPage from './pages/admin/AdminAffirmationsPage'
+import AdminAfformationsPage from './pages/admin/AdminAfformationsPage'
 import AdminVoiceNotesPage from './pages/admin/AdminVoiceNotesPage'
 import AdminPractitionersPage from './pages/admin/AdminPractitionersPage'
 import AdminSiteCopyPage from './pages/admin/AdminSiteCopyPage'
@@ -203,6 +204,7 @@ function App() {
 
             <Route path="affirmation-categories" element={<AdminAffirmationCategoriesPage />} />
             <Route path="affirmations" element={<AdminAffirmationsPage />} />
+            <Route path="afformations" element={<AdminAfformationsPage />} />
 
             <Route path="voice-notes" element={<AdminVoiceNotesPage />} />
 
