@@ -7,10 +7,12 @@ import AboutShift from '../components/about/AboutShift'
 import AboutQuote from '../components/about/AboutQuote'
 import AboutPhilosophy from '../components/about/AboutPhilosophy'
 import AboutClosing from '../components/about/AboutClosing'
+import Seo from '../components/Seo';
 
 const AboutPage = () => {
     return (
         <div className="bg-bone text-text-dark font-body antialiased">
+            <Seo title="About" description="The philosophy behind Uncoached — supporting awareness, regulation, and integration between sessions, not replacing therapy or coaching." path="/about" />
             <Navbar />
             <AboutHero />
             <AboutGap />

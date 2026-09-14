@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCopy } from '../context/SiteCopyContext';
+import Seo from '../components/Seo';
 
 const PricingPage = () => {
     const copy = useCopy();
@@ -98,6 +99,7 @@ const PricingPage = () => {
 
     return (
         <div className="whitespace-pre-line min-h-screen bg-bone py-24 px-6">
+            <Seo title="Membership" description="Choose your path. Simple monthly, quarterly, biannual, or annual membership to Uncoached — cancel any time." path="/pricing" />
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-16">
