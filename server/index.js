@@ -5,6 +5,7 @@ import audioRoutes from "./routes/audio.js";
 import stripeRoutes from "./routes/stripe.js";
 import practitionerRoutes from "./routes/practitioners.js";
 import giftRoutes from "./routes/gift.js";
+import fieldRoutes from "./routes/field.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -44,6 +45,7 @@ app.use("/audio", audioRoutes);
 app.use("/stripe", stripeRoutes);
 app.use("/practitioners", practitionerRoutes);
 app.use("/gift", giftRoutes);
+app.use("/field", fieldRoutes);
 
 // Start server
 app.listen(PORT, () => {
@@ -52,7 +54,7 @@ app.listen(PORT, () => {
     // Which config did this process actually receive? Presence only — never values.
     const need = [
         "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "STRIPE_SECRET_KEY",
-        "STRIPE_WEBHOOK_SECRET", "FRONTEND_URL", "RESEND_API_KEY", "GIFTUP_API_KEY",
+        "STRIPE_WEBHOOK_SECRET", "FRONTEND_URL", "RESEND_API_KEY", "GIFTUP_API_KEY", "CHATBASE_API_KEY",
     ];
     console.log("CONFIG CHECK:", need.map((k) => `${k}=${process.env[k] ? "yes" : "NO"}`).join("  "));
 
