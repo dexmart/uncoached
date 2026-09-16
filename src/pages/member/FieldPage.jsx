@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
+import FieldChat from '../../components/FieldChat';
 
-// ChatBase agent that powers Field. Embedded as an iframe widget.
-const CHATBASE_AGENT_ID = 'ZQ2IY-75iqOVAi4nuCUFU';
-const CHATBASE_IFRAME_SRC = `https://www.chatbase.co/chatbot-iframe/${CHATBASE_AGENT_ID}`;
+// Field runs through our own chat box (see components/FieldChat.jsx) so the
+// conversation is never stored in the ChatBase dashboard or on our servers.
 
 const FieldPage = () => {
     return (
@@ -53,16 +53,10 @@ const FieldPage = () => {
                     </p>
                 </div>
 
-                {/* Chat Container — ChatBase embed */}
+                {/* Chat */}
                 <div className="flex-1 flex flex-col w-full max-w-3xl mx-auto px-4 pb-6">
-                    <div className="flex-1 min-h-[60vh] bg-white/90 backdrop-blur-sm rounded-2xl border border-clay/20 overflow-hidden shadow-lg">
-                        <iframe
-                            title="Field"
-                            src={CHATBASE_IFRAME_SRC}
-                            className="w-full h-full min-h-[60vh]"
-                            frameBorder="0"
-                            allow="clipboard-write; microphone"
-                        />
+                    <div className="flex-1 min-h-[60vh] h-[60vh] bg-white/90 backdrop-blur-sm rounded-2xl border border-clay/20 overflow-hidden shadow-lg">
+                        <FieldChat />
                     </div>
                     <p className="text-bone/70 text-xs text-center mt-4">
                         You can come back whenever you're ready.

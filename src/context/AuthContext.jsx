@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase, getSessionWithRetry } from '../lib/supabase';
+import { clearFieldConversation } from '../lib/fieldStorage';
 
 const AuthContext = createContext({});
 
@@ -178,6 +179,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signOut = async () => {
+        clearFieldConversation(); // a Field chat never outlives the session
         const { error } = await supabase.auth.signOut();
         return { error };
     };
