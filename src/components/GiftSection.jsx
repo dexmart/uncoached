@@ -21,7 +21,7 @@ const GiftSection = () => {
                 <img
                     src={import.meta.env.BASE_URL + "bg/S7_ Give The Gift of Calm.webp"}
                     alt="Uncoached gift card"
-                    className="lg:hidden w-full h-56 object-cover object-center rounded-2xl mb-8 shadow-md"
+                    className="lg:hidden w-full h-56 md:h-80 object-cover object-bottom rounded-2xl mb-8 shadow-md"
                 />
 
                 <div className="grid lg:grid-cols-12 gap-12 items-center">
