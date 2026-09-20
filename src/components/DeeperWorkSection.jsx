@@ -29,7 +29,7 @@ const DeeperWorkSection = () => {
                     </div>
 
                     {/* Right - Content */}
-                    <div className="order-1 lg:order-2 lg:bg-bone/40 lg:backdrop-blur-xl lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/40 lg:shadow-lg">
+                    <div className="order-1 lg:order-2 lg:bg-bone/35 lg:backdrop-blur-[3px] lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/50 lg:shadow-lg lg:[&_p]:text-text-dark/85 lg:[&_li]:text-text-dark/85">
                         <h2 className="font-display text-4xl md:text-5xl text-text-dark mb-4 leading-tight whitespace-pre-line">
                             {copy('home.deeper.title')}
                         </h2>

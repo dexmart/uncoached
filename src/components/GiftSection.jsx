@@ -32,7 +32,7 @@ const GiftSection = () => {
 
                     {/* Right - Content. On desktop it sits on a soft panel so the
                         wording always reads cleanly over the photograph. */}
-                    <div className="lg:col-span-6 xl:col-span-5 lg:bg-bone/40 lg:backdrop-blur-xl lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/40 lg:shadow-lg">
+                    <div className="lg:col-span-6 xl:col-span-5 lg:bg-bone/35 lg:backdrop-blur-[3px] lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/50 lg:shadow-lg lg:[&_p]:text-text-dark/85 lg:[&_li]:text-text-dark/85">
                         <h2 className="font-display text-4xl md:text-5xl mb-4 text-text-dark">
                             {copy('home.gift.title')}
                         </h2>
@@ -53,7 +53,7 @@ const GiftSection = () => {
                         </a>
 
                         <p className="text-sm text-text-muted mb-8">
-                            <Link to="/redeem" className="text-sage hover:underline">
+                            <Link to="/redeem" className="text-sage lg:text-[#2F4639] hover:underline">
                                 {copy('home.gift.redeem_link')}
                             </Link>
                         </p>

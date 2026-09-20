@@ -18,7 +18,7 @@ const AboutWhy = () => {
                 {/* Right Content - based on image layout typically having image on one side, but BG is full. text on right? */}
                 {/* Checking standard layout. Usually alternated. Let's maximize readability. */}
                 {/* Design ref S3 image usually has visual on left. Let's put text on right. */}
-                <div className="lg:col-start-2 lg:bg-bone/40 lg:backdrop-blur-xl lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/40 lg:shadow-lg">
+                <div className="lg:col-start-2 lg:bg-bone/35 lg:backdrop-blur-[3px] lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/50 lg:shadow-lg lg:[&_p]:text-text-dark/85 lg:[&_li]:text-text-dark/85">
                     <h2 className="font-display text-4xl mb-6 text-text-dark">{copy('about.why.title')}</h2>
                     <div className="text-lg text-text-muted leading-relaxed space-y-6">
                         <p>
