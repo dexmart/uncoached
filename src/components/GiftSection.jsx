@@ -13,7 +13,7 @@ const GiftSection = () => {
             {/* Background — desktop only; on mobile the image is stacked above the text */}
             <div className="absolute inset-0 z-0 hidden lg:block">
                 <img src={import.meta.env.BASE_URL + "bg/S7_ Give The Gift of Calm.webp"} alt="" className="w-full h-full object-cover object-left-bottom" />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-bone/30 to-bone/90"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-bone/45 to-bone"></div>
             </div>
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
@@ -26,12 +26,13 @@ const GiftSection = () => {
 
                 <div className="grid lg:grid-cols-12 gap-12 items-center">
                     {/* Left - Empty for background visibility */}
-                    <div className="hidden lg:block lg:col-span-7">
+                    <div className="hidden lg:block lg:col-span-6 xl:col-span-7">
                         {/* Images removed to show background */}
                     </div>
 
-                    {/* Right - Content */}
-                    <div className="lg:col-span-5">
+                    {/* Right - Content. On desktop it sits on a soft panel so the
+                        wording always reads cleanly over the photograph. */}
+                    <div className="lg:col-span-6 xl:col-span-5 lg:bg-bone/85 lg:backdrop-blur-md lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/50 lg:shadow-sm">
                         <h2 className="font-display text-4xl md:text-5xl mb-4 text-text-dark">
                             {copy('home.gift.title')}
                         </h2>
