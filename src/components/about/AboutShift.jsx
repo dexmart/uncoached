@@ -18,7 +18,7 @@ const AboutShift = () => {
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 grid lg:grid-cols-12 gap-12 items-center">
                 {/* Content on Left usually for alternation */}
-                <div className="lg:col-span-6 lg:bg-bone/85 lg:backdrop-blur-md lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/50 lg:shadow-sm">
+                <div className="lg:col-span-6 lg:bg-bone/40 lg:backdrop-blur-xl lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/40 lg:shadow-lg">
                     <h2 className="font-display text-4xl mb-6 text-text-dark">{copy('about.shift.title')}</h2>
                     <p className="text-xl text-text-muted mb-8 italic">
                         {copy('about.shift.intro')}
