@@ -95,7 +95,7 @@ const TestimonialsSection = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-                <div className="text-center mb-16 lg:bg-bone/85 lg:backdrop-blur-md lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/50 lg:shadow-sm lg:max-w-3xl lg:mx-auto">
+                <div className="text-center mb-16 lg:bg-bone/40 lg:backdrop-blur-xl lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/40 lg:shadow-lg lg:max-w-3xl lg:mx-auto">
                     <h2 className="font-display text-4xl md:text-5xl text-text-dark">What Others Say</h2>
                 </div>
 
