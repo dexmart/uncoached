@@ -68,14 +68,17 @@ const ServicesSection = () => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={import.meta.env.BASE_URL + "bg/S4_ What You'll Find Inside - homepage.png"}
+                    src={import.meta.env.BASE_URL + "bg/S4_ What You'll Find Inside - homepage.webp"}
                     alt="Background"
                     className="w-full h-full object-cover"
                 />
+                {/* Soft wash: keeps the photograph as texture while making sure
+                    the wording never depends on it happening to be pale. */}
+                <div className="absolute inset-0 bg-bone/30"></div>
             </div>
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-                <div className="text-center mb-12">
+                <div className="text-center mb-12 lg:bg-bone/85 lg:backdrop-blur-md lg:rounded-3xl lg:p-8 xl:p-10 lg:border lg:border-white/50 lg:shadow-sm lg:max-w-4xl lg:mx-auto">
                     <h2 className="font-display text-4xl md:text-5xl mb-4 text-text-dark">
                         {copy('home.services.title')}
                     </h2>
