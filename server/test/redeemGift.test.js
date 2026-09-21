@@ -193,3 +193,23 @@ test("the membership is set to end by itself, never to renew or charge", async (
     assert.equal(params.default_payment_method, undefined);
     assert.equal(params.payment_behavior, undefined);
 });
+
+test("a redeemed gift welcomes the member, with the gift's plan and end date", async () => {
+    const { deps } = makeDeps({ card: goodCard });
+    const calls = [];
+    deps.sendWelcome = async (args) => { calls.push(args); };
+    const result = await redeemGift({ user, code: "B4J24", deps, now });
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].user.email, "jo@example.com");
+    assert.equal(calls[0].plan, "gift-1-month");
+    assert.equal(calls[0].endsOn, result.endsOn);
+});
+
+test("a failing welcome email never undoes a redemption that already worked", async () => {
+    const { deps, log } = makeDeps({ card: goodCard });
+    deps.sendWelcome = async () => { throw new Error("Resend is down"); };
+    const result = await redeemGift({ user, code: "B4J24", deps, now });
+    assert.equal(result.months, 1);
+    assert.equal(log.upserts.length, 1, "membership still saved");
+    assert.equal(log.cancelled.length, 0, "subscription not rolled back");
+});

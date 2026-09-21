@@ -113,5 +113,15 @@ export async function redeemGift({ user, code, deps, now = new Date() }) {
         console.error(`GIFT REDEEMED BUT NOT SAVED — ${normalisedCode} for ${user.id}:`, error.message);
     }
 
+    // Welcome them, the same as a paying member. Optional so tests stay pure;
+    // a failure here must never undo a redemption that already worked.
+    if (deps.sendWelcome) {
+        try {
+            await deps.sendWelcome({ user, plan: `gift-${months}-month${months === 1 ? "" : "s"}`, endsOn });
+        } catch (err) {
+            console.error("Gift welcome email failed:", err?.message || "unknown");
+        }
+    }
+
     return { months, title: card.title || "", endsOn };
 }
