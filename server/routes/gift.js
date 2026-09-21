@@ -4,6 +4,8 @@ import Stripe from "stripe";
 import { supabaseAdmin } from "../supabaseAdmin.js";
 import { createGiftUpClient, membershipMonths, redemptionProblem } from "../lib/giftup.js";
 import { redeemGift, RedeemError } from "../lib/redeemGift.js";
+import { buildWelcomeEmail } from "../lib/welcomeEmail.js";
+import { sendEmail, displayNameOf } from "../lib/mailer.js";
 
 const router = Router();
 
@@ -59,7 +61,14 @@ router.post("/redeem", async (req, res) => {
         const { data: { user }, error: authErr } = await supabaseAdmin.auth.getUser(accessToken);
         if (authErr || !user) return res.status(401).json({ ok: false, error: "Your session has expired — please sign in again." });
 
-        const result = await redeemGift({ user, code, deps: { giftup, stripe, db: supabaseAdmin } });
+        const sendWelcome = async ({ user: u, plan, endsOn }) => {
+            const { subject, html } = buildWelcomeEmail({
+                name: displayNameOf(u), plan, isGift: true, endsOn,
+                frontendUrl: process.env.FRONTEND_URL,
+            });
+            await sendEmail({ to: u.email, subject, html });
+        };
+        const result = await redeemGift({ user, code, deps: { giftup, stripe, db: supabaseAdmin, sendWelcome } });
         console.log(`Gift ${code} redeemed by ${user.id}: ${result.months} month(s) until ${result.endsOn}`);
         res.json({ ok: true, ...result });
     } catch (err) {

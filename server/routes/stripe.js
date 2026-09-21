@@ -3,6 +3,8 @@ import express from "express";
 import Stripe from "stripe";
 import { supabaseAdmin } from "../supabaseAdmin.js";
 import { reconcilePromptPurchases } from "../lib/reconcilePrompts.js";
+import { buildWelcomeEmail } from "../lib/welcomeEmail.js";
+import { sendEmail, displayNameOf } from "../lib/mailer.js";
 
 const router = Router();
 
@@ -71,6 +73,30 @@ router.post(
                         console.error("Failed to update subscription:", error);
                     } else {
                         console.log(`Subscription created for user ${userId}`);
+                    }
+
+                    // Welcome them — once. The flag lives on the Stripe
+                    // subscription, so a replayed webhook can't email twice.
+                    if (!sub.metadata?.welcome_sent) {
+                        try {
+                            const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
+                            if (user?.email) {
+                                const { subject, html } = buildWelcomeEmail({
+                                    name: displayNameOf(user),
+                                    plan: sub.items.data[0]?.price?.nickname || "monthly",
+                                    frontendUrl: process.env.FRONTEND_URL,
+                                });
+                                const sent = await sendEmail({ to: user.email, subject, html });
+                                if (sent.ok) {
+                                    await stripe.subscriptions.update(sub.id, {
+                                        metadata: { ...(sub.metadata || {}), welcome_sent: "1" },
+                                    });
+                                }
+                            }
+                        } catch (mailErr) {
+                            // Never let a welcome email break the payment flow.
+                            console.error("Welcome email failed:", mailErr?.message || "unknown");
+                        }
                     }
                 }
             }
