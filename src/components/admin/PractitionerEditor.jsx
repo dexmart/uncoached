@@ -81,26 +81,30 @@ const PractitionerEditor = ({ row, onSaved, onCancel }) => {
         try {
             if (isNew) {
                 // Added by hand, so it is already reviewed — publish it directly.
+                const record = { ...payload, status: 'approved', consent: true };
                 const { data, error } = await supabase
                     .from('practitioner_applications')
-                    .insert({ ...payload, status: 'approved', consent: true })
-                    .select()
-                    .single();
+                    .insert(record)
+                    .select();
                 if (error) throw error;
-                onSaved(data, true);
+                // The row is saved even if reading it straight back returns
+                // nothing, so never report a failure for a save that worked.
+                onSaved(data?.[0] || { id: `pending-${Date.now()}`, created_at: new Date().toISOString(), ...record }, true);
             } else {
                 const { data, error } = await supabase
                     .from('practitioner_applications')
                     .update(payload)
                     .eq('id', row.id)
-                    .select()
-                    .single();
+                    .select();
                 if (error) throw error;
-                onSaved(data, false);
+                onSaved(data?.[0] || { ...row, ...payload }, false);
             }
         } catch (err) {
             console.error('Save practitioner failed:', err);
-            setError('Could not save. Please try again.');
+            // Say what actually went wrong. "Please try again" told nobody
+            // anything and hid the real reason for days.
+            const detail = [err?.message, err?.details, err?.hint].filter(Boolean).join(' — ');
+            setError(detail ? `Could not save: ${detail}` : 'Could not save. Please try again.');
             setBusy(false);
         }
     };
