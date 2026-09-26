@@ -5,11 +5,15 @@ import {
 } from '../lib/fieldStorage';
 
 const API = import.meta.env.VITE_API_URL;
+const AVATAR = import.meta.env.BASE_URL + 'images/Field Icons/field chat.webp';
 
-// Field's chat box. The conversation is held here and in this tab's
-// sessionStorage only; each turn resends it so Field follows the thread. It is
-// never stored on our side, and the server never logs it. Cleared by the
-// member, on sign out, when the tab closes, or after 30 idle minutes.
+// Field's chat. Styled to match the Field mockup on the homepage — dark card,
+// Field's avatar, pale sage from the member and dark from Field.
+//
+// The conversation is held here and in this tab's sessionStorage only, and is
+// resent each turn so Field follows the thread. It is never stored on our side
+// and the server never logs it. Cleared by the member, on sign out, when the
+// tab closes, or after 30 idle minutes.
 const FieldChat = () => {
     const [messages, setMessages] = useState(loadFieldConversation);
     const [draft, setDraft] = useState('');
@@ -18,18 +22,14 @@ const FieldChat = () => {
     const bottomRef = useRef(null);
     const idleTimer = useRef(null);
 
-    // Persist and keep the view pinned to the latest message.
     useEffect(() => {
         if (messages.length) saveFieldConversation(messages); else clearFieldConversation();
         bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }, [messages]);
 
-    // Inactivity: wipe the conversation after FIELD_IDLE_MS with no new turns.
     useEffect(() => {
         clearTimeout(idleTimer.current);
-        if (messages.length) {
-            idleTimer.current = setTimeout(() => setMessages([]), FIELD_IDLE_MS);
-        }
+        if (messages.length) idleTimer.current = setTimeout(() => setMessages([]), FIELD_IDLE_MS);
         return () => clearTimeout(idleTimer.current);
     }, [messages]);
 
@@ -94,62 +94,90 @@ const FieldChat = () => {
     };
 
     return (
-        <div className="flex flex-col h-full">
-            {/* Toolbar */}
-            <div className="flex items-center justify-between px-4 py-2 border-b border-clay/20 bg-white/70">
-                <span className="text-xs text-text-tertiary">Private. Not saved anywhere but this tab.</span>
+        <div className="flex flex-col h-full bg-[#0D0F0E] text-bone">
+            {/* Header — Field, with their face on it */}
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
+                <img src={AVATAR} alt="" className="w-9 h-9 rounded-full bg-white/10 object-contain" />
+                <div className="flex-1 min-w-0">
+                    <p className="font-medium text-bone leading-tight">Field</p>
+                    <p className="text-[11px] text-bone/50 leading-tight">Private. Stays in this tab.</p>
+                </div>
                 <button
                     type="button"
                     onClick={clearAll}
                     disabled={!messages.length}
-                    className="text-xs text-text-muted hover:text-sage underline underline-offset-4 disabled:opacity-40 disabled:no-underline"
+                    className="text-xs text-bone/60 hover:text-bone px-3 py-1.5 rounded-full border border-white/15 hover:border-white/30 transition-colors disabled:opacity-30 disabled:hover:text-bone/60"
                 >
-                    Clear conversation
+                    Clear
                 </button>
             </div>
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto px-4 py-5 space-y-4">
                 {messages.length === 0 && (
-                    <p className="text-center text-text-muted text-sm pt-10">
-                        Say whatever&apos;s on your mind. Field will follow.
-                    </p>
-                )}
-                {messages.map((m, i) => (
-                    <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <div
-                            className={`max-w-[85%] px-4 py-3 rounded-2xl text-[15px] leading-relaxed whitespace-pre-wrap ${
-                                m.role === 'user'
-                                    ? 'bg-sage text-bone rounded-br-md'
-                                    : 'bg-bone text-text-dark border border-clay/30 rounded-bl-md'
-                            }`}
-                        >
-                            {m.content || (busy && i === messages.length - 1 ? <span className="opacity-60">Field is thinking…</span> : '')}
-                        </div>
+                    <div className="text-center pt-10">
+                        <img src={AVATAR} alt="" className="w-16 h-16 mx-auto mb-4 opacity-90" />
+                        <p className="text-bone/60 text-sm max-w-xs mx-auto">
+                            Say whatever&apos;s on your mind. Field will follow.
+                        </p>
                     </div>
-                ))}
+                )}
+
+                {messages.map((m, i) => {
+                    const mine = m.role === 'user';
+                    return (
+                        <div key={i} className={`flex items-end gap-2 ${mine ? 'justify-end' : 'justify-start'}`}>
+                            {!mine && (
+                                <img src={AVATAR} alt="" className="w-7 h-7 rounded-full bg-white/10 object-contain flex-shrink-0 mb-1" />
+                            )}
+                            <div
+                                className={`max-w-[80%] px-4 py-3 rounded-2xl text-[15px] leading-relaxed whitespace-pre-wrap ${
+                                    mine
+                                        ? 'bg-[#DCE8D6] text-[#1F2422] rounded-br-md'
+                                        : 'bg-white/[0.07] text-bone/90 border border-white/10 rounded-bl-md'
+                                }`}
+                            >
+                                {m.content || (busy && i === messages.length - 1
+                                    ? <span className="text-bone/50">Field is thinking…</span>
+                                    : '')}
+                            </div>
+                        </div>
+                    );
+                })}
                 <div ref={bottomRef} />
             </div>
 
-            {error && <div className="mx-4 mb-2 bg-red-50 text-red-600 p-3 rounded-xl text-sm text-center">{error}</div>}
+            {error && (
+                <div className="mx-4 mb-2 bg-red-500/15 border border-red-400/30 text-red-200 p-3 rounded-xl text-sm text-center">
+                    {error}
+                </div>
+            )}
 
             {/* Composer */}
-            <form onSubmit={send} className="flex gap-2 p-3 border-t border-clay/20 bg-white/70">
-                <textarea
-                    value={draft}
-                    onChange={(e) => setDraft(e.target.value)}
-                    onKeyDown={onKeyDown}
-                    rows={1}
-                    placeholder="Write to Field…"
-                    className="flex-1 resize-none px-4 py-3 bg-white border border-clay/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-sage/40 text-[15px]"
-                />
-                <button
-                    type="submit"
-                    disabled={busy || !draft.trim()}
-                    className="px-5 py-3 bg-sage text-bone rounded-2xl font-medium hover:bg-sage/90 transition-all disabled:opacity-50"
-                >
-                    {busy ? '…' : 'Send'}
-                </button>
+            <form onSubmit={send} className="px-3 pb-3">
+                <div className="flex items-end gap-2 bg-white/[0.06] border border-white/15 rounded-3xl px-3 py-2 focus-within:border-white/30 transition-colors">
+                    <textarea
+                        value={draft}
+                        onChange={(e) => setDraft(e.target.value)}
+                        onKeyDown={onKeyDown}
+                        rows={1}
+                        placeholder="Write your thoughts here…"
+                        className="flex-1 resize-none bg-transparent px-2 py-2 text-[15px] text-bone placeholder-bone/40 focus:outline-none"
+                    />
+                    <button
+                        type="submit"
+                        disabled={busy || !draft.trim()}
+                        aria-label="Send"
+                        className="w-10 h-10 flex-shrink-0 rounded-full bg-sage text-bone flex items-center justify-center hover:bg-sage/90 transition-all disabled:opacity-40"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+                <p className="text-center text-[11px] text-bone/40 mt-3">
+                    This is a private space. Your entries don&apos;t leave this chat.
+                </p>
             </form>
         </div>
     );
