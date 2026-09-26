@@ -55,7 +55,7 @@ const FieldPage = () => {
 
                 {/* Chat */}
                 <div className="flex-1 flex flex-col w-full max-w-3xl mx-auto px-4 pb-6">
-                    <div className="flex-1 min-h-[60vh] h-[60vh] bg-white/90 backdrop-blur-sm rounded-2xl border border-clay/20 overflow-hidden shadow-lg">
+                    <div className="flex-1 min-h-[60vh] h-[60vh] rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
                         <FieldChat />
                     </div>
                     <p className="text-bone/70 text-xs text-center mt-4">
