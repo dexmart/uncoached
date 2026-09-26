@@ -129,6 +129,7 @@ export const SITE_COPY_FIELDS = [
 
     // ── Legal pages — whole documents, so sections can be added freely ───
     { key: 'legal.terms.effective', group: 'Legal — Terms of Use', label: 'Effective date line', text: 'Effective: August 2025' },
+    { key: 'legal.terms.version', group: 'Legal — Terms of Use', label: 'Version (recorded when a member accepts)', help: 'Change this whenever the wording changes, e.g. 1.1.', text: '1.0' },
     {
         key: 'legal.terms.body', group: 'Legal — Terms of Use', label: 'Full document', document: true,
         help: 'Start a line with ## to make it a heading. Leave a blank line between paragraphs.',
@@ -177,8 +178,39 @@ For support, email us at hello@uncoached.space.
 These Terms are governed by the laws of the Province of Ontario and the federal laws of Canada applicable therein, without regard to conflict of law principles.`
     },
 
+    // ── Legal · User Agreement ──────────────────────────────────────────
+    // Shown once, the first time a member enters the members area. Changing
+    // the version below asks every member to accept again, and records it.
+    { key: 'legal.agreement.version', group: 'Legal — User Agreement', label: 'Version (recorded when a member accepts)', help: 'Changing this asks every member to accept again. Use 1.0, 1.1, and so on.', text: '1.0' },
+    { key: 'legal.agreement.title', group: 'Legal — User Agreement', label: 'Heading', text: 'Before you begin' },
+    { key: 'legal.agreement.intro', group: 'Legal — User Agreement', label: 'Line under the heading', multiline: true, text: 'Please read and accept this to use your membership. It only takes a moment, and you will only be asked again if the wording changes.' },
+    { key: 'legal.agreement.accept_label', group: 'Legal — User Agreement', label: 'Checkbox wording', multiline: true, text: 'I have read and agree to the User Agreement, the Terms of Use, the Privacy Policy and the Billing & Refunds policy.' },
+    { key: 'legal.agreement.button', group: 'Legal — User Agreement', label: 'Button', text: 'I agree' },
+    {
+        key: 'legal.agreement.body', group: 'Legal — User Agreement', label: 'Full document', document: true,
+        help: 'Start a line with ## to make it a heading, or • to make a bullet. Leave a blank line between paragraphs. Replace this with your lawyer’s wording.',
+        text: `## What Uncoached is
+Uncoached is a self-guided space for reflection. It is not therapy, counselling, coaching, or medical care, and it does not replace them. Nothing here is professional advice, diagnosis or treatment.
+
+## Using it well
+Uncoached is designed to support you between sessions with your own professionals. If you are struggling, please reach out to a qualified professional or your local emergency service.
+
+## Your account
+Your membership is for you alone. Please keep your sign-in details private and do not share access with anyone else.
+
+## Field, and what you write
+Field is an AI companion. It is not a person, not a professional, and its replies are not advice. Your Field conversation stays in your browser for that session only and is not stored by Uncoached.
+
+## Practitioners
+Practitioners listed on Uncoached work independently. Uncoached does not employ them and is not responsible for their services. Any arrangement you make with a practitioner is between you and them.
+
+## Changes
+If this agreement changes in a meaningful way, you will be asked to read and accept the new version the next time you sign in.`
+    },
+
     // ── Legal · Billing & Refunds ───────────────────────────────────────
     { key: 'legal.billing.effective', group: 'Legal — Billing & Refunds', label: 'Effective date line', text: 'Effective: September 2026' },
+    { key: 'legal.billing.version', group: 'Legal — Billing & Refunds', label: 'Version (recorded when a member accepts)', help: 'Change this whenever the wording changes, e.g. 1.1.', text: '1.0' },
     {
         key: 'legal.billing.body', group: 'Legal — Billing & Refunds', label: 'Full document', document: true,
         help: 'Start a line with ## to make it a heading, or • to make a bullet. Leave a blank line between paragraphs.',
@@ -202,6 +234,7 @@ If you believe a charge was made in error, or you have any billing concern, plea
     },
 
     { key: 'legal.privacy.effective', group: 'Legal — Privacy Policy', label: 'Effective date line', text: 'Effective Date: September 2025' },
+    { key: 'legal.privacy.version', group: 'Legal — Privacy Policy', label: 'Version (recorded when a member accepts)', help: 'Change this whenever the wording changes, e.g. 1.1.', text: '1.0' },
     {
         key: 'legal.privacy.body', group: 'Legal — Privacy Policy', label: 'Full document', document: true,
         help: 'Start a line with ## to make it a heading, or • to make a bullet. Leave a blank line between paragraphs.',

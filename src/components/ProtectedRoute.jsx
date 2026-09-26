@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getPendingGiftCode } from '../lib/giftCode';
+import AgreementGate from './AgreementGate';
 
 const ProtectedRoute = ({ children, requireSubscription = false }) => {
     const { user, loading, isSubscribed, isSubscriptionLoading, isAdmin, isRoleLoading } = useAuth();
@@ -27,7 +28,9 @@ const ProtectedRoute = ({ children, requireSubscription = false }) => {
         return <Navigate to={getPendingGiftCode() ? '/redeem' : '/pricing'} replace />;
     }
 
-    return children;
+    // Member content: ask for the User Agreement once, and record which
+    // version they accepted. Profile and Billing stay reachable without it.
+    return requireSubscription ? <AgreementGate>{children}</AgreementGate> : children;
 };
 
 export default ProtectedRoute;
