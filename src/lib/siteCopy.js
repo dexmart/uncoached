@@ -177,6 +177,30 @@ For support, email us at hello@uncoached.space.
 These Terms are governed by the laws of the Province of Ontario and the federal laws of Canada applicable therein, without regard to conflict of law principles.`
     },
 
+    // ── Legal · Billing & Refunds ───────────────────────────────────────
+    { key: 'legal.billing.effective', group: 'Legal — Billing & Refunds', label: 'Effective date line', text: 'Effective: September 2026' },
+    {
+        key: 'legal.billing.body', group: 'Legal — Billing & Refunds', label: 'Full document', document: true,
+        help: 'Start a line with ## to make it a heading, or • to make a bullet. Leave a blank line between paragraphs.',
+        text: `## Payment Processing
+All payments for Uncoached are securely processed through Stripe. Your membership renews automatically at the end of each billing period, according to the plan you chose, unless you cancel before your next renewal date.
+
+Gift memberships are different: they are paid for once, they do not renew, and they end by themselves on the date shown when the gift is redeemed.
+
+## Refund Policy
+Except where required by applicable law, all sales are final. Because our Services are digital and available immediately, we do not offer refunds for membership payments once a payment has been processed.
+
+If you no longer wish to continue, you can cancel at any time. Cancellation takes effect at the end of the period you have already paid for, so you keep your access until then, and no further payments are taken.
+
+## Managing Your Membership
+You can view and download your invoices, update your payment method, or cancel your membership at any time from the Billing page inside your membership area.
+
+Signed in? Open Billing & invoices from your membership area, or from your Profile page.
+
+## Questions
+If you believe a charge was made in error, or you have any billing concern, please write to us at hello@uncoached.space and we will look into it.`
+    },
+
     { key: 'legal.privacy.effective', group: 'Legal — Privacy Policy', label: 'Effective date line', text: 'Effective Date: September 2025' },
     {
         key: 'legal.privacy.body', group: 'Legal — Privacy Policy', label: 'Full document', document: true,
