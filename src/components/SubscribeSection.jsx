@@ -11,7 +11,8 @@ const KIT_ENDPOINT = `https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`;
 const SubscribeSection = () => {
     const copy = useCopy();
     const [email, setEmail] = useState('');
-    const [status, setStatus] = useState('idle'); // idle | loading | success | error
+    const [status, setStatus] = useState('idle'); // idle | loading | success | confirm | verify | error
+    const [verifyUrl, setVerifyUrl] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,11 +29,23 @@ const SubscribeSection = () => {
                 body: JSON.stringify({ email_address: email.trim() }),
             });
 
-            if (res.ok) {
-                setStatus('success');
+            if (!res.ok) { setStatus('error'); return; }
+
+            // Kit answers 200 even when it hasn't subscribed anyone yet, so read
+            // what it actually said:
+            //   quarantined — its spam check wants the person to confirm first,
+            //                 and gives a link; until they do, they're NOT subscribed
+            //   inactive    — subscribed, but Kit has emailed them to confirm
+            const data = await res.json().catch(() => ({}));
+            if (data.status === 'quarantined' && data.url) {
+                setVerifyUrl(data.url);
+                setStatus('verify');
+            } else if (data.status === 'inactive') {
+                setStatus('confirm');
                 setEmail('');
             } else {
-                setStatus('error');
+                setStatus('success');
+                setEmail('');
             }
         } catch (err) {
             console.error('Newsletter signup error:', err);
@@ -60,6 +73,22 @@ const SubscribeSection = () => {
                     <p className="text-bone font-medium text-lg max-w-md mx-auto bg-sage/30 border border-sage/40 rounded-lg py-4 px-6 backdrop-blur-sm">
                         {copy('home.subscribe.success')}
                     </p>
+                ) : status === 'confirm' ? (
+                    <p className="text-bone font-medium text-lg max-w-md mx-auto bg-sage/30 border border-sage/40 rounded-lg py-4 px-6 backdrop-blur-sm">
+                        Almost there. Check your inbox and tap the link to confirm.
+                    </p>
+                ) : status === 'verify' ? (
+                    <div className="max-w-md mx-auto bg-sage/30 border border-sage/40 rounded-lg py-5 px-6 backdrop-blur-sm">
+                        <p className="text-bone font-medium mb-4">One quick step to finish signing up.</p>
+                        <a
+                            href={verifyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block px-6 py-3 bg-sage text-bone rounded-lg font-medium hover:bg-sage/90 transition-all"
+                        >
+                            Confirm my subscription
+                        </a>
+                    </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 justify-center items-center max-w-md mx-auto">
                         <input
