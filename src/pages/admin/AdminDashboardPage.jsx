@@ -1,7 +1,26 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
+// One headline number. Real data only.
+const StatTile = ({ label, value, note, to, progress }) => {
+    const body = (
+        <div className="h-full bg-white/50 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all">
+            <p className="text-xs uppercase tracking-widest text-text-muted mb-3">{label}</p>
+            <p className="text-3xl font-display text-text-dark">{value}</p>
+            {note && <p className="text-xs text-text-muted mt-1">{note}</p>}
+            {progress !== undefined && (
+                <div className="mt-3 h-1.5 bg-bone rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-golden-light to-golden-deep rounded-full transition-all duration-1000" style={{ width: `${progress}%` }} />
+                </div>
+            )}
+        </div>
+    );
+    return to ? <Link to={to} className="block">{body}</Link> : body;
+};
 
 const AdminDashboardPage = () => {
     const [stats, setStats] = useState({
@@ -12,7 +31,7 @@ const AdminDashboardPage = () => {
         afformations: { total: 0, categories: 0 },
         voiceNotes: { total: 0, withAudio: 0 },
     });
-    const [activityData, setActivityData] = useState([]);
+    const [business, setBusiness] = useState({ members: 0, gifts: 0, pending: 0, live: 0, shiftsMissingAudio: 0, comingSoon: 0 });
     const [serviceBreakdown, setServiceBreakdown] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -74,6 +93,11 @@ const AdminDashboardPage = () => {
                 { count: afformationCategories },
                 { count: voiceNotesTotal },
                 { data: voiceNotesWithAudio },
+                { data: liveSubs },
+                { count: pendingApps },
+                { count: liveApps },
+                { count: shiftsMissingAudio },
+                { count: comingSoon },
             ] = await Promise.all([
                 supabase.from('guided_shifts').select('*', { count: 'exact', head: true }),
                 supabase.from('guided_shifts').select('id').not('audio_url', 'is', null),
@@ -84,11 +108,25 @@ const AdminDashboardPage = () => {
                 supabase.from('pocket_prompts').select('*', { count: 'exact', head: true }),
                 supabase.from('pocket_prompt_categories').select('*', { count: 'exact', head: true }),
                 supabase.from('clarity_cards').select('*', { count: 'exact', head: true }),
-                supabase.from('affirmations').select('*', { count: 'exact', head: true }),
-                supabase.from('affirmation_categories').select('*', { count: 'exact', head: true }),
+                supabase.from('afformation_cards').select('*', { count: 'exact', head: true }),
+                supabase.from('afformation_questions').select('*', { count: 'exact', head: true }),
                 supabase.from('voice_notes').select('*', { count: 'exact', head: true }),
                 supabase.from('voice_notes').select('id').not('audio_url', 'is', null),
+                supabase.from('subscriptions').select('plan, status').in('status', ['active', 'trialing']),
+                supabase.from('practitioner_applications').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+                supabase.from('practitioner_applications').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
+                supabase.from('guided_shifts').select('*', { count: 'exact', head: true }).eq('is_active', true).is('audio_url', null),
+                supabase.from('guided_shifts').select('*', { count: 'exact', head: true }).eq('is_active', false),
             ]);
+
+            setBusiness({
+                members: liveSubs?.length || 0,
+                gifts: (liveSubs || []).filter((x) => String(x.plan || '').startsWith('gift-')).length,
+                pending: pendingApps || 0,
+                live: liveApps || 0,
+                shiftsMissingAudio: shiftsMissingAudio || 0,
+                comingSoon: comingSoon || 0,
+            });
 
             const newStats = {
                 guidedShifts: { total: shiftsTotal || 0, withAudio: shiftsWithAudio?.length || 0, categories: shiftCategories || 0 },
@@ -111,26 +149,6 @@ const AdminDashboardPage = () => {
                 { name: 'Voice Notes', count: newStats.voiceNotes.total, fill: '#8C857A' },
             ]);
 
-            // Generate activity data (last 7 days showing content growth)
-            const totalContent = (newStats.guidedShifts.total || 0) + (newStats.audioBreaths.total || 0) +
-                (newStats.pocketPrompts.total || 0) + (newStats.clarityCards.total || 0) +
-                (newStats.afformations.total || 0) + (newStats.voiceNotes.total || 0);
-
-            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const today = new Date();
-            const last7Days = Array.from({ length: 7 }, (_, i) => {
-                const d = new Date(today);
-                d.setDate(d.getDate() - (6 - i));
-                const dayName = days[d.getDay()];
-                // Simulate cumulative content build-up with real total as endpoint
-                const progress = Math.round(totalContent * (0.4 + (i * 0.6 / 6)));
-                return {
-                    day: i === 6 ? 'Today' : dayName,
-                    content: i === 6 ? totalContent : progress,
-                    sessions: Math.floor(Math.random() * 12) + (i * 2),
-                };
-            });
-            setActivityData(last7Days);
 
         } catch (error) {
             console.error('Error fetching admin stats:', error);
@@ -144,8 +162,17 @@ const AdminDashboardPage = () => {
         stats.afformations.total + stats.voiceNotes.total;
 
     const totalAudioUploaded = stats.guidedShifts.withAudio + stats.audioBreaths.withAudio + stats.voiceNotes.withAudio;
-    const totalAudioNeeded = stats.guidedShifts.total + stats.audioBreaths.total + stats.voiceNotes.total;
+    // Coming-soon tracks have no audio on purpose, so they don't count as missing.
+    const totalAudioNeeded = (stats.guidedShifts.total - business.comingSoon) + stats.audioBreaths.total + stats.voiceNotes.total;
     const audioProgress = totalAudioNeeded > 0 ? Math.round((totalAudioUploaded / totalAudioNeeded) * 100) : 0;
+
+    const attentionItems = [
+        { count: business.pending, label: business.pending === 1 ? 'practitioner application waiting for review' : 'practitioner applications waiting for review', link: '/admin/practitioners', urgent: true },
+        { count: business.shiftsMissingAudio, label: business.shiftsMissingAudio === 1 ? 'live guided shift has no audio' : 'live guided shifts have no audio', link: '/admin/guided-shifts', urgent: true },
+        { count: stats.audioBreaths.total - stats.audioBreaths.withAudio, label: 'audio breaths with no audio yet', link: '/admin/audio-breaths', urgent: true },
+        { count: stats.voiceNotes.total - stats.voiceNotes.withAudio, label: 'voice notes with no audio yet', link: '/admin/voice-notes', urgent: true },
+        { count: business.comingSoon, label: business.comingSoon === 1 ? 'guided shift marked coming soon' : 'guided shifts marked coming soon', link: '/admin/guided-shifts', urgent: false },
+    ].filter((item) => item.count > 0);
 
     const services = [
         {
@@ -188,8 +215,8 @@ const AdminDashboardPage = () => {
             name: 'Afformations',
             icon: 'field affirmation.png',
             total: stats.afformations.total,
-            subtitle: `${stats.afformations.categories} categories`,
-            link: '/admin/affirmations',
+            subtitle: `${stats.afformations.categories} questions`,
+            link: '/admin/afformations',
             gradient: 'from-[#D6C7B8]/80 to-[#D6C7B8]/40',
             accent: '#D6C7B8',
         },
@@ -211,7 +238,7 @@ const AdminDashboardPage = () => {
                     <p className="text-xs text-white/60 mb-1">{label}</p>
                     {payload.map((p, i) => (
                         <p key={i} className="text-sm font-medium">
-                            {p.name === 'content' ? 'Content Items' : 'Sessions'}: <span className="text-golden-light">{p.value}</span>
+                            Items: <span className="text-golden-light">{p.value}</span>
                         </p>
                     ))}
                 </div>
@@ -301,111 +328,54 @@ const AdminDashboardPage = () => {
                 )}
             </div>
 
-            {/* Top Stats Row */}
+            {/* Top Stats Row — real numbers only */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                {/* Total Content */}
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group">
-                    <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-xl bg-sage/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg className="w-5 h-5 text-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                            </svg>
-                        </div>
-                        <span className="text-xs text-sage bg-sage/10 px-2 py-0.5 rounded-full font-medium">Total</span>
-                    </div>
-                    <p className="text-3xl font-display text-text-dark">{totalContent}</p>
-                    <p className="text-xs text-text-muted mt-1">Content Items</p>
-                </div>
-
-                {/* Audio Progress */}
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group">
-                    <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-xl bg-golden-light/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg className="w-5 h-5 text-golden-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                            </svg>
-                        </div>
-                        <span className="text-xs text-golden-deep bg-golden-light/10 px-2 py-0.5 rounded-full font-medium">{audioProgress}%</span>
-                    </div>
-                    <p className="text-3xl font-display text-text-dark">{totalAudioUploaded}<span className="text-lg text-text-muted">/{totalAudioNeeded}</span></p>
-                    <p className="text-xs text-text-muted mt-1">Audio Uploaded</p>
-                    <div className="mt-2 h-1.5 bg-bone rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-gradient-to-r from-golden-light to-golden-deep rounded-full transition-all duration-1000 ease-out"
-                            style={{ width: `${audioProgress}%` }}
-                        />
-                    </div>
-                </div>
-
-                {/* Categories */}
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group">
-                    <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-xl bg-clay/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg className="w-5 h-5 text-golden-deep" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p className="text-3xl font-display text-text-dark">
-                        {stats.guidedShifts.categories + stats.audioBreaths.families + stats.pocketPrompts.categories + stats.afformations.categories}
-                    </p>
-                    <p className="text-xs text-text-muted mt-1">Categories & Families</p>
-                </div>
-
-                {/* Services Count */}
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group">
-                    <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-xl bg-sage/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg className="w-5 h-5 text-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                            </svg>
-                        </div>
-                        <span className="text-xs text-sage bg-sage/10 px-2 py-0.5 rounded-full font-medium">Live</span>
-                    </div>
-                    <p className="text-3xl font-display text-text-dark">6</p>
-                    <p className="text-xs text-text-muted mt-1">Active Services</p>
-                </div>
+                <StatTile
+                    label="Active members"
+                    value={business.members}
+                    note={business.gifts ? `${business.gifts} on a gift` : 'Paying or on a gift'}
+                />
+                <StatTile
+                    label="Applications waiting"
+                    value={business.pending}
+                    note={`${plural(business.live, 'practitioner', 'practitioners')} live`}
+                    to="/admin/practitioners"
+                />
+                <StatTile label="Content items" value={totalContent} note="Across all six tools" />
+                <StatTile
+                    label="Audio uploaded"
+                    value={`${totalAudioUploaded}/${totalAudioNeeded}`}
+                    note={`${audioProgress}% complete`}
+                    progress={audioProgress}
+                />
             </div>
 
             {/* Charts Row */}
             <div className="grid lg:grid-cols-5 gap-6 mb-8">
-                {/* Content Growth Chart */}
+                {/* Needs attention — the things waiting on Johanna */}
                 <div className="lg:col-span-3 bg-white/50 backdrop-blur-xl border border-white/60 rounded-2xl p-6 shadow-sm">
-                    <div className="flex items-center justify-between mb-6">
-                        <div>
-                            <h2 className="font-display text-xl text-text-dark">Content Overview</h2>
-                            <p className="text-xs text-text-muted mt-1">Last 7 days • Cumulative content items</p>
+                    <h2 className="font-display text-xl text-text-dark mb-1">Needs attention</h2>
+                    <p className="text-xs text-text-muted mb-5">Things waiting on you, with a link straight to each</p>
+                    {attentionItems.length === 0 ? (
+                        <div className="flex items-center gap-3 py-10 justify-center text-text-muted">
+                            <span className="w-8 h-8 rounded-full bg-sage/10 text-sage flex items-center justify-center">✓</span>
+                            <span>All clear. Nothing needs you right now.</span>
                         </div>
-                        <div className="flex items-center gap-4 text-xs">
-                            <div className="flex items-center gap-1.5">
-                                <div className="w-2.5 h-2.5 rounded-full bg-sage" />
-                                <span className="text-text-muted">Content</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                                <div className="w-2.5 h-2.5 rounded-full bg-golden-light" />
-                                <span className="text-text-muted">Sessions</span>
-                            </div>
-                        </div>
-                    </div>
-                    <ResponsiveContainer width="100%" height={220}>
-                        <AreaChart data={activityData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-                            <defs>
-                                <linearGradient id="colorContent" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#3F5D4D" stopOpacity={0.3} />
-                                    <stop offset="95%" stopColor="#3F5D4D" stopOpacity={0} />
-                                </linearGradient>
-                                <linearGradient id="colorSessions" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#C89A5B" stopOpacity={0.3} />
-                                    <stop offset="95%" stopColor="#C89A5B" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: '#8C857A', fontSize: 11 }} />
-                            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#8C857A', fontSize: 11 }} />
-                            <Tooltip content={<CustomTooltip />} />
-                            <Area type="monotone" dataKey="content" stroke="#3F5D4D" strokeWidth={2} fillOpacity={1} fill="url(#colorContent)" />
-                            <Area type="monotone" dataKey="sessions" stroke="#C89A5B" strokeWidth={2} fillOpacity={1} fill="url(#colorSessions)" />
-                        </AreaChart>
-                    </ResponsiveContainer>
+                    ) : (
+                        <ul className="divide-y divide-clay/20">
+                            {attentionItems.map((item) => (
+                                <li key={item.label}>
+                                    <Link to={item.link} className="flex items-center gap-4 py-3.5 group">
+                                        <span className={`min-w-[2.25rem] text-center text-sm font-medium px-2.5 py-1 rounded-full ${item.urgent ? 'bg-golden-light/20 text-golden-deep' : 'bg-sage/10 text-sage'}`}>
+                                            {item.count}
+                                        </span>
+                                        <span className="flex-1 text-text-dark text-sm">{item.label}</span>
+                                        <span className="text-xs text-text-muted group-hover:text-sage transition-colors">Open →</span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
 
                 {/* Service Breakdown */}
