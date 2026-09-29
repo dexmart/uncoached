@@ -32,6 +32,17 @@ const AdminLayout = () => {
                         uncoached
                     </p>
                     <p className="font-display text-lg text-text-dark mt-1">Admin Portal</p>
+                    <a
+                        href="/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 inline-flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-sage border border-sage/30 rounded-xl hover:bg-sage/5 transition-colors"
+                    >
+                        View website
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </a>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">
@@ -238,6 +249,7 @@ const AdminLayout = () => {
             <div className="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-text-dark/10 p-4 flex justify-between items-center z-50">
                 <p className="font-display pr-2">uncoached admin</p>
                 <div className="flex gap-2 overflow-x-auto text-xs pb-1">
+                    <a href="/" target="_blank" rel="noopener noreferrer" className="whitespace-nowrap px-3 py-1.5 rounded-full bg-sage text-bone">View site ↗</a>
                     <Link to="/admin" className={`whitespace-nowrap px-3 py-1.5 rounded-full ${isActive('/admin') ? 'bg-clay text-white' : 'bg-bone text-text-dark/70'}`}>Dashboard</Link>
                     <Link to="/admin/audio-families" className={`whitespace-nowrap px-3 py-1.5 rounded-full ${isActive('/admin/audio-families') ? 'bg-clay text-white' : 'bg-bone text-text-dark/70'}`}>Audio Families</Link>
                     <Link to="/admin/audio-breaths" className={`whitespace-nowrap px-3 py-1.5 rounded-full ${isActive('/admin/audio-breaths') ? 'bg-clay text-white' : 'bg-bone text-text-dark/70'}`}>Audio Breaths</Link>
