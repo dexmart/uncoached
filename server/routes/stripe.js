@@ -12,6 +12,32 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: "2024-06-20"
 });
 
+// Send the member welcome email once per subscription. Called from BOTH the
+// Stripe webhook and the post-checkout check, so a missed webhook can't stop
+// it. The "sent" flag lives on the Stripe subscription itself, so whichever
+// path gets there first sends it and the other skips. Never throws: an email
+// must never break a payment.
+async function sendWelcomeOnce(sub, userId) {
+    if (!sub || !userId || sub.metadata?.welcome_sent) return;
+    try {
+        const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
+        if (!user?.email) return;
+        const { subject, html } = buildWelcomeEmail({
+            name: displayNameOf(user),
+            plan: sub.items?.data?.[0]?.price?.nickname || "monthly",
+            frontendUrl: process.env.FRONTEND_URL,
+        });
+        const sent = await sendEmail({ to: user.email, subject, html });
+        if (sent.ok) {
+            await stripe.subscriptions.update(sub.id, {
+                metadata: { ...(sub.metadata || {}), welcome_sent: "1" },
+            });
+        }
+    } catch (err) {
+        console.error("Welcome email failed:", err?.message || "unknown");
+    }
+}
+
 // Stripe webhook endpoint
 router.post(
     "/webhook",
@@ -75,29 +101,7 @@ router.post(
                         console.log(`Subscription created for user ${userId}`);
                     }
 
-                    // Welcome them — once. The flag lives on the Stripe
-                    // subscription, so a replayed webhook can't email twice.
-                    if (!sub.metadata?.welcome_sent) {
-                        try {
-                            const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
-                            if (user?.email) {
-                                const { subject, html } = buildWelcomeEmail({
-                                    name: displayNameOf(user),
-                                    plan: sub.items.data[0]?.price?.nickname || "monthly",
-                                    frontendUrl: process.env.FRONTEND_URL,
-                                });
-                                const sent = await sendEmail({ to: user.email, subject, html });
-                                if (sent.ok) {
-                                    await stripe.subscriptions.update(sub.id, {
-                                        metadata: { ...(sub.metadata || {}), welcome_sent: "1" },
-                                    });
-                                }
-                            }
-                        } catch (mailErr) {
-                            // Never let a welcome email break the payment flow.
-                            console.error("Welcome email failed:", mailErr?.message || "unknown");
-                        }
-                    }
+                    await sendWelcomeOnce(sub, userId);
                 }
             }
 
@@ -413,6 +417,9 @@ router.post("/verify-subscription", async (req, res) => {
         if (error) {
             console.error("Failed to upsert subscription:", error);
         }
+
+        // Backup path for the welcome email, in case the webhook never arrived.
+        await sendWelcomeOnce(sub, userId);
 
         res.json({
             subscribed: true,
