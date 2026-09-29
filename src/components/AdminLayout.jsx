@@ -24,7 +24,9 @@ const AdminLayout = () => {
     return (
         <div className="min-h-screen bg-bone flex">
             {/* Sidebar */}
-            <aside className="w-64 bg-white border-r border-text-dark/10 flex flex-col hidden md:flex">
+            {/* Pinned: stays on screen while the page scrolls, and scrolls on its
+                own if the menu is ever taller than the window. */}
+            <aside className="w-64 bg-white border-r border-text-dark/10 flex-col hidden md:flex md:sticky md:top-0 md:h-screen md:self-start md:overflow-y-auto">
                 <div className="p-6 border-b border-text-dark/10 text-center">
                     <p className="text-text-dark/70 text-xs tracking-[0.3em] uppercase font-medium">
                         uncoached
