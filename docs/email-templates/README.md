@@ -19,8 +19,11 @@ there, paste the file's contents, and Save.
 | Magic Link          | `magic-link.html`     |
 | Change Email Address| `change-email.html`   |
 
-The link placeholder inside each file is `{{ .ConfirmationURL }}` — leave it
-exactly as-is, that is what Supabase fills in per email.
+Each link points to `https://uncoached.space/auth/confirm` with Supabase's
+`{{ .TokenHash }}` placeholder — leave those exactly as they are. Pointing the
+link at our own domain rather than supabase.co matters: a link whose domain
+doesn't match the sender is a classic spam signal, and it was sending these
+emails to spam.
 
 ## 2. Send them through Resend (so they come from Uncoached, not "Supabase")
 
