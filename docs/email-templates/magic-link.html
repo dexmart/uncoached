@@ -12,10 +12,10 @@
           <p style="margin:0 0 8px;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#5E6A65;">Tap below to sign in to Uncoached. The link works once and expires shortly.</p>
         </td></tr>
         <tr><td style="padding:28px 40px;text-align:center;">
-          <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#3F5D4D;color:#F4F1EC;font-family:Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold;text-decoration:none;padding:14px 34px;border-radius:999px;">Sign in to Uncoached</a>
+          <a href="https://uncoached.space/auth/confirm?token_hash={{ .TokenHash }}&type=magiclink" style="display:inline-block;background:#3F5D4D;color:#F4F1EC;font-family:Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold;text-decoration:none;padding:14px 34px;border-radius:999px;">Sign in to Uncoached</a>
         </td></tr>
         <tr><td style="padding:0 40px 12px;text-align:center;">
-          <p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#8C857A;">If the button doesn't work, copy and paste this link into your browser:<br><a href="{{ .ConfirmationURL }}" style="color:#3F5D4D;word-break:break-all;">{{ .ConfirmationURL }}</a></p>
+          <p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#8C857A;">If the button doesn't work, copy and paste this link into your browser:<br><a href="https://uncoached.space/auth/confirm?token_hash={{ .TokenHash }}&type=magiclink" style="color:#3F5D4D;word-break:break-all;">https://uncoached.space/auth/confirm?token_hash={{ .TokenHash }}&type=magiclink</a></p>
         </td></tr>
         <tr><td style="padding:0 40px 36px;text-align:center;">
           <p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#8C857A;">If you didn't request this link, you can safely ignore this email.</p>

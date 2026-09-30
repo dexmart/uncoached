@@ -6,6 +6,7 @@ import AboutPage from './pages/AboutPage'
 import SignUpPage from './pages/SignUpPage'
 import SignInPage from './pages/SignInPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
+import AuthConfirmPage from './pages/AuthConfirmPage'
 import PricingPage from './pages/PricingPage'
 import PractitionersPage from './pages/PractitionersPage'
 import GiftPage from './pages/GiftPage'
@@ -68,6 +69,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/auth/confirm" element={<AuthConfirmPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/practitioners" element={<PractitionersPage />} />
           <Route path="/gift" element={<GiftPage />} />
