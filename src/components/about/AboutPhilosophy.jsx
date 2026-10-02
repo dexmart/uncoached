@@ -1,4 +1,5 @@
 import { useCopy } from '../../context/SiteCopyContext';
+import { emphasise } from '../../lib/emphasise';
 
 const AboutPhilosophy = () => {
     const copy = useCopy();
@@ -18,10 +19,10 @@ const AboutPhilosophy = () => {
                     <h2 className="font-display text-4xl mb-6 text-text-dark">{copy('about.philosophy.title')}</h2>
                     <div className="space-y-6 text-lg text-text-muted leading-relaxed">
                         <p>
-                            Uncoached is built on the belief that <span className="text-text-dark font-medium">you are the only one who truly understands your life</span>, your timing, and your inner landscape.
+                            {emphasise(copy('about.philosophy.belief'), 'text-text-dark font-medium')}
                         </p>
                         <p>
-                            The work is not about becoming someone else. <br />
+                            {copy('about.philosophy.lead')} <br />
                             <span className="italic font-serif text-golden-deep text-xl">{copy('about.philosophy.emphasis')}</span>
                         </p>
                         <p>
@@ -34,7 +35,7 @@ const AboutPhilosophy = () => {
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="text-sage mt-1">●</span>
-                                <span>You stop waiting to be fixed.</span>
+                                <span>{copy('about.philosophy.point_middle')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="text-sage mt-1 flex-shrink-0">●</span>

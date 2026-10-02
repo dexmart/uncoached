@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useCopy } from '../../context/SiteCopyContext';
+import { emphasise } from '../../lib/emphasise';
 
 const AfformationsPage = () => {
+    const copy = useCopy();
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeFilter, setActiveFilter] = useState('All');
@@ -70,26 +73,26 @@ const AfformationsPage = () => {
                     <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span className="text-sm font-medium tracking-wide">Back to Portal</span>
+                    <span className="text-sm font-medium tracking-wide">{copy('afformations.hero.back')}</span>
                 </Link>
 
                 {/* SECTION 1: INTRO / HERO AREA */}
                 <section className="px-6 pt-[120px] pb-[60px] md:pt-[160px] md:pb-[80px] flex items-center justify-center">
                     <div className="w-full max-w-[700px] mx-auto text-center animate-fade-in-up bg-[#F4F1EC]/85 backdrop-blur-md p-8 md:p-12 rounded-[32px] shadow-sm border border-white/40">
                         <h1 className="font-serif text-[40px] md:text-[48px] text-[#1F2422] font-medium mb-6">
-                            Af<span className="italic text-[#3F5D4D]">for</span>mations
+                            {emphasise(copy('afformations.hero.title'), 'italic text-[#3F5D4D]')}
                         </h1>
 
                         <h2 className="text-[18px] md:text-[20px] text-[#5E6A65] leading-[1.6] mb-8 font-sans">
-                            Afformations are empowering questions you ask yourself, designed to guide your brain toward supportive answers.
+                            {copy('afformations.hero.subtitle')}
                         </h2>
 
                         <p className="text-[16px] text-[#5E6A65] leading-[1.7] max-w-[680px] mx-auto mb-8">
-                            When the brain hears a question, it naturally begins searching for an answer. This simple shift invites your mind to notice evidence that supports growth, possibility, and self-trust. Instead of forcing yourself to believe something new, afformations gently guide your brain to explore the possibility that the belief may already be true. Over time, these small questions reshape what your mind pays attention to, helping you build new patterns of thinking and identity.
+                            {copy('afformations.hero.body')}
                         </p>
 
                         <p className="text-[16px] md:text-[17px] text-[#5E6A65] italic leading-relaxed">
-                            Sit with one of these questions for a moment and notice what answers your mind begins to offer.
+                            {copy('afformations.hero.invitation')}
                         </p>
                     </div>
                 </section>
@@ -106,7 +109,7 @@ const AfformationsPage = () => {
                                     : 'bg-white/90 backdrop-blur-md text-[#5E6A65] border border-[#D6C7B8] hover:bg-white hover:text-[#1F2422] shadow-sm'
                                     }`}
                             >
-                                {category}
+                                {category === 'All' ? copy('afformations.filters.all') : category}
                             </button>
                         ))}
                     </div>

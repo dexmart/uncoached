@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useCopy } from '../../context/SiteCopyContext';
+import { emphasise } from '../../lib/emphasise';
 
 const ClarityCardsPage = () => {
+    const copy = useCopy();
     const [clarityCards, setClarityCards] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -50,7 +53,7 @@ const ClarityCardsPage = () => {
                 <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                 </svg>
-                <span className="text-sm font-medium tracking-wide">Back to Portal</span>
+                <span className="text-sm font-medium tracking-wide">{copy('clarity.hero.back')}</span>
             </Link>
 
             {/* SECTION 1: HERO SECTION */}
@@ -70,18 +73,18 @@ const ClarityCardsPage = () => {
                 <div className="relative z-10 w-full max-w-[1200px] mx-auto px-6 md:px-12 pt-20 md:pt-0">
                     <div className="max-w-[500px] animate-fade-in-up">
                         <h1 className="font-serif text-[2.5rem] sm:text-5xl md:text-[3rem] text-[#1F2422] mb-6 leading-[1.15] font-medium">
-                            Clarity Cards
+                            {copy('clarity.hero.title')}
                         </h1>
 
                         <div className="space-y-6 text-[#5E6A65] text-[16px] md:text-[18px] leading-[1.7]">
                             <p>
-                                Printable journaling cards designed to help you reflect, process, and notice patterns over time, or simply meet the moment you're in.
+                                {copy('clarity.hero.body1')}
                             </p>
                             <p>
-                                Each card includes thoughtful prompts and simple activities you can respond to in your own way. Use them once, revisit them often, or add them to a journal to track what's shifting.
+                                {copy('clarity.hero.body2')}
                             </p>
                             <p>
-                                There's no prescribed path. Just tools you can return to when it feels useful.
+                                {copy('clarity.hero.body3')}
                             </p>
                         </div>
 
@@ -89,7 +92,7 @@ const ClarityCardsPage = () => {
                             onClick={scrollToCards}
                             className="mt-10 px-[28px] py-[12px] bg-[#C89A5B] hover:bg-[#b0854c] text-[#F4F1EC] font-serif rounded-[8px] text-[15px] transition-all duration-300 shadow-[0_4px_14px_rgba(200,154,91,0.25)] hover:shadow-[0_6px_20px_rgba(200,154,91,0.35)]"
                         >
-                            Choose a Card
+                            {copy('clarity.hero.cta')}
                         </button>
                     </div>
                 </div>
@@ -108,25 +111,24 @@ const ClarityCardsPage = () => {
 
                 <div className="relative z-10 max-w-[680px] mx-auto text-center">
                     <h2 className="font-serif font-bold text-[28px] md:text-[32px] text-[#1F2422] mb-12">
-                        How to use the Clarity Cards
+                        {copy('clarity.howto.title')}
                     </h2>
 
                     <div className="space-y-6 text-[#5E6A65] text-[16px] leading-[1.7] mb-10">
                         <p>
-                            Some people print them and keep a small stack nearby.<br className="hidden md:block" />
-                            Others add them to a journal or revisit the same card over time.
+                            {copy('clarity.howto.intro').split('\n').map((line, i) => (
+                                <Fragment key={i}>
+                                    {i > 0 && <>{' '}<br className="hidden md:block" /></>}
+                                    {line}
+                                </Fragment>
+                            ))}
                         </p>
                     </div>
 
-                    <p className="text-[#5E6A65] text-[16px] mb-6 text-center">You might use one to:</p>
+                    <p className="text-[#5E6A65] text-[16px] mb-6 text-center">{copy('clarity.howto.list_intro')}</p>
 
                     <ul className="space-y-[14px] mb-12 inline-flex flex-col text-left mx-auto">
-                        {[
-                            "capture how you're feeling today",
-                            "notice patterns across days or weeks",
-                            "work through a moment that feels sticky",
-                            "ground yourself before or after something meaningful"
-                        ].map((item, i) => (
+                        {copy('clarity.howto.list').split('\n').filter(Boolean).map((item, i) => (
                             <li key={i} className="flex items-center gap-3 text-[#5E6A65] text-[16px]">
                                 <span className="text-[#3F5D4D] font-bold text-[18px] leading-none mt-[-2px]">✓</span>
                                 <span>{item}</span>
@@ -136,10 +138,10 @@ const ClarityCardsPage = () => {
 
                     <div className="space-y-4 text-[#5E6A65] text-[16px] leading-[1.7]">
                         <p>
-                            Use them <span className="italic underline decoration-[#D6C7B8] underline-offset-4">in whatever way</span> fits your life right now.
+                            {emphasise(copy('clarity.howto.closing1'), 'italic underline decoration-[#D6C7B8] underline-offset-4')}
                         </p>
                         <p>
-                            That's it. No rules. No pressure.
+                            {copy('clarity.howto.closing2')}
                         </p>
                     </div>
                 </div>
@@ -176,7 +178,7 @@ const ClarityCardsPage = () => {
                                         {card.description}
                                     </p>
                                     <div className="mt-6 flex items-center gap-2 text-[#8F6A3D] text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        <span className="font-serif italic text-[#8F6A3D] font-medium">View Card</span>
+                                        <span className="font-serif italic text-[#8F6A3D] font-medium">{copy('clarity.grid.view_card')}</span>
                                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                         </svg>
@@ -202,16 +204,15 @@ const ClarityCardsPage = () => {
 
                 <div className="relative z-10 max-w-[600px] mx-auto text-center">
                     <h2 className="font-serif font-bold text-[28px] md:text-[32px] text-[#1F2422] mb-8">
-                        Use them your way
+                        {copy('clarity.closing.title')}
                     </h2>
 
                     <div className="space-y-6 text-[#5E6A65] text-[16px] leading-[1.7]">
-                        <p>
-                            There's no system to follow and no pressure to use them daily.<br />
-                            These cards are here for the moments you need them.
+                        <p className="whitespace-pre-line">
+                            {copy('clarity.closing.body1')}
                         </p>
                         <p>
-                            Come back whenever you want to go deeper with a pen and paper.
+                            {copy('clarity.closing.body2')}
                         </p>
                     </div>
                 </div>

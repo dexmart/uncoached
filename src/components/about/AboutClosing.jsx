@@ -24,7 +24,7 @@ const AboutClosing = () => {
                         <p>
                             {copy('about.closing.body1')}
                         </p>
-                        <p className="font-medium text-white">There is no magic pill here.</p>
+                        <p className="font-medium text-white">{copy('about.closing.no_pill')}</p>
                         <p>
                             {copy('about.closing.body2')}
                         </p>
@@ -50,7 +50,7 @@ const AboutClosing = () => {
                             <span className="text-golden-light text-xl font-bold flex-shrink-0">✓</span>
                             <span>{copy('about.closing.invite3')}</span>
                         </p>
-                        <p className="text-2xl font-display text-golden-light mt-8">Uncoached is here.</p>
+                        <p className="text-2xl font-display text-golden-light mt-8">{copy('about.closing.signoff')}</p>
                     </div>
 
                     <div className="mt-8">
