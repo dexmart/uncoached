@@ -34,22 +34,12 @@ const AboutHero = () => {
                             {copy('about.hero.intro')}
                         </p>
                         <ul className="grid grid-cols-2 gap-x-8 gap-y-2 justify-center max-w-md mx-auto text-sm md:text-base">
-                            <li className="flex items-center gap-2">
-                                <span className="text-golden-light text-xl font-bold">✓</span>
-                                <span>The therapy.</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="text-golden-light text-xl font-bold">✓</span>
-                                <span>The books.</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="text-golden-light text-xl font-bold">✓</span>
-                                <span>The courses.</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="text-golden-light text-xl font-bold">✓</span>
-                                <span>The podcasts.</span>
-                            </li>
+                            {copy('about.hero.checklist').split('\n').filter(Boolean).map((item, i) => (
+                                <li key={i} className="flex items-center gap-2">
+                                    <span className="text-golden-light text-xl font-bold">✓</span>
+                                    <span>{item}</span>
+                                </li>
+                            ))}
                         </ul>
                         <p className="font-medium text-lg md:text-xl">
                             {copy('about.hero.closing')}

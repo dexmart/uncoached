@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import FieldChat from '../../components/FieldChat';
+import { useCopy } from '../../context/SiteCopyContext';
 
 // Field runs through our own chat box (see components/FieldChat.jsx) so the
 // conversation is never stored in the ChatBase dashboard or on our servers.
 
 const FieldPage = () => {
+    const copy = useCopy();
     return (
         <div className="min-h-screen relative">
             {/* Background Image */}
@@ -28,7 +30,7 @@ const FieldPage = () => {
                         <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                         </svg>
-                        <span className="text-sm font-medium tracking-wide">Back to Portal</span>
+                        <span className="text-sm font-medium tracking-wide">{copy('fieldpage.header.back')}</span>
                     </Link>
 
                     <div className="flex items-center gap-2">
@@ -37,7 +39,7 @@ const FieldPage = () => {
                             alt="Field"
                             className="w-8 h-8"
                         />
-                        <span className="text-bone font-display text-lg">Field</span>
+                        <span className="text-bone font-display text-lg">{copy('fieldpage.header.name')}</span>
                     </div>
 
                     <div className="w-10 sm:w-24" aria-hidden="true" />
@@ -46,10 +48,10 @@ const FieldPage = () => {
                 {/* Intro */}
                 <div className="text-center px-6 pt-4 pb-6">
                     <h1 className="font-display text-3xl md:text-4xl text-bone mb-2 drop-shadow">
-                        You're here. Take your time.
+                        {copy('fieldpage.intro.title')}
                     </h1>
                     <p className="text-bone/80 text-sm md:text-base">
-                        Field is listening. There's no right way to start.
+                        {copy('fieldpage.intro.subtitle')}
                     </p>
                 </div>
 
@@ -59,11 +61,10 @@ const FieldPage = () => {
                         <FieldChat />
                     </div>
                     <p className="text-bone/70 text-xs text-center mt-4">
-                        You can come back whenever you're ready.
+                        {copy('fieldpage.chat.come_back')}
                     </p>
                     <p className="text-bone/60 text-xs text-center italic mt-2">
-                        Field is an AI-powered companion designed to support self-led reflection, not
-                        replace human care.
+                        {copy('fieldpage.chat.disclaimer')}
                     </p>
                 </div>
             </div>

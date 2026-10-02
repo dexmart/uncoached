@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useCopy } from '../../context/SiteCopyContext';
 
 const AudioBreathsPage = () => {
+    const copy = useCopy();
     const [breathFamilies, setBreathFamilies] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -66,7 +68,7 @@ const AudioBreathsPage = () => {
                 <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                 </svg>
-                <span className="text-sm font-medium tracking-wide">Back to Portal</span>
+                <span className="text-sm font-medium tracking-wide">{copy('breaths.back')}</span>
             </Link>
 
             {/* Hero Section */}
@@ -86,26 +88,22 @@ const AudioBreathsPage = () => {
                 <div className="relative z-10 w-full max-w-md mx-auto px-6 text-center md:max-w-lg md:ml-[20%] lg:ml-[25%]">
                     {/* Brand Mark */}
                     <p className="text-text-dark/70 text-xs tracking-[0.3em] uppercase mb-6 font-medium">
-                        uncoached
+                        {copy('breaths.hero.eyebrow')}
                     </p>
 
                     {/* Main Headline */}
                     <h1 className="font-display text-[2.75rem] sm:text-5xl md:text-6xl text-text-dark mb-5 leading-[1.15]">
-                        Audio Breaths
+                        {copy('breaths.hero.title')}
                     </h1>
 
                     {/* Subheadline */}
-                    <p className="text-text-dark text-base md:text-lg leading-relaxed mb-3">
-                        Tiny, guided pauses to help your body settle,
-                        <br />
-                        reset, or gently shift state.
+                    <p className="text-text-dark text-base md:text-lg leading-relaxed mb-3 whitespace-pre-line">
+                        {copy('breaths.hero.subtitle')}
                     </p>
 
                     {/* Supporting Text */}
-                    <p className="text-text-dark/70 text-sm mb-10 italic">
-                        Designed for real life. About five minutes each.
-                        <br />
-                        No fixing required.
+                    <p className="text-text-dark/70 text-sm mb-10 italic whitespace-pre-line">
+                        {copy('breaths.hero.supporting')}
                     </p>
 
                     {/* CTA Button - Prominent */}
@@ -113,12 +111,12 @@ const AudioBreathsPage = () => {
                         onClick={scrollToFamilies}
                         className="px-8 py-3.5 bg-white border-2 border-text-dark/40 text-text-dark font-medium rounded-full shadow-md hover:shadow-lg hover:bg-bone hover:border-text-dark/60 transition-all duration-300 mb-5"
                     >
-                        Browse Audio Breaths
+                        {copy('breaths.hero.button')}
                     </button>
 
                     {/* Scroll Hint */}
                     <p className="text-text-dark/50 text-sm">
-                        Or scroll to explore
+                        {copy('breaths.hero.scroll_hint')}
                     </p>
                 </div>
 
@@ -145,7 +143,7 @@ const AudioBreathsPage = () => {
                     {/* Section Header with decorative line */}
                     <div className="text-center mb-12">
                         <p className="text-text-dark/60 text-xs tracking-[0.4em] uppercase mb-4">
-                            Why This Works
+                            {copy('breaths.why.eyebrow')}
                         </p>
                         <div className="flex items-center justify-center gap-2">
                             <div className="w-12 h-px bg-text-dark/20"></div>
@@ -159,26 +157,21 @@ const AudioBreathsPage = () => {
                         {/* Left Card - Why these tiny breaths matter */}
                         <div className="bg-bone/60 backdrop-blur-md rounded-2xl p-8 border border-white/30 shadow-sm h-full flex flex-col justify-center">
                             <h3 className="font-display text-2xl md:text-3xl text-text-dark mb-8 text-center">
-                                Why these tiny breaths matter
+                                {copy('breaths.why.card1_title')}
                             </h3>
                             <div className="space-y-6 text-text-dark/80 text-center text-base leading-relaxed">
-                                <p>
-                                    Your breath is one of the fastest ways to communicate safety to your nervous system.
-                                </p>
-                                <p>
-                                    A slow, steady exhale tells your body it's safe enough to soften.
-                                </p>
-                                <p>
-                                    A gentle inhale brings just enough energy online to stay present.
-                                </p>
-
+                                {copy('breaths.why.card1_body').split('\n').filter(Boolean).map((para, index) => (
+                                    <p key={index}>
+                                        {para}
+                                    </p>
+                                ))}
                             </div>
                         </div>
 
                         {/* Right Card - What these breaths can do */}
                         <div className="bg-bone/60 backdrop-blur-md rounded-2xl p-8 border border-white/30 shadow-sm h-full flex flex-col justify-center">
                             <h3 className="font-display text-2xl md:text-3xl text-text-dark mb-8 text-center">
-                                What these breaths can do
+                                {copy('breaths.why.card2_title')}
                             </h3>
                             <ul className="space-y-6">
                                 <li className="flex items-center gap-5">
@@ -188,7 +181,7 @@ const AudioBreathsPage = () => {
                                             <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                                         </svg>
                                     </div>
-                                    <span className="text-text-dark/80 text-base md:text-lg">Slows a racing heart and breath</span>
+                                    <span className="text-text-dark/80 text-base md:text-lg">{copy('breaths.why.card2_item1')}</span>
                                 </li>
                                 <li className="flex items-center gap-5">
                                     <div className="text-sage opacity-80 shrink-0">
@@ -199,7 +192,7 @@ const AudioBreathsPage = () => {
                                             <path d="M19 11h2m-1 -1v2" />
                                         </svg>
                                     </div>
-                                    <span className="text-text-dark/80 text-base md:text-lg">Signals safety through the vagus nerve</span>
+                                    <span className="text-text-dark/80 text-base md:text-lg">{copy('breaths.why.card2_item2')}</span>
                                 </li>
                                 <li className="flex items-center gap-5">
                                     <div className="text-sage opacity-80 shrink-0">
@@ -214,7 +207,7 @@ const AudioBreathsPage = () => {
                                             <path d="M6 13a6 6 0 0 1 12 0" />
                                         </svg>
                                     </div>
-                                    <span className="text-text-dark/80 text-base md:text-lg">Improves emotional regulation and focus</span>
+                                    <span className="text-text-dark/80 text-base md:text-lg">{copy('breaths.why.card2_item3')}</span>
                                 </li>
                                 <li className="flex items-center gap-5">
                                     <div className="text-sage opacity-80 shrink-0">
@@ -226,7 +219,7 @@ const AudioBreathsPage = () => {
                                             <path d="M14.1 6c-.7 2.4-.9 4.9.4 6.8" />
                                         </svg>
                                     </div>
-                                    <span className="text-text-dark/80 text-base md:text-lg">Helps you respond instead of react</span>
+                                    <span className="text-text-dark/80 text-base md:text-lg">{copy('breaths.why.card2_item4')}</span>
                                 </li>
                             </ul>
                         </div>
@@ -234,10 +227,8 @@ const AudioBreathsPage = () => {
 
                     {/* Closing Text */}
                     <div className="text-center mt-10">
-                        <p className="text-text-dark italic text-lg opacity-90 leading-relaxed">
-                            When stress hits, your body often moves first.
-                            <br />
-                            These breaths meet you there.
+                        <p className="text-text-dark italic text-lg opacity-90 leading-relaxed whitespace-pre-line">
+                            {copy('breaths.why.closing')}
                         </p>
                     </div>
                 </div>
@@ -257,24 +248,18 @@ const AudioBreathsPage = () => {
                 <div className="relative z-10 max-w-lg md:mr-[5%] lg:mr-[10%] ml-auto">
                     {/* Headline */}
                     <h2 className="font-display text-3xl md:text-4xl text-text-dark mb-4">
-                        Built for real life moments
+                        {copy('breaths.real.title')}
                     </h2>
 
                     {/* Subheadline */}
                     <p className="text-text-dark/70 text-base md:text-lg mb-10">
-                        Not meditations. Just small resets for when you need one.
+                        {copy('breaths.real.subtitle')}
                     </p>
 
                     {/* Use Cases Card */}
                     <div className="bg-bone/60 backdrop-blur-md rounded-2xl p-8 border border-white/30 shadow-sm mb-10">
                         <ul className="space-y-4">
-                            {[
-                                'Before a difficult or charged conversation',
-                                'Between meetings, tasks, or mental gear shifts',
-                                'When anxiety spikes out of nowhere',
-                                'In bed when your mind won\'t settle',
-                                'When you want to strengthen a good or joyful feeling'
-                            ].map((useCase, index) => (
+                            {copy('breaths.real.list').split('\n').filter(Boolean).map((useCase, index) => (
                                 <li key={index} className="flex items-start gap-4">
                                     <span className="text-sage text-lg mt-0.5 opacity-80">✓</span>
                                     <span className="text-text-dark/90 leading-relaxed text-sm md:text-base">{useCase}</span>
@@ -285,7 +270,7 @@ const AudioBreathsPage = () => {
 
                     {/* Closing Line */}
                     <p className="text-text-dark italic text-lg opacity-90">
-                        Press play and let your body find its way back.
+                        {copy('breaths.real.closing')}
                     </p>
                 </div>
             </section>
@@ -306,9 +291,9 @@ const AudioBreathsPage = () => {
                     {/* Header - Centered above card */}
                     <div className="text-center mb-8">
                         <h2 className="font-display text-3xl md:text-4xl text-text-dark mb-2">
-                            How to use Audio Breaths
+                            {copy('breaths.how.title')}
                         </h2>
-                        <p className="text-text-dark/70 text-base">Three simple steps</p>
+                        <p className="text-text-dark/70 text-base">{copy('breaths.how.subtitle')}</p>
                     </div>
 
                     {/* Card Container */}
@@ -320,10 +305,10 @@ const AudioBreathsPage = () => {
                                 <span className="font-display text-2xl text-text-dark/60 mt-1">1.</span>
                                 <div>
                                     <h3 className="font-medium text-text-dark text-lg mb-1">
-                                        Choose what matches your current state
+                                        {copy('breaths.how.step1_title')}
                                     </h3>
                                     <p className="text-text-dark/60 text-sm leading-relaxed">
-                                        Not what you think you should feel. What's actually here.
+                                        {copy('breaths.how.step1_body')}
                                     </p>
                                 </div>
                             </div>
@@ -332,10 +317,10 @@ const AudioBreathsPage = () => {
                                 <span className="font-display text-2xl text-text-dark/60 mt-1">2.</span>
                                 <div>
                                     <h3 className="font-medium text-text-dark text-lg mb-1">
-                                        Press play and follow the voice
+                                        {copy('breaths.how.step2_title')}
                                     </h3>
                                     <p className="text-text-dark/60 text-sm leading-relaxed">
-                                        Let the pacing guide you. Your body will take it from there.
+                                        {copy('breaths.how.step2_body')}
                                     </p>
                                 </div>
                             </div>
@@ -344,10 +329,10 @@ const AudioBreathsPage = () => {
                                 <span className="font-display text-2xl text-text-dark/60 mt-1">3.</span>
                                 <div>
                                     <h3 className="font-medium text-text-dark text-lg mb-1">
-                                        Stop anytime
+                                        {copy('breaths.how.step3_title')}
                                     </h3>
                                     <p className="text-text-dark/60 text-sm leading-relaxed">
-                                        There's no right way to do this. No finishing line.
+                                        {copy('breaths.how.step3_body')}
                                     </p>
                                 </div>
                             </div>
@@ -358,17 +343,16 @@ const AudioBreathsPage = () => {
 
                         {/* Safety Note */}
                         <p className="text-text-dark/70 text-sm mb-8 leading-relaxed">
-                            Headphones are optional. Keep your eyes open if needed,
-                            especially if you're driving or on the move.
+                            {copy('breaths.how.note')}
                         </p>
 
                         {/* Closing - Centered */}
                         <div className="text-center">
                             <p className="font-display text-lg text-text-dark italic mb-1">
-                                These won't solve everything.
+                                {copy('breaths.how.closing1')}
                             </p>
                             <p className="text-text-dark/80 italic text-sm">
-                                They'll help you settle enough to choose your next step.
+                                {copy('breaths.how.closing2')}
                             </p>
                         </div>
                     </div>
@@ -381,10 +365,10 @@ const AudioBreathsPage = () => {
                     {/* Section Header */}
                     <div className="text-center mb-16">
                         <h2 className="font-display text-4xl md:text-5xl text-text-dark mb-4 italic">
-                            Find the breath your body is asking for
+                            {copy('breaths.families.title')}
                         </h2>
                         <p className="text-text-muted text-lg">
-                            Four families of short Audio Breaths, each designed for a different state.
+                            {copy('breaths.families.subtitle')}
                         </p>
                     </div>
 
@@ -428,7 +412,7 @@ const AudioBreathsPage = () => {
                                 {/* Use When Footer */}
                                 <div className="px-6 py-4 bg-clay/5 border-t border-clay/10 mt-auto flex items-center justify-between gap-4 group/footer cursor-default">
                                     <p className="text-xs text-text-dark/70 text-left leading-relaxed">
-                                        <span className="font-semibold text-text-dark block mb-0.5">Use when:</span>
+                                        <span className="font-semibold text-text-dark block mb-0.5">{copy('breaths.families.use_when')}</span>
                                         {family.useWhen}
                                     </p>
                                     <span className="text-sage/70 group-hover/footer:text-sage transition-colors">
@@ -447,7 +431,7 @@ const AudioBreathsPage = () => {
                             to="/dashboard"
                             className="inline-flex items-center gap-2 px-8 py-3 bg-sage text-bone rounded-full hover:bg-sage/90 transition-colors"
                         >
-                            Return to the membership space
+                            {copy('breaths.families.button')}
                         </Link>
                     </div>
                 </div>

@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useCopy } from '../../context/SiteCopyContext';
 
 const VoiceNotesPage = () => {
+    const copy = useCopy();
     const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -122,27 +124,26 @@ const VoiceNotesPage = () => {
                     <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span className="text-sm font-medium tracking-wide">Back to Portal</span>
+                    <span className="text-sm font-medium tracking-wide">{copy('voicenotes.back')}</span>
                 </Link>
 
                 {/* SECTION 1: HERO AREA */}
                 <section className="px-6 pt-[120px] pb-[60px] md:pt-[160px] md:pb-[80px] flex items-center justify-center">
                     <div className="w-full max-w-[700px] mx-auto text-center animate-fade-in-up bg-[#F4F1EC]/85 backdrop-blur-md p-8 md:p-12 rounded-[32px] shadow-sm border border-white/40">
                         <h1 className="font-serif text-[40px] md:text-[48px] text-[#1F2422] font-medium mb-6">
-                            Voice Notes
+                            {copy('voicenotes.hero.title')}
                         </h1>
 
                         <h2 className="text-[18px] md:text-[20px] text-[#5E6A65] leading-[1.6] mb-8 font-sans">
-                            Remember who you are. Personal messages for when you need to hear it.
+                            {copy('voicenotes.hero.subtitle')}
                         </h2>
 
                         <p className="text-[16px] text-[#5E6A65] leading-[1.7] max-w-[680px] mx-auto mb-8">
-                            These are like voice memos from a friend — short, personal recordings for specific moments.
-                            Listen when you need a reminder, a perspective shift, or just to feel less alone.
+                            {copy('voicenotes.hero.body')}
                         </p>
 
                         <p className="text-[16px] md:text-[17px] text-[#5E6A65] italic leading-relaxed">
-                            Press play and let yourself be held for a moment.
+                            {copy('voicenotes.hero.note')}
                         </p>
                     </div>
                 </section>
