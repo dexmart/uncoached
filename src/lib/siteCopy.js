@@ -86,16 +86,20 @@ export const SITE_COPY_FIELDS = [
     { key: 'home.subscribe.cta', group: 'Home — Newsletter', label: 'Button', text: 'Stay Connected' },
     { key: 'home.subscribe.success', group: 'Home — Newsletter', label: 'Thank-you message', text: "You're in. Thank you for staying connected. 🌿" },
 
+
     // ── About ───────────────────────────────────────────────────────────
     { key: 'about.hero.title', group: 'About — Hero', label: 'Headline (line 1)', text: "It's not about what you know." },
     { key: 'about.hero.title_emphasis', group: 'About — Hero', label: 'Headline (italic line 2)', text: "It's about how you live." },
     { key: 'about.hero.intro', group: 'About — Hero', label: 'Intro line', text: 'Uncoached is for people who have genuinely tried:' },
+    { key: 'about.hero.checklist', group: 'About — Hero', label: 'Checklist (things people have tried)', multiline: true, list: true, rows: 4, help: 'One item per line.', text: 'The therapy.\nThe books.\nThe courses.\nThe podcasts.' },
     { key: 'about.hero.closing', group: 'About — Hero', label: 'Closing line', multiline: true, text: 'And yet, in the middle of real life, it often feels hard to actually live them.' },
     { key: 'about.hero.cta', group: 'About — Hero', label: 'Button', text: 'Start Your Journey' },
 
     { key: 'about.gap.title', group: 'About — The Gap', label: 'Section heading', text: 'The Gap No One Talks About' },
     { key: 'about.gap.intro', group: 'About — The Gap', label: 'Intro', multiline: true, text: 'Most personal growth focuses on understanding. But understanding alone does not create change.' },
     { key: 'about.gap.emphasis', group: 'About — The Gap', label: 'Emphasised line', text: 'Change happens in ordinary moments.' },
+    { key: 'about.gap.moments', group: 'About — The Gap', label: 'Moment cards', multiline: true, list: true, rows: 4, help: 'One card per line.', text: "When emotions rise unexpectedly.\nWhen old patterns return.\nWhen something feels good and you want to stay with it.\nWhen something feels heavy and you don't want it to derail your life." },
+    { key: 'about.gap.support', group: 'About — The Gap', label: 'Boxed text', multiline: true, rows: 3, help: 'Anything between *stars* is emphasised.', text: "Without support in those moments, even the deepest insights fade.\n*Not because you're failing. But because integration was never built into the process.*" },
     { key: 'about.gap.closing', group: 'About — The Gap', label: 'Closing line', multiline: true, text: 'You don\'t need more advice, you need something that helps you come back to yourself in the moment.' },
 
     { key: 'about.why.title', group: 'About — Why Uncoached Exists', label: 'Section heading', text: 'Why Uncoached Exists' },
@@ -112,19 +116,24 @@ export const SITE_COPY_FIELDS = [
     { key: 'about.quote', group: 'About — Core Message', label: 'Quote', multiline: true, text: 'Uncoached exists to turn insight into lived experience by helping people build self-trust, repetition, and support in real time.' },
 
     { key: 'about.philosophy.title', group: 'About — Philosophy', label: 'Section heading', text: 'A Philosophy of Self-Leadership' },
+    { key: 'about.philosophy.belief', group: 'About — Philosophy', label: 'Opening paragraph', multiline: true, help: 'Anything between *stars* is emphasised.', text: 'Uncoached is built on the belief that *you are the only one who truly understands your life*, your timing, and your inner landscape.' },
+    { key: 'about.philosophy.lead', group: 'About — Philosophy', label: 'Line before the emphasised line', text: 'The work is not about becoming someone else.' },
     { key: 'about.philosophy.emphasis', group: 'About — Philosophy', label: 'Emphasised line', text: 'It is about coming home to yourself.' },
     { key: 'about.philosophy.intro', group: 'About — Philosophy', label: 'Lead-in line', multiline: true, text: 'When you learn how to support yourself in both the messy moments and the expansive ones:' },
     { key: 'about.philosophy.point1', group: 'About — Philosophy', label: 'Point 1', text: 'You stop outsourcing your authority.' },
-    { key: 'about.philosophy.point2', group: 'About — Philosophy', label: 'Point 2', multiline: true, text: 'You start trusting your own capacity to move through life.' },
+    { key: 'about.philosophy.point_middle', group: 'About — Philosophy', label: 'Point 2', text: 'You stop waiting to be fixed.' },
+    { key: 'about.philosophy.point2', group: 'About — Philosophy', label: 'Point 3', multiline: true, text: 'You start trusting your own capacity to move through life.' },
 
     { key: 'about.closing.title1', group: 'About — Closing', label: 'Heading 1', text: 'This Is Not For Everyone' },
     { key: 'about.closing.body1', group: 'About — Closing', label: 'Paragraph 1', multiline: true, text: 'Uncoached is not for people looking for quick fixes or answers outside themselves.' },
+    { key: 'about.closing.no_pill', group: 'About — Closing', label: 'Bold line after Paragraph 1', text: 'There is no magic pill here.' },
     { key: 'about.closing.body2', group: 'About — Closing', label: 'Paragraph 2', multiline: true, text: 'It is for those who are willing to practice, stay present, and integrate what they already know into daily life until it becomes automatic.' },
     { key: 'about.closing.body3', group: 'About — Closing', label: 'Paragraph 3', multiline: true, text: 'It is for people who are ready to live their growth, not just understand it.' },
     { key: 'about.closing.title2', group: 'About — Closing', label: 'Heading 2', text: 'A Quiet Invitation' },
     { key: 'about.closing.invite1', group: 'About — Closing', label: 'Invitation 1', text: 'If you feel tired of consuming and ready to embody.' },
     { key: 'about.closing.invite2', group: 'About — Closing', label: 'Invitation 2', multiline: true, text: 'If you want support that meets you in real life, not just in theory.' },
     { key: 'about.closing.invite3', group: 'About — Closing', label: 'Invitation 3', text: 'If you are ready to become your own most trusted guide.' },
+    { key: 'about.closing.signoff', group: 'About — Closing', label: 'Gold sign-off line', text: 'Uncoached is here.' },
     { key: 'about.closing.cta', group: 'About — Closing', label: 'Button', text: 'Start Your Journey' },
 
     // ── Legal pages — whole documents, so sections can be added freely ───
@@ -497,6 +506,173 @@ For privacy concerns, email us at hello@uncoached.space.`
     { key: 'member.card7_title', group: 'Members Area — Dashboard Cards', label: 'Card 7 title', text: "Voice Notes" },
     { key: 'member.card7_body', group: 'Members Area — Dashboard Cards', label: 'Card 7 text', multiline: true, text: "Remember who you are." },
 
+
+    // ── Guided Shifts Page: Hero ──
+    { key: 'shifts.back_link', group: 'Guided Shifts Page — Hero', label: 'Back link (top left)', text: "Back to Portal" },
+    { key: 'shifts.hero.title', group: 'Guided Shifts Page — Hero', label: 'Headline', text: "Shift your state." },
+    { key: 'shifts.hero.subtitle', group: 'Guided Shifts Page — Hero', label: 'Subheadline', text: "In minutes. In real life." },
+    { key: 'shifts.hero.description', group: 'Guided Shifts Page — Hero', label: 'Description', multiline: true, text: "Guided Shifts are short, precise audio experiences that help your nervous system settle, reset, or reorient when life feels loud, heavy, fast, or stuck." },
+    { key: 'shifts.hero.checklist', group: 'Guided Shifts Page — Hero', label: 'Checklist', multiline: true, list: true, rows: 3, help: 'One item per line.', text: "No long meditations.\nNo breath-counting.\nNo fixing yourself." },
+    { key: 'shifts.hero.supporting', group: 'Guided Shifts Page — Hero', label: 'Supporting text', multiline: true, text: "Just guided internal shifts you can use\nwhen it actually matters." },
+    { key: 'shifts.hero.cta', group: 'Guided Shifts Page — Hero', label: 'Button', text: "Browse the Guided Shifts" },
+    // ── Guided Shifts Page: Why This Works ──
+    { key: 'shifts.why.title', group: 'Guided Shifts Page — Why This Works', label: 'Section heading', text: "Why This Works" },
+    { key: 'shifts.why.left_title', group: 'Guided Shifts Page — Why This Works', label: 'Left card heading', text: "Why these tiny shifts matter" },
+    { key: 'shifts.why.left_p1', group: 'Guided Shifts Page — Why This Works', label: 'Left card paragraph 1', multiline: true, text: "Most tools talk to your mind.\nGuided Shifts work with your body." },
+    { key: 'shifts.why.left_p2', group: 'Guided Shifts Page — Why This Works', label: 'Left card paragraph 2', multiline: true, text: "They use sensation, attention, and subtle nervous system cues to help you move out of urgency, shutdown, or overwhelm and back into steadiness." },
+    { key: 'shifts.why.left_list', group: 'Guided Shifts Page — Why This Works', label: 'Left card checklist', multiline: true, list: true, rows: 3, help: 'One item per line.', text: "The nervous system responds faster than thought\nSmall internal shifts create immediate relief\nRegulation comes from safety, not effort" },
+    { key: 'shifts.why.left_closing', group: 'Guided Shifts Page — Why This Works', label: 'Left card closing line', multiline: true, text: "This isn't about going deeper.\nIt's about coming back online." },
+    { key: 'shifts.why.right_title', group: 'Guided Shifts Page — Why This Works', label: 'Right card heading', text: "What these shifts can do" },
+    { key: 'shifts.why.dysregulated_intro', group: 'Guided Shifts Page — Why This Works', label: 'Right card first list intro', text: "When your state is dysregulated:" },
+    { key: 'shifts.why.dysregulated_list', group: 'Guided Shifts Page — Why This Works', label: 'Right card first list (crosses)', multiline: true, list: true, rows: 3, help: 'One item per line.', text: "thinking gets narrow\nemotions feel bigger than they are\ndecisions feel urgent or impossible" },
+    { key: 'shifts.why.regulated_intro', group: 'Guided Shifts Page — Why This Works', label: 'Right card second list intro', text: "A regulated state restores:" },
+    { key: 'shifts.why.regulated_list', group: 'Guided Shifts Page — Why This Works', label: 'Right card second list (ticks)', multiline: true, list: true, rows: 3, help: 'One item per line.', text: "perspective\nchoice\naccess to your inner signals" },
+    { key: 'shifts.why.right_closing', group: 'Guided Shifts Page — Why This Works', label: 'Right card closing line', multiline: true, text: "These shifts help you meet the moment you're in without getting swallowed by it." },
+    // ── Guided Shifts Page: Built For Real Life ──
+    { key: 'shifts.real_life.title', group: 'Guided Shifts Page — Built For Real Life', label: 'Heading', text: "Built for real life moments" },
+    { key: 'shifts.real_life.intro', group: 'Guided Shifts Page — Built For Real Life', label: 'List intro', text: "Use them when:" },
+    { key: 'shifts.real_life.list', group: 'Guided Shifts Page — Built For Real Life', label: 'Checklist', multiline: true, list: true, rows: 5, help: 'One item per line.', text: "you're spiralling before a conversation\nyou can't shut your mind off at night\ntherapy stirred something up\ngrief, pressure, or fear hits suddenly\nyou need to move forward but feel stuck" },
+    { key: 'shifts.real_life.highlight', group: 'Guided Shifts Page — Built For Real Life', label: 'Highlighted line', text: "Most are under 5 minutes." },
+    { key: 'shifts.real_life.body', group: 'Guided Shifts Page — Built For Real Life', label: 'Paragraph', multiline: true, text: "With practice, these learned techniques can land in your body in under 60 seconds." },
+    { key: 'shifts.real_life.closing', group: 'Guided Shifts Page — Built For Real Life', label: 'Closing line', text: "No setup required." },
+    // ── Guided Shifts Page: How To Use Them ──
+    { key: 'shifts.how.title', group: 'Guided Shifts Page — How To Use Them', label: 'Heading', text: "How to Use Them" },
+    { key: 'shifts.how.steps', group: 'Guided Shifts Page — How To Use Them', label: 'Steps', multiline: true, list: true, rows: 3, help: 'One item per line.', text: "Choose the series that matches what you're experiencing\nPress play\nLet the guidance do the work" },
+    { key: 'shifts.how.body', group: 'Guided Shifts Page — How To Use Them', label: 'Paragraph', multiline: true, text: "Use them seated, standing, in bed, between meetings, or in the car before you go inside." },
+    { key: 'shifts.how.closing', group: 'Guided Shifts Page — How To Use Them', label: 'Closing line', text: "Repeat as needed. There is no right way." },
+    // ── Guided Shifts Page: Shift Families ──
+    { key: 'shifts.families.title', group: 'Guided Shifts Page — Shift Families', label: 'Heading', text: "Guided Shift Families" },
+    { key: 'shifts.families.intro', group: 'Guided Shifts Page — Shift Families', label: 'Intro', multiline: true, text: "Small, precise resets for your nervous system, built for real moments in real life." },
+    { key: 'shifts.families.note', group: 'Guided Shifts Page — Shift Families', label: 'Small note under intro', text: "More coming soon." },
+    { key: 'shifts.families.soon_label', group: 'Guided Shifts Page — Shift Families', label: 'Tag after shifts not yet available', text: "(soon)" },
+
+    // ── Audio Breaths Page · Hero ──
+    { key: 'breaths.back', group: 'Audio Breaths Page — Hero', label: 'Back link (top left)', help: 'The arrow is added automatically.', text: "Back to Portal" },
+    { key: 'breaths.hero.eyebrow', group: 'Audio Breaths Page — Hero', label: 'Small word above the headline', text: "uncoached" },
+    { key: 'breaths.hero.title', group: 'Audio Breaths Page — Hero', label: 'Headline', text: "Audio Breaths" },
+    { key: 'breaths.hero.subtitle', group: 'Audio Breaths Page — Hero', label: 'Paragraph under the headline', multiline: true, rows: 2, help: 'Each new line starts a new line on the page.', text: "Tiny, guided pauses to help your body settle,\nreset, or gently shift state." },
+    { key: 'breaths.hero.supporting', group: 'Audio Breaths Page — Hero', label: 'Small italic line', multiline: true, rows: 2, help: 'Each new line starts a new line on the page.', text: "Designed for real life. About five minutes each.\nNo fixing required." },
+    { key: 'breaths.hero.button', group: 'Audio Breaths Page — Hero', label: 'Button', text: "Browse Audio Breaths" },
+    { key: 'breaths.hero.scroll_hint', group: 'Audio Breaths Page — Hero', label: 'Line under the button', text: "Or scroll to explore" },
+
+    // ── Audio Breaths Page · Why This Works ──
+    { key: 'breaths.why.eyebrow', group: 'Audio Breaths Page — Why This Works', label: 'Section heading', text: "Why This Works" },
+    { key: 'breaths.why.card1_title', group: 'Audio Breaths Page — Why This Works', label: 'Left card title', text: "Why these tiny breaths matter" },
+    { key: 'breaths.why.card1_body', group: 'Audio Breaths Page — Why This Works', label: 'Left card paragraphs', multiline: true, list: true, rows: 3, help: 'One paragraph per line.', text: "Your breath is one of the fastest ways to communicate safety to your nervous system.\nA slow, steady exhale tells your body it's safe enough to soften.\nA gentle inhale brings just enough energy online to stay present." },
+    { key: 'breaths.why.card2_title', group: 'Audio Breaths Page — Why This Works', label: 'Right card title', text: "What these breaths can do" },
+    { key: 'breaths.why.card2_item1', group: 'Audio Breaths Page — Why This Works', label: 'Right card point 1 (heart icon)', text: "Slows a racing heart and breath" },
+    { key: 'breaths.why.card2_item2', group: 'Audio Breaths Page — Why This Works', label: 'Right card point 2 (moon icon)', text: "Signals safety through the vagus nerve" },
+    { key: 'breaths.why.card2_item3', group: 'Audio Breaths Page — Why This Works', label: 'Right card point 3 (sun icon)', text: "Improves emotional regulation and focus" },
+    { key: 'breaths.why.card2_item4', group: 'Audio Breaths Page — Why This Works', label: 'Right card point 4 (plant icon)', text: "Helps you respond instead of react" },
+    { key: 'breaths.why.closing', group: 'Audio Breaths Page — Why This Works', label: 'Closing line', multiline: true, rows: 2, help: 'Each new line starts a new line on the page.', text: "When stress hits, your body often moves first.\nThese breaths meet you there." },
+
+    // ── Audio Breaths Page · Built For Real Life ──
+    { key: 'breaths.real.title', group: 'Audio Breaths Page — Built For Real Life', label: 'Headline', text: "Built for real life moments" },
+    { key: 'breaths.real.subtitle', group: 'Audio Breaths Page — Built For Real Life', label: 'Line under the headline', multiline: true, text: "Not meditations. Just small resets for when you need one." },
+    { key: 'breaths.real.list', group: 'Audio Breaths Page — Built For Real Life', label: 'Checklist', multiline: true, list: true, rows: 5, help: 'One item per line.', text: "Before a difficult or charged conversation\nBetween meetings, tasks, or mental gear shifts\nWhen anxiety spikes out of nowhere\nIn bed when your mind won't settle\nWhen you want to strengthen a good or joyful feeling" },
+    { key: 'breaths.real.closing', group: 'Audio Breaths Page — Built For Real Life', label: 'Closing line', multiline: true, text: "Press play and let your body find its way back." },
+
+    // ── Audio Breaths Page · How To Use ──
+    { key: 'breaths.how.title', group: 'Audio Breaths Page — How To Use', label: 'Headline', text: "How to use Audio Breaths" },
+    { key: 'breaths.how.subtitle', group: 'Audio Breaths Page — How To Use', label: 'Line under the headline', text: "Three simple steps" },
+    { key: 'breaths.how.step1_title', group: 'Audio Breaths Page — How To Use', label: 'Step 1 title', text: "Choose what matches your current state" },
+    { key: 'breaths.how.step1_body', group: 'Audio Breaths Page — How To Use', label: 'Step 1 text', multiline: true, text: "Not what you think you should feel. What's actually here." },
+    { key: 'breaths.how.step2_title', group: 'Audio Breaths Page — How To Use', label: 'Step 2 title', text: "Press play and follow the voice" },
+    { key: 'breaths.how.step2_body', group: 'Audio Breaths Page — How To Use', label: 'Step 2 text', multiline: true, text: "Let the pacing guide you. Your body will take it from there." },
+    { key: 'breaths.how.step3_title', group: 'Audio Breaths Page — How To Use', label: 'Step 3 title', text: "Stop anytime" },
+    { key: 'breaths.how.step3_body', group: 'Audio Breaths Page — How To Use', label: 'Step 3 text', multiline: true, text: "There's no right way to do this. No finishing line." },
+    { key: 'breaths.how.note', group: 'Audio Breaths Page — How To Use', label: 'Safety note', multiline: true, text: "Headphones are optional. Keep your eyes open if needed, especially if you're driving or on the move." },
+    { key: 'breaths.how.closing1', group: 'Audio Breaths Page — How To Use', label: 'Closing line 1', text: "These won't solve everything." },
+    { key: 'breaths.how.closing2', group: 'Audio Breaths Page — How To Use', label: 'Closing line 2', multiline: true, text: "They'll help you settle enough to choose your next step." },
+
+    // ── Audio Breaths Page · Find Your Breath ──
+    { key: 'breaths.families.title', group: 'Audio Breaths Page — Find Your Breath', label: 'Headline', text: "Find the breath your body is asking for" },
+    { key: 'breaths.families.subtitle', group: 'Audio Breaths Page — Find Your Breath', label: 'Line under the headline', multiline: true, text: "Four families of short Audio Breaths, each designed for a different state." },
+    { key: 'breaths.families.use_when', group: 'Audio Breaths Page — Find Your Breath', label: 'Label at the bottom of each family card', help: 'The text after it comes from each family in Audio Breaths.', text: "Use when:" },
+    { key: 'breaths.families.button', group: 'Audio Breaths Page — Find Your Breath', label: 'Button at the bottom', text: "Return to the membership space" },
+
+    // ── Clarity Cards Page · Hero ───────────────────────────────────────
+    { key: 'clarity.hero.back', group: 'Clarity Cards Page — Hero', label: 'Back link', help: 'The arrow is added automatically.', text: 'Back to Portal' },
+    { key: 'clarity.hero.title', group: 'Clarity Cards Page — Hero', label: 'Headline', text: 'Clarity Cards' },
+    { key: 'clarity.hero.body1', group: 'Clarity Cards Page — Hero', label: 'Paragraph 1', multiline: true, text: "Printable journaling cards designed to help you reflect, process, and notice patterns over time, or simply meet the moment you're in." },
+    { key: 'clarity.hero.body2', group: 'Clarity Cards Page — Hero', label: 'Paragraph 2', multiline: true, text: "Each card includes thoughtful prompts and simple activities you can respond to in your own way. Use them once, revisit them often, or add them to a journal to track what's shifting." },
+    { key: 'clarity.hero.body3', group: 'Clarity Cards Page — Hero', label: 'Paragraph 3', multiline: true, text: "There's no prescribed path. Just tools you can return to when it feels useful." },
+    { key: 'clarity.hero.cta', group: 'Clarity Cards Page — Hero', label: 'Button', text: 'Choose a Card' },
+
+    // ── Clarity Cards Page · How to Use ─────────────────────────────────
+    { key: 'clarity.howto.title', group: 'Clarity Cards Page — How to Use', label: 'Section heading', text: 'How to use the Clarity Cards' },
+    { key: 'clarity.howto.intro', group: 'Clarity Cards Page — How to Use', label: 'Intro paragraph', multiline: true, rows: 2, help: 'Each new line starts on its own line on wider screens.', text: "Some people print them and keep a small stack nearby.\nOthers add them to a journal or revisit the same card over time." },
+    { key: 'clarity.howto.list_intro', group: 'Clarity Cards Page — How to Use', label: 'Line above the list', text: 'You might use one to:' },
+    { key: 'clarity.howto.list', group: 'Clarity Cards Page — How to Use', label: 'Ticked list', multiline: true, list: true, rows: 4, help: 'One item per line.', text: "capture how you're feeling today\nnotice patterns across days or weeks\nwork through a moment that feels sticky\nground yourself before or after something meaningful" },
+    { key: 'clarity.howto.closing1', group: 'Clarity Cards Page — How to Use', label: 'Closing line 1', help: 'Anything between *stars* is emphasised.', text: 'Use them *in whatever way* fits your life right now.' },
+    { key: 'clarity.howto.closing2', group: 'Clarity Cards Page — How to Use', label: 'Closing line 2', text: "That's it. No rules. No pressure." },
+
+    // ── Clarity Cards Page · Card Grid ──────────────────────────────────
+    { key: 'clarity.grid.view_card', group: 'Clarity Cards Page — Card Grid', label: 'Card link (shown on hover)', help: 'The arrow is added automatically.', text: 'View Card' },
+
+    // ── Clarity Cards Page · Use Them Your Way ──────────────────────────
+    { key: 'clarity.closing.title', group: 'Clarity Cards Page — Use Them Your Way', label: 'Section heading', text: 'Use them your way' },
+    { key: 'clarity.closing.body1', group: 'Clarity Cards Page — Use Them Your Way', label: 'Paragraph 1', multiline: true, rows: 2, text: "There's no system to follow and no pressure to use them daily.\nThese cards are here for the moments you need them." },
+    { key: 'clarity.closing.body2', group: 'Clarity Cards Page — Use Them Your Way', label: 'Paragraph 2', multiline: true, text: 'Come back whenever you want to go deeper with a pen and paper.' },
+
+    // ── Field Page · Header ─────────────────────────────────────────────
+    { key: 'fieldpage.header.back', group: 'Field Page — Header', label: 'Back link', help: 'The arrow is added automatically.', text: 'Back to Portal' },
+    { key: 'fieldpage.header.name', group: 'Field Page — Header', label: 'Name next to the icon', text: 'Field' },
+
+    // ── Field Page · Intro ──────────────────────────────────────────────
+    { key: 'fieldpage.intro.title', group: 'Field Page — Intro', label: 'Headline', text: "You're here. Take your time." },
+    { key: 'fieldpage.intro.subtitle', group: 'Field Page — Intro', label: 'Line under the headline', text: "Field is listening. There's no right way to start." },
+
+    // ── Field Page · Below the Chat ─────────────────────────────────────
+    { key: 'fieldpage.chat.come_back', group: 'Field Page — Below the Chat', label: 'Line under the chat', text: "You can come back whenever you're ready." },
+    { key: 'fieldpage.chat.disclaimer', group: 'Field Page — Below the Chat', label: 'Small italic note', multiline: true, text: 'Field is an AI-powered companion designed to support self-led reflection, not replace human care.' },
+
+    // ── Afformations Page · Hero ────────────────────────────────────────
+    { key: 'afformations.hero.back', group: 'Afformations Page — Hero', label: 'Back link', help: 'The arrow is added automatically.', text: 'Back to Portal' },
+    { key: 'afformations.hero.title', group: 'Afformations Page — Hero', label: 'Headline', help: 'Anything between *stars* is emphasised.', text: 'Af*for*mations' },
+    { key: 'afformations.hero.subtitle', group: 'Afformations Page — Hero', label: 'Subheadline', multiline: true, text: 'Afformations are empowering questions you ask yourself, designed to guide your brain toward supportive answers.' },
+    { key: 'afformations.hero.body', group: 'Afformations Page — Hero', label: 'Paragraph', multiline: true, rows: 5, text: 'When the brain hears a question, it naturally begins searching for an answer. This simple shift invites your mind to notice evidence that supports growth, possibility, and self-trust. Instead of forcing yourself to believe something new, afformations gently guide your brain to explore the possibility that the belief may already be true. Over time, these small questions reshape what your mind pays attention to, helping you build new patterns of thinking and identity.' },
+    { key: 'afformations.hero.invitation', group: 'Afformations Page — Hero', label: 'Italic closing line', multiline: true, text: 'Sit with one of these questions for a moment and notice what answers your mind begins to offer.' },
+
+    // ── Afformations Page · Filters ─────────────────────────────────────
+    { key: 'afformations.filters.all', group: 'Afformations Page — Filters', label: '"Show everything" filter button', help: 'The other filter buttons come from the card tags.', text: 'All' },
+
+    // ── Pocket Prompts Page · Intro ─────────────────────────────────────
+    { key: 'prompts.back', group: 'Pocket Prompts Page — Intro', label: 'Back link (top left)', help: 'The arrow is added automatically.', text: 'Back to Portal' },
+    { key: 'prompts.hero.title', group: 'Pocket Prompts Page — Intro', label: 'Headline', text: 'Pocket Prompts' },
+    { key: 'prompts.hero.subtitle', group: 'Pocket Prompts Page — Intro', label: 'Subheadline', multiline: true, text: 'Clarity through questions. Sometimes, the right question is all you need.' },
+    { key: 'prompts.hero.body', group: 'Pocket Prompts Page — Intro', label: 'Paragraph', multiline: true, text: 'These prompts are designed to help you cut through the noise and get to what matters. Copy them to your notes, journal with them, or just sit with them for a moment.' },
+    { key: 'prompts.hero.note', group: 'Pocket Prompts Page — Intro', label: 'Italic closing line', multiline: true, text: "You don't need to answer right away—sometimes just holding the question is enough." },
+
+    // ── Pocket Prompts Page · Category Filters ──────────────────────────
+    { key: 'prompts.filters.all', group: 'Pocket Prompts Page — Category Filters', label: 'First filter button (shows every prompt)', text: 'All Prompts' },
+
+    // ── Pocket Prompts Page · Prompt Cards ──────────────────────────────
+    { key: 'prompts.card.uncategorized', group: 'Pocket Prompts Page — Prompt Cards', label: 'Tag for a prompt with no category', text: 'Uncategorized' },
+    { key: 'prompts.card.when_to_use', group: 'Pocket Prompts Page — Prompt Cards', label: '"When to use" heading', help: 'The emoji is added automatically.', text: 'When to Use' },
+    { key: 'prompts.card.purpose', group: 'Pocket Prompts Page — Prompt Cards', label: '"Purpose" heading', help: 'The emoji is added automatically.', text: 'Purpose' },
+    { key: 'prompts.card.example', group: 'Pocket Prompts Page — Prompt Cards', label: '"Example scenario" heading', help: 'The emoji is added automatically.', text: 'Example Scenario' },
+    { key: 'prompts.card.versions_title', group: 'Pocket Prompts Page — Prompt Cards', label: '"What each version does" heading', help: 'The emoji is added automatically.', text: 'What Each Version Does' },
+    { key: 'prompts.card.free_title', group: 'Pocket Prompts Page — Prompt Cards', label: 'Free version box title', text: 'Free Version' },
+    { key: 'prompts.card.premium_title', group: 'Pocket Prompts Page — Prompt Cards', label: 'High-level version box title', help: 'The star is added automatically.', text: 'High-Level Version' },
+    { key: 'prompts.free.label', group: 'Pocket Prompts Page — Prompt Cards', label: 'Label above the free prompt', text: 'Free Prompt' },
+    { key: 'prompts.free.copy', group: 'Pocket Prompts Page — Prompt Cards', label: 'Copy button (free prompt)', text: 'Copy Free' },
+    { key: 'prompts.copied', group: 'Pocket Prompts Page — Prompt Cards', label: 'Copy button, just after copying', text: 'Copied!' },
+
+    // ── Pocket Prompts Page · High-Level Version ────────────────────────
+    { key: 'prompts.premium.label', group: 'Pocket Prompts Page — High-Level Version', label: 'Label above the high-level prompt', help: 'Followed by the "unlocked" or "preview" word below.', text: 'High-Level Version' },
+    { key: 'prompts.premium.preview', group: 'Pocket Prompts Page — High-Level Version', label: 'Label ending, before she buys', text: '— Preview' },
+    { key: 'prompts.premium.unlocked', group: 'Pocket Prompts Page — High-Level Version', label: 'Label ending, once unlocked', text: '— Unlocked' },
+    { key: 'prompts.premium.unlock', group: 'Pocket Prompts Page — High-Level Version', label: 'Unlock button', help: 'Changing the price here only changes the wording — the amount charged is set separately.', text: 'Unlock full prompt — $2' },
+    { key: 'prompts.premium.unlock_note', group: 'Pocket Prompts Page — High-Level Version', label: 'Note beside the unlock button', text: 'One-time payment · yours to keep' },
+    { key: 'prompts.premium.copy', group: 'Pocket Prompts Page — High-Level Version', label: 'Copy button (unlocked prompt)', text: 'Copy Prompt' },
+
+    // ── Voice Notes Page · Intro ────────────────────────────────────────
+    { key: 'voicenotes.back', group: 'Voice Notes Page — Intro', label: 'Back link (top left)', help: 'The arrow is added automatically.', text: 'Back to Portal' },
+    { key: 'voicenotes.hero.title', group: 'Voice Notes Page — Intro', label: 'Headline', text: 'Voice Notes' },
+    { key: 'voicenotes.hero.subtitle', group: 'Voice Notes Page — Intro', label: 'Subheadline', multiline: true, text: 'Remember who you are. Personal messages for when you need to hear it.' },
+    { key: 'voicenotes.hero.body', group: 'Voice Notes Page — Intro', label: 'Paragraph', multiline: true, text: 'These are like voice memos from a friend — short, personal recordings for specific moments. Listen when you need a reminder, a perspective shift, or just to feel less alone.' },
+    { key: 'voicenotes.hero.note', group: 'Voice Notes Page — Intro', label: 'Italic closing line', multiline: true, text: 'Press play and let yourself be held for a moment.' },
 ];
 
 /** Ordered list of group names, for the admin screen. */

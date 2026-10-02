@@ -2,9 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
+import { useCopy } from '../../context/SiteCopyContext';
 
 const PocketPromptsPage = () => {
     const { user } = useAuth();
+    const copy = useCopy();
     const location = useLocation();
     const [copiedId, setCopiedId] = useState(null);
     const [activeCategory, setActiveCategory] = useState('all');
@@ -211,7 +213,7 @@ const PocketPromptsPage = () => {
                     <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span className="text-sm font-medium tracking-wide">Back to Portal</span>
+                    <span className="text-sm font-medium tracking-wide">{copy('prompts.back')}</span>
                 </Link>
 
                 {/* Payment confirmation, after returning from checkout */}
@@ -231,20 +233,19 @@ const PocketPromptsPage = () => {
                 <section className="px-6 pt-[120px] pb-[60px] md:pt-[160px] md:pb-[80px] flex items-center justify-center">
                     <div className="w-full max-w-[700px] mx-auto text-center animate-fade-in-up bg-[#F4F1EC]/85 backdrop-blur-md p-8 md:p-12 rounded-[32px] shadow-sm border border-white/40">
                         <h1 className="font-serif text-[40px] md:text-[48px] text-[#1F2422] font-medium mb-6">
-                            Pocket Prompts
+                            {copy('prompts.hero.title')}
                         </h1>
 
                         <h2 className="text-[18px] md:text-[20px] text-[#5E6A65] leading-[1.6] mb-8 font-sans">
-                            Clarity through questions. Sometimes, the right question is all you need.
+                            {copy('prompts.hero.subtitle')}
                         </h2>
 
                         <p className="text-[16px] text-[#5E6A65] leading-[1.7] max-w-[680px] mx-auto mb-8">
-                            These prompts are designed to help you cut through the noise and get to what matters.
-                            Copy them to your notes, journal with them, or just sit with them for a moment.
+                            {copy('prompts.hero.body')}
                         </p>
 
                         <p className="text-[16px] md:text-[17px] text-[#5E6A65] italic leading-relaxed">
-                            You don't need to answer right away—sometimes just holding the question is enough.
+                            {copy('prompts.hero.note')}
                         </p>
                     </div>
                 </section>
@@ -264,7 +265,7 @@ const PocketPromptsPage = () => {
                                             : 'bg-white/90 backdrop-blur-md text-text-muted hover:bg-white hover:text-text-dark border border-clay/20 shadow-sm'
                                             }`}
                                     >
-                                        {cat.title}
+                                        {cat.id === 'all' ? copy('prompts.filters.all') : cat.title}
                                     </button>
                                 ))}
                             </div>
@@ -286,7 +287,7 @@ const PocketPromptsPage = () => {
                                             <div className="flex justify-between items-start">
                                                 <div>
                                                     <span className="text-sage text-xs font-medium uppercase tracking-wider bg-sage/10 px-2 py-1 rounded inline-block mb-2">
-                                                        {prompt.pocket_prompt_categories?.title || 'Uncategorized'}
+                                                        {prompt.pocket_prompt_categories?.title || copy('prompts.card.uncategorized')}
                                                     </span>
                                                     <h3 className="font-display text-2xl text-text-dark mb-2">
                                                         {prompt.title}
@@ -298,7 +299,7 @@ const PocketPromptsPage = () => {
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-bone/50 p-5 rounded-xl border border-clay/20">
                                                 <div>
                                                     <h4 className="font-bold text-text-dark mb-3 flex items-center gap-2">
-                                                        <span>🕰️</span> When to Use
+                                                        <span>🕰️</span> {copy('prompts.card.when_to_use')}
                                                     </h4>
                                                     <ul className="text-sm text-text-muted space-y-2 list-none pl-1">
                                                         {prompt.when_to_use?.split('\n').filter(Boolean).map((line, i) => (
@@ -313,13 +314,13 @@ const PocketPromptsPage = () => {
                                                 <div className="space-y-4">
                                                     <div>
                                                         <h4 className="font-bold text-text-dark mb-1 flex items-center gap-2">
-                                                            <span>🎯</span> Purpose
+                                                            <span>🎯</span> {copy('prompts.card.purpose')}
                                                         </h4>
                                                         <p className="text-sm text-text-muted">{prompt.purpose}</p>
                                                     </div>
                                                     <div>
                                                         <h4 className="font-bold text-text-dark mb-1 flex items-center gap-2">
-                                                            <span>💬</span> Example Scenario
+                                                            <span>💬</span> {copy('prompts.card.example')}
                                                         </h4>
                                                         <p className="text-sm text-text-muted italic">"{prompt.example_scenario}"</p>
                                                     </div>
@@ -329,19 +330,19 @@ const PocketPromptsPage = () => {
                                             {/* What Each Version Does */}
                                             <div className="mt-2">
                                                 <h4 className="font-bold text-text-dark mb-3 flex items-center gap-2">
-                                                    <span>✨</span> What Each Version Does
+                                                    <span>✨</span> {copy('prompts.card.versions_title')}
                                                 </h4>
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                     <div className="bg-white p-4 rounded-lg border border-clay/20 shadow-sm relative overflow-hidden">
                                                         <div className="absolute top-0 left-0 w-1 h-full bg-sage/50"></div>
-                                                        <h5 className="font-bold text-sm text-text-dark mb-2">Free Version</h5>
+                                                        <h5 className="font-bold text-sm text-text-dark mb-2">{copy('prompts.card.free_title')}</h5>
                                                         <p className="text-xs text-text-muted leading-relaxed">{prompt.what_free_offers}</p>
                                                     </div>
                                                     <div className="bg-white p-4 rounded-lg border border-golden/30 shadow-sm relative overflow-hidden">
                                                         <div className="absolute top-0 left-0 w-1 h-full bg-golden/80"></div>
                                                         <h5 className="font-bold text-sm text-text-dark mb-2 flex items-center gap-1.5">
                                                             <svg className="w-3.5 h-3.5 text-golden" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
-                                                            High-Level Version
+                                                            {copy('prompts.card.premium_title')}
                                                         </h5>
                                                         <p className="text-xs text-text-muted leading-relaxed">{prompt.what_premium_offers}</p>
                                                     </div>
@@ -353,7 +354,7 @@ const PocketPromptsPage = () => {
                                                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                                                     <div className="flex-1">
                                                         <div className="flex items-center gap-2 mb-3">
-                                                            <span className="text-xs font-bold text-sage uppercase tracking-wider">Free Prompt</span>
+                                                            <span className="text-xs font-bold text-sage uppercase tracking-wider">{copy('prompts.free.label')}</span>
                                                         </div>
                                                         <div className="bg-sage/5 p-5 rounded-xl border border-sage/20 text-sm text-text-dark/90 whitespace-pre-wrap leading-relaxed font-mono">
                                                             {prompt.content_free}
@@ -366,7 +367,7 @@ const PocketPromptsPage = () => {
                                                             : 'bg-bone text-text-dark/70 hover:bg-sage hover:text-white'
                                                             }`}
                                                     >
-                                                        {copiedId === `${prompt.id}-free` ? 'Copied!' : 'Copy Free'}
+                                                        {copiedId === `${prompt.id}-free` ? copy('prompts.copied') : copy('prompts.free.copy')}
                                                     </button>
                                                 </div>
                                             </div>
@@ -379,7 +380,7 @@ const PocketPromptsPage = () => {
                                                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                         </svg>
                                                         <span className="text-xs font-bold text-golden-deep uppercase tracking-wider">
-                                                            High-Level Version {purchasedIds.has(prompt.id) ? '— Unlocked' : '— Preview'}
+                                                            {copy('prompts.premium.label')} {purchasedIds.has(prompt.id) ? copy('prompts.premium.unlocked') : copy('prompts.premium.preview')}
                                                         </span>
                                                     </div>
 
@@ -397,7 +398,7 @@ const PocketPromptsPage = () => {
                                                                     : 'bg-bone text-text-dark/70 hover:bg-golden-deep hover:text-white'
                                                                     }`}
                                                             >
-                                                                {copiedId === `${prompt.id}-premium` ? 'Copied!' : 'Copy Prompt'}
+                                                                {copiedId === `${prompt.id}-premium` ? copy('prompts.copied') : copy('prompts.premium.copy')}
                                                             </button>
                                                         </div>
                                                     ) : (
@@ -414,9 +415,9 @@ const PocketPromptsPage = () => {
                                                                     disabled={unlockingId === prompt.id}
                                                                     className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-golden-deep text-bone text-sm font-medium rounded-full hover:bg-golden-deep/90 transition-colors shadow-sm disabled:opacity-70"
                                                                 >
-                                                                    {unlockingId === prompt.id ? 'Opening checkout…' : 'Unlock full prompt — $2'}
+                                                                    {unlockingId === prompt.id ? 'Opening checkout…' : copy('prompts.premium.unlock')}
                                                                 </button>
-                                                                <span className="text-xs text-text-muted">One-time payment · yours to keep</span>
+                                                                <span className="text-xs text-text-muted">{copy('prompts.premium.unlock_note')}</span>
                                                             </div>
                                                         </div>
                                                     )}
