@@ -28,7 +28,7 @@ const GuidedShiftPlayerPage = () => {
                         )
                     `)
                     .eq('id', id)
-                    .single();
+                    .maybeSingle();
 
                 if (error) {
                     setFetchError(`Database error: ${error.message}`);
