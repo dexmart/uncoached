@@ -25,6 +25,7 @@ const GuidedShiftsPage = () => {
                         purpose: family.purpose,
                         icon: family.icon,
                         shifts: sortedShifts.map(s => ({
+                            id: s.id,
                             name: s.title,
                             status: s.is_active ? 'active' : 'coming-soon'
                         }))
@@ -359,7 +360,7 @@ const GuidedShiftsPage = () => {
                                             <div key={idx}>
                                                 {shift.status === 'active' ? (
                                                     <Link
-                                                        to={`/dashboard/guided-shifts/${shift.name.toLowerCase().replace(/ /g, '-')}`}
+                                                        to={`/dashboard/guided-shifts/${encodeURIComponent(shift.id)}`}
                                                         className="block w-full px-4 py-3 bg-[#3F5D4D] hover:bg-[#2E4A3B] text-white rounded-xl text-sm font-medium transition-all text-center shadow-sm hover:shadow-md"
                                                     >
                                                         {shift.name}
