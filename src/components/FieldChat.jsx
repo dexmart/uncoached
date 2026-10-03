@@ -342,7 +342,7 @@ const FieldChat = () => {
                     </button>
                 </div>
                 <p className="text-center text-[11px] text-bone/40 mt-3">
-                    This is a private space. Your entries don&apos;t leave this chat.
+                    {copy('fieldpage.chat.footer')}
                 </p>
             </form>
         </div>
