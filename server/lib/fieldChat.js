@@ -16,7 +16,8 @@
 //   - the request body is built from the sanitised messages only
 
 const CHATBASE_CHAT_URL = "https://www.chatbase.co/api/v1/chat";
-const DEFAULTS = { maxTurns: 30, maxChars: 4000 };
+// maxChars leaves room for a short attached document (text only) in one turn.
+const DEFAULTS = { maxTurns: 30, maxChars: 12000 };
 
 /** Keep only well-formed user/assistant turns, most recent first-in-order, capped. */
 export function sanitiseMessages(messages, opts = {}) {

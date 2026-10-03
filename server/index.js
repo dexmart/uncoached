@@ -6,6 +6,7 @@ import stripeRoutes from "./routes/stripe.js";
 import practitionerRoutes from "./routes/practitioners.js";
 import giftRoutes from "./routes/gift.js";
 import fieldRoutes from "./routes/field.js";
+import adminRoutes from "./routes/admin.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -46,6 +47,7 @@ app.use("/stripe", stripeRoutes);
 app.use("/practitioners", practitionerRoutes);
 app.use("/gift", giftRoutes);
 app.use("/field", fieldRoutes);
+app.use("/admin", adminRoutes);
 
 // Start server
 app.listen(PORT, () => {

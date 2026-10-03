@@ -13,8 +13,11 @@ const AdminClarityCardsPage = () => {
         title: '',
         description: '',
         is_active: true,
-        sort_order: 0
+        sort_order: 0,
+        file_url: ''
     });
+    const [uploading, setUploading] = useState(false);
+    const [uploadError, setUploadError] = useState('');
 
     useEffect(() => {
         fetchCards();
@@ -43,8 +46,10 @@ const AdminClarityCardsPage = () => {
             title: card.title,
             description: card.description || '',
             is_active: card.is_active,
-            sort_order: card.sort_order || 0
+            sort_order: card.sort_order || 0,
+            file_url: card.file_url || ''
         });
+        setUploadError('');
         setCurrentCard(card);
         setIsEditing(true);
     };
@@ -54,8 +59,10 @@ const AdminClarityCardsPage = () => {
             title: '',
             description: '',
             is_active: true,
-            sort_order: cards.length + 1
+            sort_order: cards.length + 1,
+            file_url: ''
         });
+        setUploadError('');
         setCurrentCard(null);
         setIsEditing(true);
     };
@@ -74,7 +81,8 @@ const AdminClarityCardsPage = () => {
                 title: formData.title,
                 description: formData.description,
                 is_active: formData.is_active,
-                sort_order: parseInt(formData.sort_order) || 0
+                sort_order: parseInt(formData.sort_order) || 0,
+                file_url: formData.file_url.trim() || null
             };
 
             if (currentCard?.id) {
@@ -91,9 +99,40 @@ const AdminClarityCardsPage = () => {
             setIsEditing(false);
         } catch (error) {
             console.error('Error saving clarity card:', error);
-            alert('Failed to save Clarity Card');
+            alert(`Could not save the Clarity Card: ${error.message || 'unknown error'}`);
         } finally {
             setIsSaving(false);
+        }
+    };
+
+    // Upload a new PDF for this card. It gets a fresh file name every time, so
+    // members never see an old cached copy, and the old file is left alone in
+    // case it's needed again.
+    const handleUpload = async (file) => {
+        if (!file) return;
+        setUploadError('');
+        if (file.type !== 'application/pdf') {
+            setUploadError('Please choose a PDF file.');
+            return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+            setUploadError('That PDF is over 10 MB. Please export a smaller version.');
+            return;
+        }
+        setUploading(true);
+        try {
+            const slug = (formData.title || 'card').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            const path = `${slug || 'card'}-${Date.now()}.pdf`;
+            const { error } = await supabase.storage
+                .from('clarity-cards')
+                .upload(path, file, { contentType: 'application/pdf', upsert: false });
+            if (error) throw error;
+            const { data } = supabase.storage.from('clarity-cards').getPublicUrl(path);
+            setFormData((f) => ({ ...f, file_url: data.publicUrl }));
+        } catch (error) {
+            setUploadError(`Upload failed: ${error.message || 'unknown error'}`);
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -176,6 +215,34 @@ const AdminClarityCardsPage = () => {
                             ></textarea>
                         </div>
 
+                        <div className="p-4 bg-bone/50 rounded-xl border border-text-dark/5 space-y-3">
+                            <label className="block text-sm font-medium text-text-dark">Card PDF</label>
+                            {formData.file_url ? (
+                                <a href={formData.file_url} target="_blank" rel="noopener noreferrer"
+                                    className="inline-block text-sm text-sage underline break-all">
+                                    Open the current PDF
+                                </a>
+                            ) : (
+                                <p className="text-sm text-text-dark/50">No PDF attached yet.</p>
+                            )}
+                            <div className="flex flex-wrap items-center gap-3">
+                                <label className={`px-4 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors ${uploading ? 'bg-text-dark/10 text-text-dark/40' : 'bg-sage text-bone hover:bg-sage/90'}`}>
+                                    {uploading ? 'Uploading…' : formData.file_url ? 'Replace with a new PDF' : 'Upload a PDF'}
+                                    <input type="file" accept="application/pdf" className="hidden" disabled={uploading}
+                                        onChange={(e) => { handleUpload(e.target.files?.[0]); e.target.value = ''; }} />
+                                </label>
+                                <span className="text-xs text-text-dark/50">Then press Save Card to make it live.</span>
+                            </div>
+                            {uploadError && <p className="text-sm text-red-600">{uploadError}</p>}
+                            <details className="text-sm">
+                                <summary className="cursor-pointer text-text-dark/60">Or paste a link instead</summary>
+                                <input type="url" value={formData.file_url}
+                                    onChange={(e) => setFormData({ ...formData, file_url: e.target.value })}
+                                    className="mt-2 w-full px-4 py-2 border border-text-dark/20 rounded-xl focus:outline-none focus:border-clay"
+                                    placeholder="https://…" />
+                            </details>
+                        </div>
+
                         <div className="flex items-center gap-2 mt-4 p-4 bg-bone/50 rounded-xl border border-text-dark/5">
                             <input
                                 type="checkbox"
@@ -221,6 +288,9 @@ const AdminClarityCardsPage = () => {
                                         <h3 className="font-display text-xl text-text-dark truncate">{card.title}</h3>
                                         {!card.is_active && (
                                             <span className="px-2 py-0.5 rounded text-xs font-medium bg-bone text-text-dark/60">Hidden</span>
+                                        )}
+                                        {!card.file_url && (
+                                            <span className="px-2 py-0.5 rounded text-xs font-medium bg-golden-light/20 text-golden-deep">No PDF</span>
                                         )}
                                     </div>
                                     <p className="text-sm text-text-dark/70 truncate">{card.description}</p>

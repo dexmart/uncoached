@@ -623,6 +623,9 @@ For privacy concerns, email us at hello@uncoached.space.`
     { key: 'fieldpage.intro.title', group: 'Field Page — Intro', label: 'Headline', text: "You're here. Take your time." },
     { key: 'fieldpage.intro.subtitle', group: 'Field Page — Intro', label: 'Line under the headline', text: "Field is listening. There's no right way to start." },
 
+    // ── Field Page · Greeting ───────────────────────────────────────────
+    { key: 'fieldpage.chat.greeting', group: 'Field Page — Greeting', label: "Field's opening messages", multiline: true, list: true, rows: 5, help: 'What Field says before the member types anything. One message bubble per line.', text: "Hey, you made it! I’ve been waiting for you. 😊 I’m Field.\nYou don’t need to have anything figured out to be here.\nWhat’s going on for you today?\n(Oh, and what's your name, so I know what to call you?)" },
+
     // ── Field Page · Below the Chat ─────────────────────────────────────
     { key: 'fieldpage.chat.come_back', group: 'Field Page — Below the Chat', label: 'Line under the chat', text: "You can come back whenever you're ready." },
     { key: 'fieldpage.chat.disclaimer', group: 'Field Page — Below the Chat', label: 'Small italic note', multiline: true, text: 'Field is an AI-powered companion designed to support self-led reflection, not replace human care.' },
