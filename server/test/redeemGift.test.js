@@ -213,3 +213,12 @@ test("a failing welcome email never undoes a redemption that already worked", as
     assert.equal(log.upserts.length, 1, "membership still saved");
     assert.equal(log.cancelled.length, 0, "subscription not rolled back");
 });
+
+test("never picks a $0 price or one outside the membership list", async () => {
+    const freeYear = { ...annualPrice, id: "price_free_year", unit_amount: 0 };
+    const strayYear = { ...annualPrice, id: "price_stray_year" };
+    const { deps, log } = makeDeps({ card: { ...goodCard, title: "1-Year Uncoached Membership" }, prices: [freeYear, strayYear, annualPrice] });
+    deps.allowedPriceIds = [monthlyPrice.id, quarterlyPrice.id, annualPrice.id];
+    await redeemGift({ user, code: goodCard.code, deps, now });
+    assert.equal(log.created[0].items[0].price, annualPrice.id);
+});

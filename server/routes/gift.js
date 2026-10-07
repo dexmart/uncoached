@@ -1,6 +1,7 @@
 // GiftUp gift card redemption. See docs/superpowers/specs/2026-09-08-giftup-redeem-design.md
 import { Router } from "express";
 import Stripe from "stripe";
+import { membershipPriceIds } from "../lib/membershipPrices.js";
 import { supabaseAdmin } from "../supabaseAdmin.js";
 import { createGiftUpClient, membershipMonths, redemptionProblem } from "../lib/giftup.js";
 import { redeemGift, RedeemError } from "../lib/redeemGift.js";
@@ -68,7 +69,7 @@ router.post("/redeem", async (req, res) => {
             });
             await sendEmail({ to: u.email, subject, html });
         };
-        const result = await redeemGift({ user, code, deps: { giftup, stripe, db: supabaseAdmin, sendWelcome } });
+        const result = await redeemGift({ user, code, deps: { giftup, stripe, db: supabaseAdmin, sendWelcome, allowedPriceIds: membershipPriceIds() } });
         console.log(`Gift ${code} redeemed by ${user.id}: ${result.months} month(s) until ${result.endsOn}`);
         res.json({ ok: true, ...result });
     } catch (err) {

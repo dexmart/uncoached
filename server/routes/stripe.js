@@ -1,6 +1,7 @@
 import { Router } from "express";
 import express from "express";
 import Stripe from "stripe";
+import { isMembershipPrice } from "../lib/membershipPrices.js";
 import { supabaseAdmin } from "../supabaseAdmin.js";
 import { reconcilePromptPurchases } from "../lib/reconcilePrompts.js";
 import { buildWelcomeEmail } from "../lib/welcomeEmail.js";
@@ -148,11 +149,16 @@ router.post("/create-checkout-session", async (req, res) => {
     if (!priceId || !userId) {
         return res.status(400).json({ error: "Missing priceId or userId" });
     }
+    // Only the membership plans can be bought here. See lib/membershipPrices.js.
+    if (!isMembershipPrice(priceId)) {
+        return res.status(400).json({ error: "That plan isn't available." });
+    }
 
     try {
+        // No payment_method_types: Stripe shows whatever methods are switched
+        // on in the dashboard (cards, Apple Pay, Google Pay, Link...).
         const session = await stripe.checkout.sessions.create({
             mode: "subscription",
-            payment_method_types: ["card"],
             allow_promotion_codes: true,
             line_items: [{ price: priceId, quantity: 1 }],
             success_url: `${process.env.FRONTEND_URL}/dashboard?success=true`,
@@ -246,7 +252,6 @@ router.post("/create-prompt-checkout", async (req, res) => {
     try {
         const session = await stripe.checkout.sessions.create({
             mode: "payment",
-            payment_method_types: ["card"],
             line_items: [{
                 price_data: {
                     currency: "usd",

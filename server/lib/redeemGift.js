@@ -66,7 +66,10 @@ export async function redeemGift({ user, code, deps, now = new Date() }) {
 
     // 3. The plan the gift stands in for — so a member who adds a card later
     //    simply continues at that plan's price.
-    const { data: prices } = await stripe.prices.list({ active: true, type: "recurring", limit: 100 });
+    //    Only real membership prices count: never a $0 or unrelated price.
+    const { data: listed } = await stripe.prices.list({ active: true, type: "recurring", limit: 100 });
+    const allowed = deps.allowedPriceIds;
+    const prices = listed.filter((p) => p.unit_amount !== 0 && (!allowed || allowed.includes(p.id)));
     const price = priceForMonths(prices, months);
     if (!price) throw new RedeemError(500, `No membership plan matches a ${months}-month gift. Please contact hello@uncoached.space.`);
 
