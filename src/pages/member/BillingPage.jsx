@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useCopy } from '../../context/SiteCopyContext';
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -31,6 +32,7 @@ const prettyDate = (iso) => {
 // is handled in Stripe's secure Customer Portal, opened from here.
 const BillingPage = () => {
     const { user, subscription, isSubscribed } = useAuth();
+    const copy = useCopy();
     const [portalLoading, setPortalLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -67,62 +69,59 @@ const BillingPage = () => {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span className="text-sm">Back to your space</span>
+                    <span className="text-sm">{copy('memberbilling.back')}</span>
                 </Link>
             </nav>
 
             <div className="max-w-2xl mx-auto px-6 pt-32 pb-24">
-                <h1 className="font-display text-4xl text-text-dark mb-2">Billing &amp; invoices</h1>
-                <p className="text-text-muted mb-10">Your membership, your receipts, and where to make changes.</p>
+                <h1 className="font-display text-4xl text-text-dark mb-2">{copy('memberbilling.title')}</h1>
+                <p className="text-text-muted mb-10">{copy('memberbilling.intro')}</p>
 
                 {/* Membership summary */}
                 <div className="bg-white p-8 rounded-3xl shadow-sm border border-clay/10 mb-6">
-                    <h2 className="font-display text-2xl text-text-dark mb-6">Your membership</h2>
+                    <h2 className="font-display text-2xl text-text-dark mb-6">{copy('memberbilling.membership_heading')}</h2>
 
                     {isSubscribed ? (
                         <dl className="space-y-4">
                             <div className="flex justify-between items-baseline gap-4">
-                                <dt className="text-text-muted">Plan</dt>
+                                <dt className="text-text-muted">{copy('memberbilling.plan_label')}</dt>
                                 <dd className="text-text-dark font-medium text-right">{planLabel(subscription?.plan)}</dd>
                             </div>
                             <div className="flex justify-between items-baseline gap-4">
-                                <dt className="text-text-muted">Status</dt>
+                                <dt className="text-text-muted">{copy('memberbilling.status_label')}</dt>
                                 <dd className="text-text-dark font-medium text-right">{statusLabel(subscription?.status)}</dd>
                             </div>
                             {endDate && (
                                 <div className="flex justify-between items-baseline gap-4">
-                                    <dt className="text-text-muted">{isGift ? 'Access until' : 'Renews on'}</dt>
+                                    <dt className="text-text-muted">{isGift ? copy('memberbilling.until_label') : copy('memberbilling.renews_label')}</dt>
                                     <dd className="text-text-dark font-medium text-right">{endDate}</dd>
                                 </div>
                             )}
                         </dl>
                     ) : (
                         <div>
-                            <p className="text-text-muted mb-5">You don&apos;t have an active membership right now.</p>
+                            <p className="text-text-muted mb-5">{copy('memberbilling.none_text')}</p>
                             <Link
                                 to="/pricing"
                                 className="inline-block px-6 py-3 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all"
                             >
-                                Choose a plan
+                                {copy('memberbilling.none_cta')}
                             </Link>
                         </div>
                     )}
 
                     {isGift && (
                         <p className="mt-6 text-sm text-text-muted leading-relaxed bg-sage/5 border border-sage/20 rounded-xl p-4">
-                            This is a gift membership. It ends by itself on the date above, with no renewal and
-                            no charge. If you&apos;d like to continue afterwards, you can choose a plan any time.
+                            {copy('memberbilling.gift_note')}
                         </p>
                     )}
                 </div>
 
                 {/* Invoices & changes via Stripe */}
                 <div className="bg-white p-8 rounded-3xl shadow-sm border border-clay/10">
-                    <h2 className="font-display text-2xl text-text-dark mb-2">Invoices &amp; payment</h2>
+                    <h2 className="font-display text-2xl text-text-dark mb-2">{copy('memberbilling.invoices_heading')}</h2>
                     <p className="text-sm text-text-muted mb-6 leading-relaxed">
-                        View and download every receipt, including any one-time high-level prompt unlocks, update
-                        your payment method, or cancel your membership. If you cancel, you keep full access until
-                        the end of the period you&apos;ve already paid for.
+                        {copy('memberbilling.invoices_body')}
                     </p>
                     {error && <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-4 text-sm text-center">{error}</div>}
                     <button
@@ -132,9 +131,9 @@ const BillingPage = () => {
                         className={`w-full py-4 rounded-xl font-medium transition-all duration-300 shadow-sm
                             ${portalLoading ? 'bg-bone text-text-muted cursor-not-allowed border border-clay/20' : 'bg-charcoal text-bone hover:bg-charcoal/90'}`}
                     >
-                        {portalLoading ? 'Opening secure portal…' : 'Open billing portal'}
+                        {portalLoading ? 'Opening secure portal…' : copy('memberbilling.portal_button')}
                     </button>
-                    <p className="mt-3 text-center text-xs text-text-tertiary">Secure billing powered by Stripe.</p>
+                    <p className="mt-3 text-center text-xs text-text-tertiary">{copy('memberbilling.stripe_note')}</p>
                 </div>
             </div>
         </div>

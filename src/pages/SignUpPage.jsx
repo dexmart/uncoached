@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getPendingGiftCode } from '../lib/giftCode';
+import { useCopy } from '../context/SiteCopyContext';
 
 const SignUpPage = () => {
+    const copy = useCopy();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [displayName, setDisplayName] = useState('');
@@ -30,7 +32,7 @@ const SignUpPage = () => {
             setLoading(false);
         } else if (data?.user?.identities?.length === 0) {
             // Supabase returns success but empty identities if user already exists
-            setError('An account with this email already exists. Please sign in instead.');
+            setError(copy('signup.error_exists'));
             setLoading(false);
         } else {
             setSuccess(true);
@@ -59,14 +61,14 @@ const SignUpPage = () => {
                             className="h-16 mx-auto mb-4"
                         />
                     </Link>
-                    <h1 className="font-display text-3xl text-text-dark">Create your account</h1>
-                    <p className="text-text-muted mt-2">Begin your journey to self-connection</p>
+                    <h1 className="font-display text-3xl text-text-dark">{copy('signup.title')}</h1>
+                    <p className="text-text-muted mt-2">{copy('signup.subtitle')}</p>
                 </div>
 
                 {/* Success Message */}
                 {success && (
                     <div className="bg-sage/10 text-sage p-4 rounded-xl mb-6 text-center">
-                        Account created! Check your email to confirm, then {hasGift ? 'redeem your gift card' : 'choose a plan'}.
+                        {hasGift ? copy('signup.success_gift') : copy('signup.success_plan')}
                     </div>
                 )}
 
@@ -88,7 +90,7 @@ const SignUpPage = () => {
                         <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                         <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                     </svg>
-                    Continue with Google
+                    {copy('signup.google_button')}
                 </button>
 
                 <div className="relative mb-6">
@@ -96,7 +98,7 @@ const SignUpPage = () => {
                         <div className="w-full border-t border-clay/30"></div>
                     </div>
                     <div className="relative flex justify-center text-sm">
-                        <span className="px-4 bg-bone text-text-muted">or sign up with email</span>
+                        <span className="px-4 bg-bone text-text-muted">{copy('signup.divider')}</span>
                     </div>
                 </div>
 
@@ -105,7 +107,7 @@ const SignUpPage = () => {
                     <div>
                         <input
                             type="text"
-                            placeholder="Your name"
+                            placeholder={copy('signup.name_placeholder')}
                             value={displayName}
                             onChange={(e) => setDisplayName(e.target.value)}
                             className="w-full px-6 py-3 bg-white border border-clay/30 rounded-full focus:outline-none focus:ring-2 focus:ring-sage/50"
@@ -115,7 +117,7 @@ const SignUpPage = () => {
                     <div>
                         <input
                             type="email"
-                            placeholder="Email address"
+                            placeholder={copy('signup.email_placeholder')}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full px-6 py-3 bg-white border border-clay/30 rounded-full focus:outline-none focus:ring-2 focus:ring-sage/50"
@@ -125,7 +127,7 @@ const SignUpPage = () => {
                     <div>
                         <input
                             type="password"
-                            placeholder="Password (min 6 characters)"
+                            placeholder={copy('signup.password_placeholder')}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full px-6 py-3 bg-white border border-clay/30 rounded-full focus:outline-none focus:ring-2 focus:ring-sage/50"
@@ -138,14 +140,14 @@ const SignUpPage = () => {
                         disabled={loading}
                         className="w-full px-6 py-3 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all disabled:opacity-50"
                     >
-                        {loading ? 'Creating account...' : 'Create Account'}
+                        {loading ? copy('signup.submit_busy') : copy('signup.submit')}
                     </button>
                 </form>
 
                 <p className="text-center text-text-muted mt-6">
-                    Already have an account?{' '}
+                    {copy('signup.signin_prompt')}{' '}
                     <Link to="/signin" className="text-sage hover:underline">
-                        Sign in
+                        {copy('signup.signin_link')}
                     </Link>
                 </p>
             </div>

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useCopy } from '../../context/SiteCopyContext';
 
 const ClarityCardDetailPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const copy = useCopy();
 
     const [card, setCard] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -57,7 +59,7 @@ const ClarityCardDetailPage = () => {
                 <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                 </svg>
-                <span className="text-sm font-medium tracking-wide">Back to Deck</span>
+                <span className="text-sm font-medium tracking-wide">{copy('carddetail.back')}</span>
             </Link>
 
             {/* Main Content */}
@@ -73,7 +75,7 @@ const ClarityCardDetailPage = () => {
                         <div className="relative z-10 text-center">
                             {/* Header */}
                             <span className="inline-block px-4 py-1.5 bg-[#F4F1EC] text-[#8C857A] text-[12px] font-medium uppercase tracking-[0.1em] rounded-full mb-8">
-                                Clarity Card
+                                {copy('carddetail.badge')}
                             </span>
 
                             <h1 className="font-serif text-[32px] md:text-[44px] text-[#1F2422] mb-6 leading-tight">
@@ -97,17 +99,17 @@ const ClarityCardDetailPage = () => {
                                 {card.content?.body ? (
                                     <div dangerouslySetInnerHTML={{ __html: card.content.body }} />
                                 ) : (
-                                    <p>Take a few moments to journal or reflect on this card. Let whatever comes up simply be there without judgment.</p>
+                                    <p>{copy('carddetail.fallback_body')}</p>
                                 )}
                             </div>
 
                             {/* Download Action */}
                             <div className="pt-8 border-t border-[#D6C7B8]/40 flex flex-col items-center">
                                 <h3 className="font-serif text-[20px] text-[#1F2422] mb-3">
-                                    Printable Version
+                                    {copy('carddetail.print_heading')}
                                 </h3>
                                 <p className="text-[14px] text-[#5E6A65] mb-6">
-                                    Download the beautifully designed PDF to print or save to your journal.
+                                    {copy('carddetail.print_body')}
                                 </p>
 
                                 {card.file_url ? (
@@ -120,14 +122,14 @@ const ClarityCardDetailPage = () => {
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                         </svg>
-                                        Download PDF
+                                        {copy('carddetail.download_button')}
                                     </a>
                                 ) : (
                                     <div className="inline-flex items-center gap-2 px-[28px] py-[12px] bg-[#F4F1EC] text-[#8C857A] font-serif rounded-[8px] text-[15px] border border-[#D6C7B8] cursor-not-allowed">
                                         <svg className="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                         </svg>
-                                        PDF Not Uploaded Yet
+                                        {copy('carddetail.no_pdf')}
                                     </div>
                                 )}
                             </div>

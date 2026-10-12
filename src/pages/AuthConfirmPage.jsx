@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import Seo from '../components/Seo';
+import { useCopy } from '../context/SiteCopyContext';
 
 // Where the links in our auth emails land.
 //
@@ -20,6 +21,7 @@ const NEXT = {
 };
 
 const AuthConfirmPage = () => {
+    const copy = useCopy();
     const [params] = useSearchParams();
     const navigate = useNavigate();
     const [error, setError] = useState('');
@@ -31,13 +33,13 @@ const AuthConfirmPage = () => {
         let active = true;
         (async () => {
             if (!tokenHash || !ALLOWED.includes(type)) {
-                if (active) setError('This link is incomplete. Please use the button in the email again.');
+                if (active) setError('incomplete');
                 return;
             }
             const { error: verifyErr } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type });
             if (!active) return;
             if (verifyErr) {
-                setError('This link has expired or has already been used. Links only work once, for a short time.');
+                setError('expired');
                 return;
             }
             navigate(NEXT[type] || '/dashboard', { replace: true });
@@ -59,21 +61,21 @@ const AuthConfirmPage = () => {
                 </Link>
                 {error ? (
                     <>
-                        <h1 className="font-display text-3xl text-text-dark mb-3">That link didn&apos;t work</h1>
-                        <p className="text-text-muted mb-8">{error}</p>
+                        <h1 className="font-display text-3xl text-text-dark mb-3">{copy('authconfirm.error_title')}</h1>
+                        <p className="text-text-muted mb-8">{copy(error === 'expired' ? 'authconfirm.error_expired' : 'authconfirm.error_incomplete')}</p>
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
                             <Link to="/signin" className="px-6 py-3 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all">
-                                Sign in
+                                {copy('authconfirm.signin_button')}
                             </Link>
                             <Link to="/signin" className="px-6 py-3 bg-white border border-clay/30 text-text-dark rounded-full font-medium hover:bg-bone/50 transition-all">
-                                Send a new link
+                                {copy('authconfirm.new_link_button')}
                             </Link>
                         </div>
                     </>
                 ) : (
                     <>
                         <div className="w-10 h-10 border-4 border-sage border-t-transparent rounded-full animate-spin mx-auto mb-5" />
-                        <p className="text-text-muted">One moment…</p>
+                        <p className="text-text-muted">{copy('authconfirm.loading')}</p>
                     </>
                 )}
             </div>

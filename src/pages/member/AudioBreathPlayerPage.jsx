@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useCopy } from '../../context/SiteCopyContext';
 
 const AudioBreathPlayerPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const copy = useCopy();
 
     const [breath, setBreath] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -149,7 +151,7 @@ const AudioBreathPlayerPage = () => {
                         <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                         </svg>
-                        <span className="text-sm font-medium tracking-wide">Back to Audio Breaths</span>
+                        <span className="text-sm font-medium tracking-wide">{copy('breathplayer.back_link')}</span>
                     </Link>
                 </div>
 
@@ -192,7 +194,7 @@ const AudioBreathPlayerPage = () => {
                                     </svg>
                                 )}
                             </div>
-                            <span className="text-text-dark font-medium text-lg pr-2">Listen</span>
+                            <span className="text-text-dark font-medium text-lg pr-2">{copy('breathplayer.player.listen')}</span>
                         </button>
                     </div>
 
@@ -223,7 +225,7 @@ const AudioBreathPlayerPage = () => {
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="h-px bg-text-dark/10 flex-1"></div>
                                 <h3 className="font-display text-2xl text-text-dark text-center">
-                                    Use this when:
+                                    {copy('breathplayer.use_when.title')}
                                 </h3>
                                 <div className="h-px bg-text-dark/10 flex-1"></div>
                             </div>
@@ -250,7 +252,7 @@ const AudioBreathPlayerPage = () => {
                             <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-clay/5 rounded-full blur-3xl"></div>
 
                             <h4 className="font-display text-base uppercase tracking-widest text-sage mb-4">
-                                Science Corner
+                                {copy('breathplayer.corners.science_title')}
                             </h4>
                             <p className="text-text-dark/80 text-base leading-relaxed mb-6">
                                 {breath.science_text}
@@ -259,7 +261,7 @@ const AudioBreathPlayerPage = () => {
                                 <>
                                     <div className="w-10 h-px bg-text-dark/10 mb-4"></div>
                                     <p className="text-text-dark/50 text-xs italic">
-                                        Source: {breath.science_source}
+                                        {copy('breathplayer.corners.source_label')} {breath.science_source}
                                     </p>
                                 </>
                             )}
@@ -273,7 +275,7 @@ const AudioBreathPlayerPage = () => {
                             <div className="absolute -top-10 -left-10 w-40 h-40 bg-clay/5 rounded-full blur-3xl"></div>
 
                             <h4 className="font-display text-base uppercase tracking-widest text-sage mb-4">
-                                Spiritual Corner
+                                {copy('breathplayer.corners.spiritual_title')}
                             </h4>
                             <p className="text-text-dark/80 text-base leading-relaxed mb-6">
                                 {breath.spiritual_text}
@@ -282,7 +284,7 @@ const AudioBreathPlayerPage = () => {
                                 <>
                                     <div className="w-10 h-px bg-text-dark/10 mb-4"></div>
                                     <p className="text-text-dark/50 text-xs italic">
-                                        Source: {breath.spiritual_source}
+                                        {copy('breathplayer.corners.source_label')} {breath.spiritual_source}
                                     </p>
                                 </>
                             )}

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { useCopy } from '../context/SiteCopyContext';
 
 const ResetPasswordPage = () => {
+    const copy = useCopy();
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
     const [error, setError] = useState('');
@@ -23,8 +25,8 @@ const ResetPasswordPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(''); setMessage('');
-        if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
-        if (password !== confirm) { setError('Passwords do not match.'); return; }
+        if (password.length < 6) { setError(copy('resetpw.error_too_short')); return; }
+        if (password !== confirm) { setError(copy('resetpw.error_mismatch')); return; }
 
         setSaving(true);
         const { error } = await supabase.auth.updateUser({ password });
@@ -32,7 +34,7 @@ const ResetPasswordPage = () => {
             setError(error.message);
             setSaving(false);
         } else {
-            setMessage('Password updated! Taking you in…');
+            setMessage(copy('resetpw.success'));
             setTimeout(() => navigate('/dashboard'), 1200);
         }
     };
@@ -44,7 +46,7 @@ const ResetPasswordPage = () => {
                     <Link to="/">
                         <img src={import.meta.env.BASE_URL + "logo/Uncoached Logo Primary Lora Font.webp"} alt="Uncoached" className="h-16 mx-auto mb-4" />
                     </Link>
-                    <h1 className="font-display text-3xl text-text-dark">Set a new password</h1>
+                    <h1 className="font-display text-3xl text-text-dark">{copy('resetpw.title')}</h1>
                 </div>
 
                 {error && <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 text-center">{error}</div>}
@@ -52,24 +54,23 @@ const ResetPasswordPage = () => {
 
                 {!ready ? (
                     <p className="text-center text-text-muted">
-                        Open this page from the password-reset link in your email. If you got here by
-                        mistake, <Link to="/signin" className="text-sage hover:underline">go back to sign in</Link>.
+                        {copy('resetpw.not_ready')}{' '}<Link to="/signin" className="text-sage hover:underline">{copy('resetpw.not_ready_link')}</Link>.
                     </p>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <input
-                            type="password" placeholder="New password" value={password}
+                            type="password" placeholder={copy('resetpw.password_placeholder')} value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full px-6 py-3 bg-white border border-clay/30 rounded-full focus:outline-none focus:ring-2 focus:ring-sage/50" required
                         />
                         <input
-                            type="password" placeholder="Confirm new password" value={confirm}
+                            type="password" placeholder={copy('resetpw.confirm_placeholder')} value={confirm}
                             onChange={(e) => setConfirm(e.target.value)}
                             className="w-full px-6 py-3 bg-white border border-clay/30 rounded-full focus:outline-none focus:ring-2 focus:ring-sage/50" required
                         />
                         <button type="submit" disabled={saving}
                             className="w-full px-6 py-3 bg-sage text-bone rounded-full font-medium hover:bg-sage/90 transition-all disabled:opacity-50">
-                            {saving ? 'Saving…' : 'Update password'}
+                            {saving ? copy('resetpw.submit_busy') : copy('resetpw.submit')}
                         </button>
                     </form>
                 )}
