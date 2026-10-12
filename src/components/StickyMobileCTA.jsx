@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCopy } from '../context/SiteCopyContext';
 
 // A calm, dismissible-feeling call to action pinned to the bottom on phones,
 // for logged-out visitors on the public pages. Hidden on desktop and for
@@ -7,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 const HIDE_ON = ['/signin', '/signup', '/pricing', '/redeem', '/reset-password'];
 
 const StickyMobileCTA = () => {
+    const copy = useCopy();
     const { user, loading } = useAuth();
     const { pathname } = useLocation();
 
@@ -19,7 +21,7 @@ const StickyMobileCTA = () => {
                 to="/pricing"
                 className="block text-center w-full py-3 rounded-full bg-sage text-bone font-medium shadow-sm hover:bg-sage/90 transition-all"
             >
-                Start your journey
+                {copy('stickycta.button')}
             </Link>
         </div>
     );

@@ -128,21 +128,21 @@ const DashboardPage = () => {
                     </div>
                     {/* Hover tooltip */}
                     <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-3 py-1 bg-charcoal/80 text-bone text-xs rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm pointer-events-none">
-                        Edit Profile
+                        {copy('dashboard.profile_tooltip')}
                     </div>
                 </Link>
 
                 {/* Billing & invoices */}
                 <Link to="/dashboard/billing" className="mb-6 -mt-2 text-sm text-text-muted hover:text-text-dark underline underline-offset-4 transition-colors">
-                    Billing &amp; invoices
+                    {copy('dashboard.billing_link')}
                 </Link>
 
                 {/* Welcome */}
                 <h1 className="font-display text-4xl md:text-5xl text-text-dark text-center mb-2">
-                    Welcome, {displayName}
+                    {copy('dashboard.greeting')} {displayName}
                 </h1>
                 <p className="text-text-muted text-center mb-8">
-                    It's good to have you here.
+                    {copy('dashboard.subtitle')}
                 </p>
 
                 {/* Search Bar */}
@@ -154,7 +154,7 @@ const DashboardPage = () => {
                             onChange={(e) => setQuery(e.target.value)}
                             onFocus={() => setSearchFocused(true)}
                             onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
-                            placeholder="Search the portal..."
+                            placeholder={copy('dashboard.search_placeholder')}
                             className="w-full px-6 py-4 pl-12 bg-white/80 backdrop-blur-sm border border-clay/30 rounded-full focus:outline-none focus:ring-2 focus:ring-sage/50 text-text-dark"
                         />
                         <svg
@@ -238,7 +238,7 @@ const DashboardPage = () => {
                     onClick={handleSignOut}
                     className="mt-12 px-8 py-3 bg-sage text-bone rounded-full font-medium shadow-sm hover:bg-sage/90 transition-all duration-300 text-sm tracking-wide"
                 >
-                    Sign Out
+                    {copy('dashboard.sign_out')}
                 </button>
             </div>
         </div>

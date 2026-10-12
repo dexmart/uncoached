@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useCopy } from '../../context/SiteCopyContext';
 import { supabase } from '../../lib/supabase';
 import { Link } from 'react-router-dom';
 
 const ProfilePage = () => {
     const { user, updateProfile } = useAuth();
+    const copy = useCopy();
     const [displayName, setDisplayName] = useState('');
     const [isSaving, setIsSaving] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
@@ -106,9 +108,9 @@ const ProfilePage = () => {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    Back to Dashboard
+                    {copy('profile.back')}
                 </Link>
-                <div className="font-display text-lg text-text-dark">Profile Settings</div>
+                <div className="font-display text-lg text-text-dark">{copy('profile.nav_title')}</div>
                 <div className="w-24"></div> {/* Spacer for centering */}
             </nav>
 
@@ -137,7 +139,7 @@ const ProfilePage = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             <span className="text-xs font-medium">
-                                {isUploading ? 'Uploading...' : 'Change'}
+                                {isUploading ? 'Uploading...' : copy('profile.photo_change')}
                             </span>
                             <input
                                 type="file"
@@ -150,7 +152,7 @@ const ProfilePage = () => {
                         </label>
                     </div>
 
-                    <p className="text-sm text-text-muted">Click the image to change your profile picture.</p>
+                    <p className="text-sm text-text-muted">{copy('profile.photo_help')}</p>
                 </div>
 
                 {/* Status Messages */}
@@ -168,11 +170,11 @@ const ProfilePage = () => {
 
                 {/* Profile Details Form */}
                 <form onSubmit={handleSaveProfile} className="w-full bg-white p-8 rounded-3xl shadow-sm border border-clay/10">
-                    <h2 className="font-display text-2xl text-text-dark mb-6">Personal Details</h2>
+                    <h2 className="font-display text-2xl text-text-dark mb-6">{copy('profile.details_heading')}</h2>
 
                     <div className="mb-6">
                         <label htmlFor="displayName" className="block text-sm font-medium text-text-muted mb-2">
-                            Display Name
+                            {copy('profile.name_label')}
                         </label>
                         <input
                             type="text"
@@ -180,17 +182,17 @@ const ProfilePage = () => {
                             value={displayName}
                             onChange={(e) => setDisplayName(e.target.value)}
                             className="w-full px-4 py-3 bg-bone/30 border border-clay/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-sage/50 text-text-dark transition-all"
-                            placeholder="How should we call you?"
+                            placeholder={copy('profile.name_placeholder')}
                             required
                         />
                         <p className="mt-2 text-xs text-text-muted">
-                            This is the name that will appear on your dashboard.
+                            {copy('profile.name_help')}
                         </p>
                     </div>
 
                     <div className="mb-8">
                         <label className="block text-sm font-medium text-text-muted mb-2">
-                            Email Address
+                            {copy('profile.email_label')}
                         </label>
                         <input
                             type="email"
@@ -199,7 +201,7 @@ const ProfilePage = () => {
                             className="w-full px-4 py-3 bg-clay/5 border border-clay/20 rounded-xl text-text-muted cursor-not-allowed"
                         />
                         <p className="mt-2 text-xs text-text-muted">
-                            Your email address cannot be changed from this page.
+                            {copy('profile.email_help')}
                         </p>
                     </div>
 
@@ -209,22 +211,21 @@ const ProfilePage = () => {
                         className={`w-full py-4 rounded-xl font-medium text-white transition-all duration-300 shadow-sm
                             ${isSaving ? 'bg-sage/70 cursor-not-allowed' : 'bg-sage hover:bg-sage/90 hover:shadow-md'}`}
                     >
-                        {isSaving ? 'Saving Changes...' : 'Save Profile'}
+                        {isSaving ? 'Saving Changes...' : copy('profile.save_button')}
                     </button>
                 </form>
 
                 {/* Membership & Billing */}
                 <div className="w-full mt-6 bg-white p-8 rounded-3xl shadow-sm border border-clay/10">
-                    <h2 className="font-display text-2xl text-text-dark mb-2">Managing Your Subscription</h2>
+                    <h2 className="font-display text-2xl text-text-dark mb-2">{copy('profile.billing_heading')}</h2>
                     <p className="text-sm text-text-muted mb-6 leading-relaxed">
-                        See your plan, download invoices for memberships and any add-ons, update your payment
-                        method, or cancel — all in one place.
+                        {copy('profile.billing_body')}
                     </p>
                     <Link
                         to="/dashboard/billing"
                         className="block text-center w-full py-4 rounded-xl font-medium transition-all duration-300 shadow-sm bg-charcoal text-bone hover:bg-charcoal/90"
                     >
-                        Billing &amp; invoices
+                        {copy('profile.billing_button')}
                     </Link>
                 </div>
 

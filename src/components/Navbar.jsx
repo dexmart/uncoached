@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ContactLink from './ContactLink';
+import { useCopy } from '../context/SiteCopyContext';
 
+// Each label is read from Website Text by its copy key; the routes stay here.
 const NAV_LINKS = [
-    { label: 'Home', to: '/' },
-    { label: 'About', to: '/about' },
-    { label: 'Practitioners', to: '/practitioners' },
-    { label: 'Gift', to: '/gift' },
-    { label: 'Contact Us', contact: true },
+    { copyKey: 'nav.link_home', to: '/' },
+    { copyKey: 'nav.link_about', to: '/about' },
+    { copyKey: 'nav.link_practitioners', to: '/practitioners' },
+    { copyKey: 'nav.link_gift', to: '/gift' },
+    { copyKey: 'nav.link_contact', contact: true },
 ];
 
 const Navbar = () => {
+    const copy = useCopy();
     const [isScrolled, setIsScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -36,10 +39,10 @@ const Navbar = () => {
 
     const renderLink = (link, className, onClick) =>
         link.contact ? (
-            <ContactLink key={link.label} className={className} label={link.label} onNavigate={onClick} />
+            <ContactLink key={link.copyKey} className={className} label={copy(link.copyKey)} onNavigate={onClick} />
         ) : (
-            <Link key={link.label} className={className} to={link.to} onClick={onClick}>
-                {link.label}
+            <Link key={link.copyKey} className={className} to={link.to} onClick={onClick}>
+                {copy(link.copyKey)}
             </Link>
         );
 
@@ -66,7 +69,7 @@ const Navbar = () => {
                     className="hidden md:block px-6 py-2 rounded-full bg-sage text-bone hover:bg-sage/90 transition-all duration-300 text-sm font-medium shadow-sm"
                     to="/signin"
                 >
-                    Sign In
+                    {copy('nav.signin')}
                 </Link>
 
                 <button
@@ -100,7 +103,7 @@ const Navbar = () => {
                         onClick={() => setMenuOpen(false)}
                         className="mt-4 text-center px-6 py-3 rounded-full bg-sage text-bone hover:bg-sage/90 transition-all text-sm font-medium"
                     >
-                        Sign In
+                        {copy('nav.signin')}
                     </Link>
                 </div>
             </div>

@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useCopy } from '../../context/SiteCopyContext';
 
 const GuidedShiftPlayerPage = () => {
     const { id } = useParams();
+    const copy = useCopy();
 
     const [shift, setShift] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -195,7 +197,7 @@ const GuidedShiftPlayerPage = () => {
                         <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                         </svg>
-                        <span className="text-sm font-medium tracking-wide">Back to Guided Shifts</span>
+                        <span className="text-sm font-medium tracking-wide">{copy('shiftplayer.back_link')}</span>
                     </Link>
                 </div>
 
@@ -269,7 +271,7 @@ const GuidedShiftPlayerPage = () => {
 
                     {shift.audio_url && !audioReady && (
                         <p className="text-center text-[12px] text-[#8C857A] italic -mt-4 mb-8">
-                            Audio may take a moment to load…
+                            {copy('shiftplayer.player.loading_note')}
                         </p>
                     )}
 
@@ -281,7 +283,7 @@ const GuidedShiftPlayerPage = () => {
                             <div className="flex items-center gap-4 mb-5">
                                 <div className="h-px bg-[#D6C7B8]/50 flex-1"></div>
                                 <h3 className="text-[13px] uppercase tracking-[0.2em] text-[#8F6A3D] font-bold text-center">
-                                    Use This When
+                                    {copy('shiftplayer.use_when.title')}
                                 </h3>
                                 <div className="h-px bg-[#D6C7B8]/50 flex-1"></div>
                             </div>
@@ -320,10 +322,10 @@ const GuidedShiftPlayerPage = () => {
                             <div className="absolute -top-16 -right-16 w-40 h-40 bg-[#3F5D4D]/5 rounded-full blur-3xl pointer-events-none"></div>
 
                             <h4 className="text-[13px] uppercase tracking-[0.2em] text-[#3F5D4D] font-bold mb-1 text-center">
-                                Field Integration Prompt
+                                {copy('shiftplayer.field.title')}
                             </h4>
                             <p className="text-[12px] text-[#5E6A65] italic mb-5 text-center">
-                                (copy and paste into Field)
+                                {copy('shiftplayer.field.note')}
                             </p>
 
                             <div className="text-[#1F2422]/80 text-[15px] leading-[1.8] whitespace-pre-line">
@@ -352,7 +354,7 @@ const GuidedShiftPlayerPage = () => {
                                     </div>
 
                                     <h4 className="text-[12px] uppercase tracking-[0.2em] text-[#8F6A3D] font-bold mb-3 text-center">
-                                        Science Corner
+                                        {copy('shiftplayer.corners.science_title')}
                                     </h4>
                                     <p className="text-[#1F2422]/75 text-[14px] leading-[1.7]">
                                         {shift.science_text}
@@ -361,7 +363,7 @@ const GuidedShiftPlayerPage = () => {
                                         <>
                                             <div className="w-8 h-px bg-[#D6C7B8]/50 mt-4 mb-3"></div>
                                             <p className="text-[#8C857A] text-[11px] italic">
-                                                Source: {shift.science_source}
+                                                {copy('shiftplayer.corners.source_label')} {shift.science_source}
                                             </p>
                                         </>
                                     )}
@@ -382,7 +384,7 @@ const GuidedShiftPlayerPage = () => {
                                     </div>
 
                                     <h4 className="text-[12px] uppercase tracking-[0.2em] text-[#8F6A3D] font-bold mb-3 text-center">
-                                        Spiritual Corner
+                                        {copy('shiftplayer.corners.spiritual_title')}
                                     </h4>
                                     <p className="text-[#1F2422]/75 text-[14px] leading-[1.7]">
                                         {shift.spiritual_text}
@@ -391,7 +393,7 @@ const GuidedShiftPlayerPage = () => {
                                         <>
                                             <div className="w-8 h-px bg-[#D6C7B8]/50 mt-4 mb-3"></div>
                                             <p className="text-[#8C857A] text-[11px] italic">
-                                                Source: {shift.spiritual_source}
+                                                {copy('shiftplayer.corners.source_label')} {shift.spiritual_source}
                                             </p>
                                         </>
                                     )}
@@ -404,7 +406,7 @@ const GuidedShiftPlayerPage = () => {
                     {shift.audio_url && (
                         <div className="text-center pt-4 pb-8">
                             <p className="text-[#8C857A] text-[13px] italic">
-                                {categoryTitle && `Part of the ${categoryTitle}`}
+                                {categoryTitle && `${copy('shiftplayer.footer.part_of')} ${categoryTitle}`}
                             </p>
                         </div>
                     )}

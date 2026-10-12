@@ -678,6 +678,160 @@ For privacy concerns, email us at hello@uncoached.space.`
     { key: 'voicenotes.hero.subtitle', group: 'Voice Notes Page — Intro', label: 'Subheadline', multiline: true, text: 'Remember who you are. Personal messages for when you need to hear it.' },
     { key: 'voicenotes.hero.body', group: 'Voice Notes Page — Intro', label: 'Paragraph', multiline: true, text: 'These are like voice memos from a friend — short, personal recordings for specific moments. Listen when you need a reminder, a perspective shift, or just to feel less alone.' },
     { key: 'voicenotes.hero.note', group: 'Voice Notes Page — Intro', label: 'Italic closing line', multiline: true, text: 'Press play and let yourself be held for a moment.' },
+
+    // ── Site-wide · Top Menu ────────────────────────────────────────────
+    { key: 'nav.link_home', group: 'Site-wide — Top Menu', label: 'Menu link: Home', text: 'Home' },
+    { key: 'nav.link_about', group: 'Site-wide — Top Menu', label: 'Menu link: About', text: 'About' },
+    { key: 'nav.link_practitioners', group: 'Site-wide — Top Menu', label: 'Menu link: Practitioners', text: 'Practitioners' },
+    { key: 'nav.link_gift', group: 'Site-wide — Top Menu', label: 'Menu link: Gift', text: 'Gift' },
+    { key: 'nav.link_contact', group: 'Site-wide — Top Menu', label: 'Menu link: Contact', text: 'Contact Us' },
+    { key: 'nav.signin', group: 'Site-wide — Top Menu', label: 'Sign In button', text: 'Sign In', help: 'Shows on the desktop menu and in the phone menu.' },
+
+    // ── Site-wide · Footer ──────────────────────────────────────────────
+    { key: 'footer.copyright', group: 'Site-wide — Footer', label: 'Copyright line', text: '© 2026 Emergyng Energy Inc. All rights reserved.' },
+    { key: 'footer.link_terms', group: 'Site-wide — Footer', label: 'Link: Terms', text: 'Terms' },
+    { key: 'footer.link_privacy', group: 'Site-wide — Footer', label: 'Link: Privacy', text: 'Privacy' },
+    { key: 'footer.link_billing', group: 'Site-wide — Footer', label: 'Link: Billing & Refunds', text: 'Billing & Refunds' },
+
+    // ── Site-wide · Mobile Button ───────────────────────────────────────
+    { key: 'stickycta.button', group: 'Site-wide — Mobile Button', label: 'Button pinned to the bottom on phones', text: 'Start your journey', help: 'Only visitors who are not signed in see this button.' },
+
+    // ── Page Not Found ──────────────────────────────────────────────────
+    { key: 'notfound.code', group: 'Page Not Found — Message', label: 'Big number', text: '404' },
+    { key: 'notfound.title', group: 'Page Not Found — Message', label: 'Heading', text: 'This page wandered off' },
+    { key: 'notfound.body', group: 'Page Not Found — Message', label: 'Text', multiline: true, text: "The page you were looking for isn't here. Let's get you back to a calm place." },
+    { key: 'notfound.cta_home', group: 'Page Not Found — Message', label: 'Button: home', text: 'Back home' },
+    { key: 'notfound.cta_membership', group: 'Page Not Found — Message', label: 'Button: membership', text: 'See membership' },
+
+    // ── Sign In & Sign Up · Sign In ─────────────────────────────────────
+    { key: 'signin.title', group: 'Sign In & Sign Up — Sign In', label: 'Heading', text: 'Welcome back' },
+    { key: 'signin.subtitle', group: 'Sign In & Sign Up — Sign In', label: 'Line under the heading', text: 'Sign in to continue your journey' },
+    { key: 'signin.google_button', group: 'Sign In & Sign Up — Sign In', label: 'Google button', text: 'Continue with Google' },
+    { key: 'signin.divider', group: 'Sign In & Sign Up — Sign In', label: 'Divider text (between Google and email)', text: 'or sign in with email' },
+    { key: 'signin.email_placeholder', group: 'Sign In & Sign Up — Sign In', label: 'Email box (grey hint text)', text: 'Email address' },
+    { key: 'signin.password_placeholder', group: 'Sign In & Sign Up — Sign In', label: 'Password box (grey hint text)', text: 'Password' },
+    { key: 'signin.submit', group: 'Sign In & Sign Up — Sign In', label: 'Sign-in button', text: 'Sign In' },
+    { key: 'signin.submit_busy', group: 'Sign In & Sign Up — Sign In', label: 'Sign-in button (while it works)', text: 'Signing in...' },
+    { key: 'signin.forgot_link', group: 'Sign In & Sign Up — Sign In', label: 'Forgot password link', text: 'Forgot your password?' },
+    { key: 'signin.forgot_need_email', group: 'Sign In & Sign Up — Sign In', label: 'Message when Forgot password is clicked with no email', text: 'Enter your email above first, then click "Forgot your password?"' },
+    { key: 'signin.signup_prompt', group: 'Sign In & Sign Up — Sign In', label: 'Sign-up line (before the link)', text: "Don't have an account?" },
+    { key: 'signin.signup_link', group: 'Sign In & Sign Up — Sign In', label: 'Sign-up link', text: 'Sign up' },
+
+    // ── Sign In & Sign Up · Sign Up ─────────────────────────────────────
+    { key: 'signup.title', group: 'Sign In & Sign Up — Sign Up', label: 'Heading', text: 'Create your account' },
+    { key: 'signup.subtitle', group: 'Sign In & Sign Up — Sign Up', label: 'Line under the heading', text: 'Begin your journey to self-connection' },
+    { key: 'signup.success_plan', group: 'Sign In & Sign Up — Sign Up', label: 'Success message', multiline: true, text: 'Account created! Check your email to confirm, then choose a plan.' },
+    { key: 'signup.success_gift', group: 'Sign In & Sign Up — Sign Up', label: 'Success message (when they came with a gift card)', multiline: true, text: 'Account created! Check your email to confirm, then redeem your gift card.' },
+    { key: 'signup.error_exists', group: 'Sign In & Sign Up — Sign Up', label: 'Message when the email already has an account', multiline: true, text: 'An account with this email already exists. Please sign in instead.' },
+    { key: 'signup.google_button', group: 'Sign In & Sign Up — Sign Up', label: 'Google button', text: 'Continue with Google' },
+    { key: 'signup.divider', group: 'Sign In & Sign Up — Sign Up', label: 'Divider text (between Google and email)', text: 'or sign up with email' },
+    { key: 'signup.name_placeholder', group: 'Sign In & Sign Up — Sign Up', label: 'Name box (grey hint text)', text: 'Your name' },
+    { key: 'signup.email_placeholder', group: 'Sign In & Sign Up — Sign Up', label: 'Email box (grey hint text)', text: 'Email address' },
+    { key: 'signup.password_placeholder', group: 'Sign In & Sign Up — Sign Up', label: 'Password box (grey hint text)', text: 'Password (min 6 characters)' },
+    { key: 'signup.submit', group: 'Sign In & Sign Up — Sign Up', label: 'Create-account button', text: 'Create Account' },
+    { key: 'signup.submit_busy', group: 'Sign In & Sign Up — Sign Up', label: 'Create-account button (while it works)', text: 'Creating account...' },
+    { key: 'signup.signin_prompt', group: 'Sign In & Sign Up — Sign Up', label: 'Sign-in line (before the link)', text: 'Already have an account?' },
+    { key: 'signup.signin_link', group: 'Sign In & Sign Up — Sign Up', label: 'Sign-in link', text: 'Sign in' },
+
+    // ── Sign In & Sign Up · Reset Password ──────────────────────────────
+    { key: 'resetpw.title', group: 'Sign In & Sign Up — Reset Password', label: 'Heading', text: 'Set a new password' },
+    { key: 'resetpw.not_ready', group: 'Sign In & Sign Up — Reset Password', label: 'Note when the page is opened without the email link (before the link)', multiline: true, text: 'Open this page from the password-reset link in your email. If you got here by mistake,' },
+    { key: 'resetpw.not_ready_link', group: 'Sign In & Sign Up — Reset Password', label: 'Note link (back to sign in)', text: 'go back to sign in' },
+    { key: 'resetpw.password_placeholder', group: 'Sign In & Sign Up — Reset Password', label: 'New password box (grey hint text)', text: 'New password' },
+    { key: 'resetpw.confirm_placeholder', group: 'Sign In & Sign Up — Reset Password', label: 'Confirm password box (grey hint text)', text: 'Confirm new password' },
+    { key: 'resetpw.submit', group: 'Sign In & Sign Up — Reset Password', label: 'Save button', text: 'Update password' },
+    { key: 'resetpw.submit_busy', group: 'Sign In & Sign Up — Reset Password', label: 'Save button (while it works)', text: 'Saving…' },
+    { key: 'resetpw.error_too_short', group: 'Sign In & Sign Up — Reset Password', label: 'Message when the password is too short', text: 'Password must be at least 6 characters.' },
+    { key: 'resetpw.error_mismatch', group: 'Sign In & Sign Up — Reset Password', label: 'Message when the two passwords differ', text: 'Passwords do not match.' },
+    { key: 'resetpw.success', group: 'Sign In & Sign Up — Reset Password', label: 'Success message', text: 'Password updated! Taking you in…' },
+
+    // ── Sign In & Sign Up · Email Link Page ─────────────────────────────
+    { key: 'authconfirm.loading', group: 'Sign In & Sign Up — Email Link Page', label: 'Waiting text (while the link is checked)', text: 'One moment…' },
+    { key: 'authconfirm.error_title', group: 'Sign In & Sign Up — Email Link Page', label: 'Heading when the link fails', text: "That link didn't work" },
+    { key: 'authconfirm.error_incomplete', group: 'Sign In & Sign Up — Email Link Page', label: 'Explanation: link is incomplete', multiline: true, text: 'This link is incomplete. Please use the button in the email again.' },
+    { key: 'authconfirm.error_expired', group: 'Sign In & Sign Up — Email Link Page', label: 'Explanation: link expired or already used', multiline: true, text: 'This link has expired or has already been used. Links only work once, for a short time.' },
+    { key: 'authconfirm.signin_button', group: 'Sign In & Sign Up — Email Link Page', label: 'Sign-in button', text: 'Sign in' },
+    { key: 'authconfirm.new_link_button', group: 'Sign In & Sign Up — Email Link Page', label: 'New-link button', text: 'Send a new link' },
+
+    // ── Clarity Card Page · Card ────────────────────────────────────────
+    { key: 'carddetail.back', group: 'Clarity Card Page — Card', label: 'Back link (top left)', text: "Back to Deck" },
+    { key: 'carddetail.badge', group: 'Clarity Card Page — Card', label: 'Small label above the card title', text: "Clarity Card" },
+    { key: 'carddetail.fallback_body', group: 'Clarity Card Page — Card', label: 'Text shown when a card has no body text', multiline: true, text: "Take a few moments to journal or reflect on this card. Let whatever comes up simply be there without judgment." },
+
+    // ── Clarity Card Page · Printable Version ───────────────────────────
+    { key: 'carddetail.print_heading', group: 'Clarity Card Page — Printable Version', label: 'Heading', text: "Printable Version" },
+    { key: 'carddetail.print_body', group: 'Clarity Card Page — Printable Version', label: 'Text under heading', multiline: true, text: "Download the beautifully designed PDF to print or save to your journal." },
+    { key: 'carddetail.download_button', group: 'Clarity Card Page — Printable Version', label: 'Download button', text: "Download PDF" },
+    { key: 'carddetail.no_pdf', group: 'Clarity Card Page — Printable Version', label: 'Greyed-out button when no PDF is uploaded', text: "PDF Not Uploaded Yet" },
+
+    // ── Members Area · Billing ──────────────────────────────────────────
+    { key: 'memberbilling.back', group: 'Members Area — Billing', label: 'Back link (top bar)', text: "Back to your space" },
+    { key: 'memberbilling.title', group: 'Members Area — Billing', label: 'Page title', text: "Billing & invoices" },
+    { key: 'memberbilling.intro', group: 'Members Area — Billing', label: 'Intro line', multiline: true, text: "Your membership, your receipts, and where to make changes." },
+    { key: 'memberbilling.membership_heading', group: 'Members Area — Billing', label: 'Membership box heading', text: "Your membership" },
+    { key: 'memberbilling.plan_label', group: 'Members Area — Billing', label: 'Label: plan', text: "Plan" },
+    { key: 'memberbilling.status_label', group: 'Members Area — Billing', label: 'Label: status', text: "Status" },
+    { key: 'memberbilling.renews_label', group: 'Members Area — Billing', label: 'Label: renewal date (paid plans)', text: "Renews on" },
+    { key: 'memberbilling.until_label', group: 'Members Area — Billing', label: 'Label: end date (gift memberships)', text: "Access until" },
+    { key: 'memberbilling.none_text', group: 'Members Area — Billing', label: 'Text when there is no membership', multiline: true, text: "You don't have an active membership right now." },
+    { key: 'memberbilling.none_cta', group: 'Members Area — Billing', label: 'Button when there is no membership', text: "Choose a plan" },
+    { key: 'memberbilling.gift_note', group: 'Members Area — Billing', label: 'Note shown for gift memberships', multiline: true, text: "This is a gift membership. It ends by itself on the date above, with no renewal and no charge. If you'd like to continue afterwards, you can choose a plan any time." },
+    { key: 'memberbilling.invoices_heading', group: 'Members Area — Billing', label: 'Invoices box heading', text: "Invoices & payment" },
+    { key: 'memberbilling.invoices_body', group: 'Members Area — Billing', label: 'Invoices box text', multiline: true, text: "View and download every receipt, including any one-time high-level prompt unlocks, update your payment method, or cancel your membership. If you cancel, you keep full access until the end of the period you've already paid for." },
+    { key: 'memberbilling.portal_button', group: 'Members Area — Billing', label: 'Billing portal button', text: "Open billing portal" },
+    { key: 'memberbilling.stripe_note', group: 'Members Area — Billing', label: 'Small note under button', text: "Secure billing powered by Stripe." },
+
+    // ── Members Area · Profile ──────────────────────────────────────────
+    { key: 'profile.back', group: 'Members Area — Profile', label: 'Back link (top bar)', text: "Back to Dashboard" },
+    { key: 'profile.nav_title', group: 'Members Area — Profile', label: 'Top bar title', text: "Profile Settings" },
+    { key: 'profile.photo_change', group: 'Members Area — Profile', label: 'Word on the photo when you hover', text: "Change" },
+    { key: 'profile.photo_help', group: 'Members Area — Profile', label: 'Line under the photo', text: "Click the image to change your profile picture." },
+    { key: 'profile.details_heading', group: 'Members Area — Profile', label: 'Details box heading', text: "Personal Details" },
+    { key: 'profile.name_label', group: 'Members Area — Profile', label: 'Name field label', text: "Display Name" },
+    { key: 'profile.name_placeholder', group: 'Members Area — Profile', label: 'Name field placeholder (grey text in the empty box)', text: "How should we call you?" },
+    { key: 'profile.name_help', group: 'Members Area — Profile', label: 'Line under the name field', text: "This is the name that will appear on your dashboard." },
+    { key: 'profile.email_label', group: 'Members Area — Profile', label: 'Email field label', text: "Email Address" },
+    { key: 'profile.email_help', group: 'Members Area — Profile', label: 'Line under the email field', text: "Your email address cannot be changed from this page." },
+    { key: 'profile.save_button', group: 'Members Area — Profile', label: 'Save button', text: "Save Profile" },
+    { key: 'profile.billing_heading', group: 'Members Area — Profile', label: 'Subscription box heading', text: "Managing Your Subscription" },
+    { key: 'profile.billing_body', group: 'Members Area — Profile', label: 'Subscription box text', multiline: true, text: "See your plan, download invoices for memberships and any add-ons, update your payment method, or cancel — all in one place." },
+    { key: 'profile.billing_button', group: 'Members Area — Profile', label: 'Subscription box button', text: "Billing & invoices" },
+
+    // ── Members Area · Dashboard Welcome ────────────────────────────────
+    { key: 'dashboard.profile_tooltip', group: 'Members Area — Dashboard Welcome', label: 'Tooltip on the profile photo', text: "Edit Profile" },
+    { key: 'dashboard.billing_link', group: 'Members Area — Dashboard Welcome', label: 'Billing link under the photo', text: "Billing & invoices" },
+    { key: 'dashboard.greeting', group: 'Members Area — Dashboard Welcome', label: "Greeting (the member's name follows it)", text: "Welcome," },
+    { key: 'dashboard.subtitle', group: 'Members Area — Dashboard Welcome', label: 'Line under the greeting', text: "It's good to have you here." },
+    { key: 'dashboard.search_placeholder', group: 'Members Area — Dashboard Welcome', label: 'Search box placeholder', text: "Search the portal..." },
+
+    // ── Members Area · Dashboard Sign Out ───────────────────────────────
+    { key: 'dashboard.sign_out', group: 'Members Area — Dashboard Sign Out', label: 'Sign out button', text: "Sign Out" },
+
+    // ── Guided Shift Player: Top ──
+    { key: 'shiftplayer.back_link', group: 'Guided Shift Player — Top', label: 'Back link (top left)', text: "Back to Guided Shifts" },
+    // ── Guided Shift Player: Audio Player ──
+    { key: 'shiftplayer.player.loading_note', group: 'Guided Shift Player — Audio Player', label: 'Note under the player while the audio loads', text: "Audio may take a moment to load…" },
+    // ── Guided Shift Player: Use This When ──
+    { key: 'shiftplayer.use_when.title', group: 'Guided Shift Player — Use This When', label: 'Heading above the list', text: "Use This When" },
+    // ── Guided Shift Player: Field Integration Prompt ──
+    { key: 'shiftplayer.field.title', group: 'Guided Shift Player — Field Integration Prompt', label: 'Box heading', text: "Field Integration Prompt" },
+    { key: 'shiftplayer.field.note', group: 'Guided Shift Player — Field Integration Prompt', label: 'Small note under the heading', text: "(copy and paste into Field)" },
+    // ── Guided Shift Player: Science & Spiritual Corners ──
+    { key: 'shiftplayer.corners.science_title', group: 'Guided Shift Player — Science & Spiritual Corners', label: 'Science box heading', text: "Science Corner" },
+    { key: 'shiftplayer.corners.spiritual_title', group: 'Guided Shift Player — Science & Spiritual Corners', label: 'Spiritual box heading', text: "Spiritual Corner" },
+    { key: 'shiftplayer.corners.source_label', group: 'Guided Shift Player — Science & Spiritual Corners', label: 'Word before each source', help: 'The source itself comes from each shift.', text: "Source:" },
+    // ── Guided Shift Player: Bottom ──
+    { key: 'shiftplayer.footer.part_of', group: 'Guided Shift Player — Bottom', label: 'Words before the family name at the bottom', help: 'The family name is added after these words.', text: "Part of the" },
+    // ── Audio Breath Player: Top ──
+    { key: 'breathplayer.back_link', group: 'Audio Breath Player — Top', label: 'Back link (top left)', text: "Back to Audio Breaths" },
+    // ── Audio Breath Player: Play Button ──
+    { key: 'breathplayer.player.listen', group: 'Audio Breath Player — Play Button', label: 'Play button text', text: "Listen" },
+    // ── Audio Breath Player: Use This When ──
+    { key: 'breathplayer.use_when.title', group: 'Audio Breath Player — Use This When', label: 'Heading above the list', text: "Use this when:" },
+    // ── Audio Breath Player: Science & Spiritual Corners ──
+    { key: 'breathplayer.corners.science_title', group: 'Audio Breath Player — Science & Spiritual Corners', label: 'Science box heading', text: "Science Corner" },
+    { key: 'breathplayer.corners.spiritual_title', group: 'Audio Breath Player — Science & Spiritual Corners', label: 'Spiritual box heading', text: "Spiritual Corner" },
+    { key: 'breathplayer.corners.source_label', group: 'Audio Breath Player — Science & Spiritual Corners', label: 'Word before each source', help: 'The source itself comes from each breath.', text: "Source:" },
 ];
 
 /** Ordered list of group names, for the admin screen. */
