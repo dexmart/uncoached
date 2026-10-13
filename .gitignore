@@ -29,3 +29,6 @@ server/.env
 bulk-upload-audio.mjs
 bulk-upload-retry.mjs
 check-audio.mjs
+
+# Local tool folders
+.claude/
