@@ -13,6 +13,15 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: "2024-06-20"
 });
 
+// When the current period ends, as an ISO date (or null). Newer Stripe API
+// versions (2025-03-31 "basil" onwards) moved current_period_end from the
+// subscription onto each subscription item, and webhook payloads follow the
+// endpoint's version, so read whichever one is there.
+function periodEndIso(sub) {
+    const secs = sub?.current_period_end ?? sub?.items?.data?.[0]?.current_period_end;
+    return secs ? new Date(secs * 1000).toISOString() : null;
+}
+
 // Send the member welcome email once per subscription. Called from BOTH the
 // Stripe webhook and the post-checkout check, so a missed webhook can't stop
 // it. The "sent" flag lives on the Stripe subscription itself, so whichever
@@ -93,7 +102,7 @@ router.post(
                         stripe_customer_id: session.customer,
                         status: sub.status,
                         plan: sub.items.data[0]?.price?.nickname || "monthly",
-                        current_period_end: new Date(sub.current_period_end * 1000).toISOString()
+                        current_period_end: periodEndIso(sub)
                     }, { onConflict: "user_id" });
 
                     if (error) {
@@ -114,7 +123,7 @@ router.post(
                     .from("subscriptions")
                     .update({
                         status: sub.status,
-                        current_period_end: new Date(sub.current_period_end * 1000).toISOString()
+                        current_period_end: periodEndIso(sub)
                     })
                     .eq("stripe_subscription_id", sub.id);
 
@@ -353,7 +362,7 @@ router.post("/repair-subscription", async (req, res) => {
             stripe_customer_id: customerId,
             status: sub.status,
             plan: sub.items.data[0]?.price?.nickname || "monthly",
-            current_period_end: new Date(sub.current_period_end * 1000).toISOString()
+            current_period_end: periodEndIso(sub)
         }, { onConflict: "user_id" });
         if (upErr) return res.status(500).json({ error: `Save failed (is the user_id unique constraint added?): ${upErr.message}` });
 
@@ -416,7 +425,7 @@ router.post("/verify-subscription", async (req, res) => {
             stripe_customer_id: customer.id,
             status: sub.status,
             plan: sub.items.data[0]?.price?.nickname || "monthly",
-            current_period_end: new Date(sub.current_period_end * 1000).toISOString()
+            current_period_end: periodEndIso(sub)
         }, { onConflict: "user_id" });
 
         if (error) {
