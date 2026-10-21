@@ -225,6 +225,15 @@ const AdminLayout = () => {
                         >
                             Agreement Records
                         </Link>
+                        <Link
+                            to="/admin/backup"
+                            className={`w-full flex items-center px-4 py-3 rounded-xl transition-colors text-sm font-medium ${isActive('/admin/backup')
+                                ? 'bg-clay/10 text-clay shadow-sm'
+                                : 'text-text-dark/70 hover:bg-clay/10 hover:text-text-dark'
+                                }`}
+                        >
+                            Backup
+                        </Link>
                     </div>
                 </nav>
 

@@ -40,6 +40,7 @@ import AdminVoiceNotesPage from './pages/admin/AdminVoiceNotesPage'
 import AdminPractitionersPage from './pages/admin/AdminPractitionersPage'
 import AdminSiteCopyPage from './pages/admin/AdminSiteCopyPage'
 import AdminAgreementRecordsPage from './pages/admin/AdminAgreementRecordsPage'
+import AdminBackupPage from './pages/admin/AdminBackupPage'
 
 // Member Pages
 import DashboardPage from './pages/member/DashboardPage'
@@ -218,6 +219,7 @@ function App() {
             <Route path="practitioners" element={<AdminPractitionersPage />} />
             <Route path="site-copy" element={<AdminSiteCopyPage />} />
             <Route path="agreement-records" element={<AdminAgreementRecordsPage />} />
+            <Route path="backup" element={<AdminBackupPage />} />
           </Route>
           {/* 404 — any unknown URL */}
           <Route path="*" element={<NotFoundPage />} />
