@@ -138,7 +138,7 @@ export const SITE_COPY_FIELDS = [
 
     // ── Legal pages — whole documents, so sections can be added freely ───
     { key: 'legal.terms.effective', group: 'Legal — Terms of Use', label: 'Effective date line', text: 'Effective: August 2025' },
-    { key: 'legal.terms.version', group: 'Legal — Terms of Use', label: 'Version (recorded when a member accepts)', help: 'Change this whenever the wording changes, e.g. 1.1.', text: '1.0' },
+    { key: 'legal.terms.version', group: 'Legal — Terms of Use', label: 'Version (recorded when a member accepts)', help: 'Changing this asks every member to accept again. Use 1.0, 1.1, and so on. Leave it for small typo fixes.', text: '1.0' },
     {
         key: 'legal.terms.body', group: 'Legal — Terms of Use', label: 'Full document', document: true,
         help: 'Start a line with ## to make it a heading. Leave a blank line between paragraphs.',
@@ -219,7 +219,7 @@ If this agreement changes in a meaningful way, you will be asked to read and acc
 
     // ── Legal · Billing & Refunds ───────────────────────────────────────
     { key: 'legal.billing.effective', group: 'Legal — Billing & Refunds', label: 'Effective date line', text: 'Effective: September 2026' },
-    { key: 'legal.billing.version', group: 'Legal — Billing & Refunds', label: 'Version (recorded when a member accepts)', help: 'Change this whenever the wording changes, e.g. 1.1.', text: '1.0' },
+    { key: 'legal.billing.version', group: 'Legal — Billing & Refunds', label: 'Version (recorded when a member accepts)', help: 'Changing this asks every member to accept again. Use 1.0, 1.1, and so on. Leave it for small typo fixes.', text: '1.0' },
     {
         key: 'legal.billing.body', group: 'Legal — Billing & Refunds', label: 'Full document', document: true,
         help: 'Start a line with ## to make it a heading, or • to make a bullet. Leave a blank line between paragraphs.',
@@ -243,7 +243,7 @@ If you believe a charge was made in error, or you have any billing concern, plea
     },
 
     { key: 'legal.privacy.effective', group: 'Legal — Privacy Policy', label: 'Effective date line', text: 'Effective Date: September 2025' },
-    { key: 'legal.privacy.version', group: 'Legal — Privacy Policy', label: 'Version (recorded when a member accepts)', help: 'Change this whenever the wording changes, e.g. 1.1.', text: '1.0' },
+    { key: 'legal.privacy.version', group: 'Legal — Privacy Policy', label: 'Version (recorded when a member accepts)', help: 'Changing this asks every member to accept again. Use 1.0, 1.1, and so on. Leave it for small typo fixes.', text: '1.0' },
     {
         key: 'legal.privacy.body', group: 'Legal — Privacy Policy', label: 'Full document', document: true,
         help: 'Start a line with ## to make it a heading, or • to make a bullet. Leave a blank line between paragraphs.',

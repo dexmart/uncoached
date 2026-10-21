@@ -9,12 +9,16 @@ import CopyDocument from './CopyDocument';
 // members area, and records exactly which version of each document they
 // accepted (see setup-user-agreement.sql).
 //
-// If Johanna publishes a new User Agreement version, members are asked again
-// and a new record is written; the previous one is kept.
+// If Johanna publishes a new version of ANY of the four documents (User
+// Agreement, Terms, Privacy, Billing), members are asked again and a new record
+// is written; the previous one is kept.
 const AgreementGate = ({ children }) => {
     const { user } = useAuth();
     const copy = useCopy();
     const version = (copy('legal.agreement.version') || '1.0').trim();
+    const termsVersion = (copy('legal.terms.version') || '').trim() || null;
+    const privacyVersion = (copy('legal.privacy.version') || '').trim() || null;
+    const billingVersion = (copy('legal.billing.version') || '').trim() || null;
 
     const [checking, setChecking] = useState(true);
     const [accepted, setAccepted] = useState(false);
@@ -26,12 +30,17 @@ const AgreementGate = ({ children }) => {
         if (!user) return;
         let active = true;
         (async () => {
-            const { data, error: readErr } = await supabase
+            // Accepted = a record matching the current version of all four.
+            const same = (q, col, v) => (v === null ? q.is(col, null) : q.eq(col, v));
+            let query = supabase
                 .from('document_acceptances')
                 .select('id')
                 .eq('user_id', user.id)
-                .eq('user_agreement_version', version)
-                .limit(1);
+                .eq('user_agreement_version', version);
+            query = same(query, 'terms_version', termsVersion);
+            query = same(query, 'privacy_version', privacyVersion);
+            query = same(query, 'billing_version', billingVersion);
+            const { data, error: readErr } = await query.limit(1);
             if (!active) return;
             if (readErr) {
                 // If the table isn't there yet, never lock a paying member out
@@ -44,7 +53,7 @@ const AgreementGate = ({ children }) => {
             setChecking(false);
         })();
         return () => { active = false; };
-    }, [user, version]);
+    }, [user, version, termsVersion, privacyVersion, billingVersion]);
 
     const accept = async () => {
         setSaving(true);
@@ -53,9 +62,9 @@ const AgreementGate = ({ children }) => {
             user_id: user.id,
             accepted: true,
             user_agreement_version: version,
-            terms_version: (copy('legal.terms.version') || '').trim() || null,
-            privacy_version: (copy('legal.privacy.version') || '').trim() || null,
-            billing_version: (copy('legal.billing.version') || '').trim() || null,
+            terms_version: termsVersion,
+            privacy_version: privacyVersion,
+            billing_version: billingVersion,
         });
         if (writeErr) {
             console.error('Could not record acceptance:', writeErr.message);
