@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCopy } from '../../context/SiteCopyContext';
+import { supabase } from '../../lib/supabase';
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -31,7 +32,7 @@ const prettyDate = (iso) => {
 // subscription; everything transactional (invoices, payment method, cancelling)
 // is handled in Stripe's secure Customer Portal, opened from here.
 const BillingPage = () => {
-    const { user, subscription, isSubscribed } = useAuth();
+    const { subscription, isSubscribed } = useAuth();
     const copy = useCopy();
     const [portalLoading, setPortalLoading] = useState(false);
     const [error, setError] = useState('');
@@ -40,10 +41,11 @@ const BillingPage = () => {
         setPortalLoading(true);
         setError('');
         try {
+            const { data: { session } } = await supabase.auth.getSession();
             const res = await fetch(`${API}/stripe/create-portal-session`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userEmail: user.email }),
+                body: JSON.stringify({ accessToken: session?.access_token }),
             });
             const data = await res.json();
             if (data.url) {

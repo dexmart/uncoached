@@ -38,10 +38,11 @@ export const AuthProvider = ({ children }) => {
             // If no active subscription in Supabase, verify directly with Stripe
             if (email) {
                 try {
+                    const { data: { session } } = await supabase.auth.getSession();
                     const response = await fetch(`${import.meta.env.VITE_API_URL}/stripe/verify-subscription`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ userId, userEmail: email })
+                        body: JSON.stringify({ accessToken: session?.access_token })
                     });
                     const result = await response.json();
                     if (result.subscribed) {

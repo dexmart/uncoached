@@ -287,16 +287,27 @@ router.post("/create-prompt-checkout", async (req, res) => {
     }
 });
 
-// Create customer portal session.
-// Accepts a customerId, or resolves the Stripe customer by userEmail.
+// The signed-in member, from their session token. Billing routes must never
+// trust an email or id sent in the body: anyone could send someone else's.
+async function signedInUser(accessToken) {
+    if (!accessToken) return null;
+    const { data: { user }, error } = await supabaseAdmin.auth.getUser(accessToken);
+    return error ? null : user;
+}
+
+// Create customer portal session for the signed-in member only.
+// Uses the customer saved on their subscription, else finds it by their email.
 router.post("/create-portal-session", async (req, res) => {
-    const { customerId, userEmail } = req.body;
-
     try {
-        let custId = customerId;
+        const user = await signedInUser(req.body?.accessToken);
+        if (!user) return res.status(401).json({ error: "Please sign in again." });
 
-        if (!custId && userEmail) {
-            const customers = await stripe.customers.list({ email: userEmail, limit: 1 });
+        const { data: subRow } = await supabaseAdmin
+            .from("subscriptions").select("stripe_customer_id").eq("user_id", user.id).maybeSingle();
+        let custId = subRow?.stripe_customer_id || null;
+
+        if (!custId && user.email) {
+            const customers = await stripe.customers.list({ email: user.email, limit: 1 });
             if (customers.data.length > 0) {
                 custId = customers.data[0].id;
             }
@@ -373,15 +384,16 @@ router.post("/repair-subscription", async (req, res) => {
     }
 });
 
-// Verify subscription status directly from Stripe
+// Verify the signed-in member's subscription directly from Stripe.
+// Identity comes from the JWT, never the body.
 router.post("/verify-subscription", async (req, res) => {
-    const { userId, userEmail } = req.body;
-
-    if (!userId || !userEmail) {
-        return res.status(400).json({ error: "Missing userId or userEmail" });
-    }
-
     try {
+        const user = await signedInUser(req.body?.accessToken);
+        if (!user) return res.status(401).json({ error: "Please sign in again." });
+        const userId = user.id;
+        const userEmail = user.email;
+        if (!userEmail) return res.json({ subscribed: false });
+
         // Search for the customer in Stripe by email
         const customers = await stripe.customers.list({
             email: userEmail,
