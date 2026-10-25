@@ -15,6 +15,56 @@ const COLUMNS = [
     ['id', 'Record ID'],
 ];
 
+const DOC_NAMES = { agreement: 'User Agreement', terms: 'Terms of Use', privacy: 'Privacy Policy', billing: 'Billing & Refunds' };
+
+// Every saved version of each legal document (see setup-legal-history.sql).
+// With a record's version and date, this is the exact wording the member accepted.
+const LegalVersions = () => {
+    const [versions, setVersions] = useState([]);
+    const [open, setOpen] = useState(null);
+
+    useEffect(() => {
+        supabase
+            .from('legal_document_versions')
+            .select('id, doc, version, body, saved_at')
+            .order('saved_at', { ascending: false })
+            .then(({ data }) => setVersions(data || []));
+    }, []);
+
+    if (!versions.length) return null;
+
+    return (
+        <div className="mt-12">
+            <h2 className="font-display text-2xl text-text-dark mb-2">Document wording</h2>
+            <p className="text-text-dark/70 mb-4 max-w-2xl">
+                A copy of each legal document is saved every time its text or version changes in Website Text.
+                Old copies are never changed or deleted.
+            </p>
+            <div className="bg-white rounded-2xl border border-text-dark/10 shadow-sm divide-y divide-text-dark/5">
+                {versions.map((v) => (
+                    <div key={v.id} className="px-4 py-3">
+                        <button
+                            onClick={() => setOpen(open === v.id ? null : v.id)}
+                            className="w-full flex flex-wrap justify-between gap-2 text-left text-sm"
+                        >
+                            <span className="text-text-dark font-medium">{DOC_NAMES[v.doc] || v.doc} · version {v.version || '–'}</span>
+                            <span className="text-text-dark/60">
+                                saved {new Date(v.saved_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
+                                {' · '}{open === v.id ? 'Hide wording' : 'Show wording'}
+                            </span>
+                        </button>
+                        {open === v.id && (
+                            <pre className="mt-3 max-h-96 overflow-y-auto whitespace-pre-wrap font-sans text-sm text-text-dark/80 bg-bone/40 rounded-xl p-4">
+                                {v.body}
+                            </pre>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const csvCell = (v) => {
     const s = String(v ?? '');
     return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
@@ -75,6 +125,7 @@ const AdminAgreementRecordsPage = () => {
                     <h1 className="font-display text-4xl text-text-dark mb-2">Agreement Records</h1>
                     <p className="text-text-dark/70 max-w-2xl">
                         Every time a member accepts the User Agreement, with the version of each document they accepted.
+                        A new acceptance adds a new record; older records stay, even if the member deletes their account.
                         These records can&apos;t be edited or deleted. Download a copy to keep in Google Drive. It opens in Google Sheets.
                     </p>
                 </div>
@@ -131,6 +182,8 @@ const AdminAgreementRecordsPage = () => {
                     </div>
                 </>
             )}
+
+            <LegalVersions />
         </div>
     );
 };

@@ -7,7 +7,7 @@
 import archiver from "archiver";
 
 export const BACKUP_TABLES = [
-    "subscriptions", "user_roles", "document_acceptances", "prompt_purchases",
+    "subscriptions", "user_roles", "document_acceptances", "legal_document_versions", "prompt_purchases",
     "site_copy", "practitioner_applications",
     "guided_shift_categories", "guided_shifts", "audio_families", "audio_breaths",
     "clarity_cards", "pocket_prompt_categories", "pocket_prompts",

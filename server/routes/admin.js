@@ -27,7 +27,7 @@ router.post("/acceptances", async (req, res) => {
 
         const { data: rows, error } = await supabaseAdmin
             .from("document_acceptances")
-            .select("id, user_id, accepted, accepted_at, user_agreement_version, terms_version, privacy_version, billing_version")
+            .select("id, user_id, email, accepted, accepted_at, user_agreement_version, terms_version, privacy_version, billing_version")
             .order("accepted_at", { ascending: false })
             .limit(5000);
         if (error) return res.status(500).json({ error: error.message });
@@ -41,7 +41,11 @@ router.post("/acceptances", async (req, res) => {
         }
 
         res.json({
-            records: (rows || []).map((r) => ({ ...r, email: emails.get(r.user_id) || "(account deleted)" })),
+            // The email saved on the record is kept even after the account is deleted.
+            records: (rows || []).map((r) => ({
+                ...r,
+                email: emails.get(r.user_id) || (r.email ? `${r.email} (account deleted)` : "(account deleted)"),
+            })),
         });
     } catch (err) {
         console.error("Acceptances lookup failed:", err?.message || "unknown");
