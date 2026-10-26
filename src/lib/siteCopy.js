@@ -773,6 +773,8 @@ For privacy concerns, email us at hello@uncoached.space.`
     { key: 'memberbilling.status_label', group: 'Members Area — Billing', label: 'Label: status', text: "Status" },
     { key: 'memberbilling.renews_label', group: 'Members Area — Billing', label: 'Label: renewal date (paid plans)', text: "Renews on" },
     { key: 'memberbilling.until_label', group: 'Members Area — Billing', label: 'Label: end date (gift memberships)', text: "Access until" },
+    { key: 'memberbilling.cancelled_status', group: 'Members Area — Billing', label: 'Status after a member cancels', help: 'Shown until the paid period ends.', text: "Cancelled" },
+    { key: 'memberbilling.ends_label', group: 'Members Area — Billing', label: 'Label: end date after a member cancels', text: "Access ends on" },
     { key: 'memberbilling.none_text', group: 'Members Area — Billing', label: 'Text when there is no membership', multiline: true, text: "You don't have an active membership right now." },
     { key: 'memberbilling.none_cta', group: 'Members Area — Billing', label: 'Button when there is no membership', text: "Choose a plan" },
     { key: 'memberbilling.gift_note', group: 'Members Area — Billing', label: 'Note shown for gift memberships', multiline: true, text: "This is a gift membership. It ends by itself on the date above, with no renewal and no charge. If you'd like to continue afterwards, you can choose a plan any time." },

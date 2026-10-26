@@ -5,6 +5,7 @@ import { isMembershipPrice } from "../lib/membershipPrices.js";
 import { supabaseAdmin } from "../supabaseAdmin.js";
 import { reconcilePromptPurchases } from "../lib/reconcilePrompts.js";
 import { buildWelcomeEmail } from "../lib/welcomeEmail.js";
+import { buildCancelEmail, isCancelScheduled, cancelJustScheduled, accessEndsIso } from "../lib/cancelEmail.js";
 import { sendEmail, displayNameOf } from "../lib/mailer.js";
 
 const router = Router();
@@ -45,6 +46,30 @@ async function sendWelcomeOnce(sub, userId) {
         }
     } catch (err) {
         console.error("Welcome email failed:", err?.message || "unknown");
+    }
+}
+
+// Confirm a cancellation by email, once per cancellation. The "sent" flag
+// lives on the Stripe subscription, so a retried webhook can't send it twice;
+// it is cleared if the member un-cancels, so a later cancellation is confirmed
+// too. Never throws.
+async function sendCancelOnce(sub) {
+    if (sub.metadata?.cancel_email_sent) return;
+    try {
+        const { data: row } = await supabaseAdmin
+            .from("subscriptions").select("user_id").eq("stripe_subscription_id", sub.id).maybeSingle();
+        if (!row?.user_id) return;
+        const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(row.user_id);
+        if (!user?.email) return;
+        const { subject, html } = buildCancelEmail({ endsOn: accessEndsIso(sub), frontendUrl: process.env.FRONTEND_URL });
+        const sent = await sendEmail({ to: user.email, subject, html });
+        if (sent.ok) {
+            await stripe.subscriptions.update(sub.id, {
+                metadata: { ...(sub.metadata || {}), cancel_email_sent: "1" },
+            });
+        }
+    } catch (err) {
+        console.error("Cancellation email failed:", err?.message || "unknown");
     }
 }
 
@@ -102,7 +127,8 @@ router.post(
                         stripe_customer_id: session.customer,
                         status: sub.status,
                         plan: sub.items.data[0]?.price?.nickname || "monthly",
-                        current_period_end: periodEndIso(sub)
+                        current_period_end: periodEndIso(sub),
+                        cancel_at_period_end: isCancelScheduled(sub)
                     }, { onConflict: "user_id" });
 
                     if (error) {
@@ -123,12 +149,24 @@ router.post(
                     .from("subscriptions")
                     .update({
                         status: sub.status,
-                        current_period_end: periodEndIso(sub)
+                        current_period_end: periodEndIso(sub),
+                        cancel_at_period_end: isCancelScheduled(sub)
                     })
                     .eq("stripe_subscription_id", sub.id);
 
                 if (error) {
                     console.error("Failed to update subscription:", error);
+                }
+
+                const previous = event.data.previous_attributes;
+                if (cancelJustScheduled(sub, previous)) {
+                    await sendCancelOnce(sub);
+                } else if (!isCancelScheduled(sub) && sub.metadata?.cancel_email_sent
+                    && previous && ("cancel_at_period_end" in previous || "cancel_at" in previous)) {
+                    // Un-cancelled: allow the next cancellation to be confirmed.
+                    await stripe.subscriptions.update(sub.id, {
+                        metadata: { ...sub.metadata, cancel_email_sent: "" },
+                    }).catch((e) => console.error("Could not clear cancel flag:", e?.message));
                 }
             }
 
@@ -373,7 +411,8 @@ router.post("/repair-subscription", async (req, res) => {
             stripe_customer_id: customerId,
             status: sub.status,
             plan: sub.items.data[0]?.price?.nickname || "monthly",
-            current_period_end: periodEndIso(sub)
+            current_period_end: periodEndIso(sub),
+            cancel_at_period_end: isCancelScheduled(sub)
         }, { onConflict: "user_id" });
         if (upErr) return res.status(500).json({ error: `Save failed (is the user_id unique constraint added?): ${upErr.message}` });
 
@@ -437,7 +476,8 @@ router.post("/verify-subscription", async (req, res) => {
             stripe_customer_id: customer.id,
             status: sub.status,
             plan: sub.items.data[0]?.price?.nickname || "monthly",
-            current_period_end: periodEndIso(sub)
+            current_period_end: periodEndIso(sub),
+            cancel_at_period_end: isCancelScheduled(sub)
         }, { onConflict: "user_id" });
 
         if (error) {

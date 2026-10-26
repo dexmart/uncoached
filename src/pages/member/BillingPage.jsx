@@ -62,7 +62,12 @@ const BillingPage = () => {
     };
 
     const isGift = subscription?.plan?.startsWith('gift-');
+    // Cancelled in the portal: still active, but it will not renew.
+    const isCancelling = !isGift && subscription?.cancel_at_period_end === true;
     const endDate = prettyDate(subscription?.current_period_end);
+    const endLabel = isGift
+        ? copy('memberbilling.until_label')
+        : isCancelling ? copy('memberbilling.ends_label') : copy('memberbilling.renews_label');
 
     return (
         <div className="min-h-screen bg-bone">
@@ -91,11 +96,13 @@ const BillingPage = () => {
                             </div>
                             <div className="flex justify-between items-baseline gap-4">
                                 <dt className="text-text-muted">{copy('memberbilling.status_label')}</dt>
-                                <dd className="text-text-dark font-medium text-right">{statusLabel(subscription?.status)}</dd>
+                                <dd className="text-text-dark font-medium text-right">
+                                    {isCancelling ? copy('memberbilling.cancelled_status') : statusLabel(subscription?.status)}
+                                </dd>
                             </div>
                             {endDate && (
                                 <div className="flex justify-between items-baseline gap-4">
-                                    <dt className="text-text-muted">{isGift ? copy('memberbilling.until_label') : copy('memberbilling.renews_label')}</dt>
+                                    <dt className="text-text-muted">{endLabel}</dt>
                                     <dd className="text-text-dark font-medium text-right">{endDate}</dd>
                                 </div>
                             )}
