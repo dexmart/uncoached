@@ -11,10 +11,18 @@ const prettyDate = (iso) => {
     return isNaN(d) ? null : d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 };
 
-/** True while a subscription is set to stop at a future date. */
+const periodEndSecs = (sub) => sub?.current_period_end ?? sub?.items?.data?.[0]?.current_period_end ?? null;
+
+/**
+ * True while the member has cancelled: the subscription stops at or before
+ * the end of the period already paid for, so it will not renew. A cancel_at
+ * further away (Stripe sets one on test subscriptions) is not a cancellation.
+ */
 export function isCancelScheduled(sub) {
     if (!sub || sub.status === "canceled") return false;
-    return Boolean(sub.cancel_at_period_end || sub.cancel_at);
+    if (sub.cancel_at_period_end) return true;
+    const end = periodEndSecs(sub);
+    return Boolean(sub.cancel_at && end && sub.cancel_at <= end);
 }
 
 /** True when this update is the moment the member cancelled. `previous` is the event's previous_attributes. */
@@ -26,7 +34,8 @@ export function cancelJustScheduled(sub, previous) {
 
 /** When access ends, as an ISO date (or null). */
 export function accessEndsIso(sub) {
-    const secs = sub?.cancel_at ?? sub?.current_period_end ?? sub?.items?.data?.[0]?.current_period_end;
+    const end = periodEndSecs(sub);
+    const secs = sub?.cancel_at && (!end || sub.cancel_at < end) ? sub.cancel_at : end;
     return secs ? new Date(secs * 1000).toISOString() : null;
 }
 

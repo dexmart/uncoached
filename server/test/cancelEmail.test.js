@@ -27,6 +27,15 @@ test("a cancellation is scheduled by cancel_at_period_end or by cancel_at", () =
     assert.equal(isCancelScheduled(sub({ cancel_at_period_end: true })), true);
     assert.equal(isCancelScheduled(sub({ cancel_at: PERIOD_END })), true);
     assert.equal(isCancelScheduled(sub({ cancel_at_period_end: true, status: "canceled" })), false);
+    // Stripe puts a far-off cancel_at on test subscriptions; that is not the member cancelling.
+    assert.equal(isCancelScheduled(sub({ cancel_at: PERIOD_END + 60 * 86400 })), false);
+});
+
+test("cancelling a test subscription that already had a far-off cancel_at still counts", () => {
+    const now = sub({ cancel_at_period_end: true, cancel_at: PERIOD_END });
+    assert.equal(cancelJustScheduled(now, { cancel_at_period_end: false, cancel_at: PERIOD_END + 60 * 86400 }), true);
+    assert.equal(accessEndsIso(sub({ cancel_at_period_end: true, cancel_at: PERIOD_END + 60 * 86400 })),
+        new Date(PERIOD_END * 1000).toISOString());
 });
 
 test("only the change from renewing to cancelling counts, so other updates send nothing", () => {
